@@ -1,0 +1,4 @@
+device webpage: https://www.pololu.com/product/1350/resources
+controller python code: https://github.com/FRC4564/Maestro
+usb software: https://www.pololu.com/docs/0J41
+pi and maestro python example: https://rimstar.org/science_electronics_projects/servo_motor_with_raspberry_pi_and_pololu_maestro.htm

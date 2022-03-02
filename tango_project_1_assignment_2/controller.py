@@ -1,3 +1,5 @@
+import os
+import platform
 from typing import Dict
 
 import serial
@@ -26,13 +28,21 @@ class Controller:
         self.servo_robot_anatomy_map: Dict[str: int] = {"motors": 0x01, "waist": "02", "head_pan": "03",
                                                         "head_tilt": "04"}
         self.servo_controller = None
-        # try:
-        #     self.servo_controller = serial.Serial('/dev/ttyACM0')
-        # except:
-        #     try:
-        #         self.servo_controller = serial.Serial('/dev/ttyACM1')
-        #     except:
-        #         exit(1)
+        if platform.system() != 'Windows':
+            try:
+                self.servo_controller = serial.Serial('/dev/ttyACM0')
+            except:
+                try:
+                    self.servo_controller = serial.Serial('/dev/ttyACM1')
+                except:
+                    print(" MAC or Linux: no serial device found in /dev/.")
+                    exit(1)
+        else:
+            try:
+                self.servo_controller = serial.Serial('COM7')
+            except:
+                print("Windows: no serial device found on COM port.")
+                exit(1)
         pass
 
     def drive_servo(self, servo: str, target: int) -> None:

@@ -28,25 +28,33 @@ class Controller:
                                                         }
         self.servo_robot_anatomy_map: Dict[str: int] = {"motors": 0x01, "waist": "02", "head_pan": "03",
                                                         "head_tilt": "04"}
-        self.servo_controller = None
+        self.servo_controller = Controller.servo_controller_via_serial()
+        if self.servo_controller is None:
+            print(f"No servo controller found on {platform.system()} serial port")
+            exit(1)
+        else:
+            print(f"Servo controller found on {self.servo_controller.name}")
+
+    @staticmethod
+    def servo_controller_via_serial():
         if platform.system() == 'Linux':
             try:
-                self.servo_controller = serial.Serial('/dev/ttyACM0')
+                device = serial.Serial('/dev/ttyACM0')
+                return device
             except SerialException:
                 try:
-                    self.servo_controller = serial.Serial('/dev/ttyACM1')
+                    device = serial.Serial('/dev/ttyACM1')
+                    return device
                 except SerialException:
-                    print("Linux: No serial device found on ttyACM ports")
-                    exit(1)
+                    return None
         elif platform.system() == 'Windows':
             try:
-                self.servo_controller = serial.Serial('COM7')
+                device = serial.Serial('COM7')
+                return device
             except SerialException:
-                print("Windows: No serial device found on COM port.")
-                exit(1)
+                return None
         else:
-            print("Unknown Operating System or platform.")
-        pass
+            return None
 
     def drive_servo(self, servo: str, target: int) -> None:
         lsb = target & 0x7F

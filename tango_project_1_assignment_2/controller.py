@@ -2,7 +2,7 @@ import os
 import platform
 from typing import Dict
 
-import serial
+import serial, tkinter as tk
 from serial import SerialException
 
 
@@ -63,7 +63,6 @@ class Controller:
             lsb) + chr(msb)
         self.servo_controller.write(serial_command.encode('utf-8'))
 
-    # TODO: make class for keyboard input
     # Keyboard input class contains arithmetic for doing and modifying each movement.
     # Add methods to this class to control specific movements (turn right, turn waist, pan_head, etc, etc)
     # Add reset method (zero all servos)
@@ -71,6 +70,12 @@ class Controller:
     # Add E-stop method that exit's the code and releases the servo controller.
     # Add data_input method. If not a supported method print("Unsupported input data format")
 
+
+class KeyboardInput:
+    # TODO: make class for keyboard input
+    # Hunter uses a window for keyboard controlling on the video, not sure how that's supposed to work.
+    # Imported tkinter for later use. Guessing we need to be active on a specific window to record key inputs w/tkinter
+    # Hunter doesn't have methods, he just has an if else chain for each keycode (23:49 on week 6 friday video)
 
 if __name__ == '__main__':
     controller: Controller = Controller()

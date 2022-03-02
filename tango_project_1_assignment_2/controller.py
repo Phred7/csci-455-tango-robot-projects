@@ -26,21 +26,29 @@ class Controller:
         self.servo_robot_anatomy_map: Dict[str: int] = {"motors": 0x01, "waist": "02", "head_pan": "03",
                                                         "head_tilt": "04"}
         self.servo_controller = None
-        try:
-            self.servo_controller = serial.Serial('/dev/ttyACM0')
-        except:
-            try:
-                self.servo_controller = serial.Serial('/dev/ttyACM1')
-            except:
-                exit(1)
+        # try:
+        #     self.servo_controller = serial.Serial('/dev/ttyACM0')
+        # except:
+        #     try:
+        #         self.servo_controller = serial.Serial('/dev/ttyACM1')
+        #     except:
+        #         exit(1)
         pass
 
     def drive_servo(self, servo: str, target: int) -> None:
         lsb = target & 0x7F
         msb = (target >> 7) & 0x7F
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x04) + chr(self.servo_robot_anatomy_map.get(servo)) + chr(
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x04) + chr(int(self.servo_robot_anatomy_map.get(servo))) + chr(
             lsb) + chr(msb)
-        self.servo_controller.write(serial_command)
+        self.servo_controller.write(serial_command.encode('utf-8'))
+
+    # TODO: make class for keyboard input
+    # Keyboard input class contains arithmetic for doing and modifying each movement.
+    # Add methods to this class to control specific movements (turn right, turn waist, pan_head, etc, etc)
+    # Add reset method (zero all servos)
+    # Add stop method (slowly, decrease the motors to 0 vel.)
+    # Add E-stop method that exit's the code and releases the servo controller.
+    # Add data_input method. If not a supported method print("Unsupported input data format")
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@ Pololu Maestro servo controller board library
 """
 import serial
 
+
 class MaestroUART(object):
 	def __init__(self, device='/dev/ttyS0', baudrate=9600):
 		"""Open the given serial port and do any setup for the serial port.
@@ -53,7 +54,7 @@ class MaestroUART(object):
 			>0: the servo position in quarter-microseconds
 			0: error getting the position, check the connections, could also be
 			low power
-		""" 
+		"""
 		command = bytes([0xAA, 0x0C, 0x90 & 0x7F, channel])
 
 		self.ser.write(command)
@@ -137,7 +138,7 @@ class MaestroUART(object):
 		self.ser.write(command)
 
 	def set_target(self, channel, target):
-		"""Sets the target of a Maestro channel. 
+		"""Sets the target of a Maestro channel.
 
 		Args:
 			channel: The channel for the servo motor (0, 1, ...).

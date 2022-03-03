@@ -1,9 +1,7 @@
-import os
 import platform
-import tkinter
 from typing import Dict
 
-import serial, tkinter as tk
+import serial
 from serial import SerialException
 
 
@@ -40,6 +38,7 @@ class Controller:
         self.servo_max: int = 8000
         self.motor_velocity_counter: int = self.servo_neutral
         self.motor_turn_velocity_counter: int = self.servo_neutral
+        self.motor_step_size: int = 16
         if self.servo_controller is None:
             print(f"No servo controller found on {platform.system()} serial port")
             exit(1)
@@ -89,7 +88,7 @@ class Controller:
 
     def forward(self):
         # < 6000 on channel 1
-        self.motor_velocity_counter -= 16
+        self.motor_velocity_counter -= self.motor_step_size
         if self.motor_velocity_counter < self.servo_min:
             self.motor_velocity_counter = self.servo_min
         if self.motor_velocity_counter > self.servo_neutral:
@@ -98,7 +97,7 @@ class Controller:
 
     def reverse(self):
         # > 6000 on channel 1
-        self.motor_velocity_counter += 16
+        self.motor_velocity_counter += self.motor_step_size
         if self.motor_velocity_counter > self.servo_max:
             self.motor_velocity_counter = self.servo_max
         if self.motor_velocity_counter < self.servo_neutral:
@@ -109,7 +108,20 @@ class Controller:
     def STOPDROPANDROLL(self):
         # 6000 on channel 2 and 1
         # need to slowdown first!!
-        pass
+        while self.motor_turn_velocity_counter != self.servo_neutral:
+            if self.motor_turn_velocity_counter > self.servo_neutral:
+                self.motor_turn_velocity_counter -= self.motor_step_size
+            else:
+                self.motor_turn_velocity_counter += self.motor_step_size
+            self.drive_servo("turn_motors", self.motor_velocity_counter)
+        while self.motor_velocity_counter != self.servo_neutral:
+            if self.motor_velocity_counter > self.servo_neutral:
+                self.motor_velocity_counter -= self.motor_step_size
+            else:
+                self.motor_velocity_counter += self.motor_step_size
+            self.drive_servo("turn_motors", self.motor_velocity_counter)
+        print("stopped")
+        return
 
     def turnwaist(self):
         # channel 0

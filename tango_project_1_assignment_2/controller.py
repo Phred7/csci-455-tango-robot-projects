@@ -35,9 +35,9 @@ class Controller:
                                                         "l_grip": 0x17
                                                         }
         self.servo_controller = Controller.servo_controller_via_serial()
-        self.servo_min: int = 4000
-        self.servo_neutral: int = 6000
-        self.servo_max: int = 8000
+        self.servo_min: int = 4096
+        self.servo_neutral: int = 5376
+        self.servo_max: int = 8192
         if self.servo_controller is None:
             print(f"No servo controller found on {platform.system()} serial port")
             exit(1)

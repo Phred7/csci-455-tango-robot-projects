@@ -10,6 +10,13 @@ from serial import SerialException
 class Controller:
 
     def __init__(self) -> None:
+        self.fivestepsofPOWER: Dict[str:int] = {"rhigh": 4096,
+                                                "rmid":4688,
+                                                "mid":5376,
+                                                "lmid":5968,
+                                                "lhigh": 8192
+
+        }
         self.servo_robot_anatomy_map: Dict[str: int] = {"waist": 0x00,
                                                         "motors": 0x01,
                                                         "turn_motors": 0x02,
@@ -29,9 +36,9 @@ class Controller:
                                                         "l_grip": 0x17
                                                         }
         self.servo_controller = Controller.servo_controller_via_serial()
-        self.servo_min: int = 4000
-        self.servo_neutral: int = 6000
-        self.servo_max: int = 8000
+        self.servo_min: int = 4096
+        self.servo_neutral: int = 5376
+        self.servo_max: int = 8192
         if self.servo_controller is None:
             print(f"No servo controller found on {platform.system()} serial port")
             exit(1)
@@ -80,27 +87,39 @@ class Controller:
 
     def forward(self):
         self.drive_servo("motor", )
+        # < 6000 on channel 1
         pass
 
     def reverse(self):
+        # > 6000 on channel 1
         pass
 
     def STOPDROPANDROLL(self):
+        # 6000 on channel 2 and 1
+        # need to slowdown first!!
         pass
 
     def turnwaist(self):
+        # channel 0
+        # from right to left 4096, 4688, 5376, 5968, 8192
         pass
 
     def shakehead(self):
+        # channel 3
+        # from right to left 4096, 4688, 5376, 5968, 8192
         pass
 
     def nodhead(self):
+        # channel 4
+        # from up to down 4096, 4688, 5376, 5968, 8192
         pass
 
     def right(self):
+        # > 6000 on channel 2
         pass
 
     def left(self):
+        # < 6000 on channel 2
         pass
 
 

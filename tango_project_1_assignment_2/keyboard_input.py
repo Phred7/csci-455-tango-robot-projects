@@ -18,4 +18,39 @@ class KeyboardInput:
         window.mainloop()
 
     def drive_robot(self, pressed_key) -> None:
-        pass
+        if pressed_key.keycode == 38:
+            # up
+            pass
+        elif pressed_key.keycode == 40:
+            # down
+            pass
+        elif pressed_key.keycode == 37:
+            # left
+            pass
+        elif pressed_key.keycode == 39:
+            # right
+            pass
+        elif pressed_key.keycode == 40:
+            # down
+            pass
+        elif pressed_key.keycode == 87:
+            # w
+            pass
+        elif pressed_key.keycode == 83:
+            # s
+            pass
+        elif pressed_key.keycode == 65:
+            # a
+            pass
+        elif pressed_key.keycode == 68:
+            # d
+            pass
+        elif pressed_key.keycode == 32:
+            # space
+            pass
+        elif pressed_key.keycode == 90:
+            # z
+            pass
+        elif pressed_key.keycode == 67:
+            # c
+            pass

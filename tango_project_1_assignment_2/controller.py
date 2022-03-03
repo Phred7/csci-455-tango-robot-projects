@@ -10,13 +10,12 @@ from serial import SerialException
 class Controller:
 
     def __init__(self) -> None:
-        self.fivestepsofPOWER: Dict[str:int] = {"rhigh": 4096,
-                                                "rmid":4688,
-                                                "mid":5376,
-                                                "lmid":5968,
-                                                "lhigh": 8192
+        self.fivestepsofPOWER: Dict[str:int] = {"rhigh": 4000,
+                                                "rmid": 5000,
+                                                "mid": 6000,
+                                                "lmid": 7000,
+                                                "lhigh": 8000}
 
-        }
         self.servo_robot_anatomy_map: Dict[str: int] = {"waist": 0x00,
                                                         "motors": 0x01,
                                                         "turn_motors": 0x02,
@@ -36,14 +35,17 @@ class Controller:
                                                         "l_grip": 0x17
                                                         }
         self.servo_controller = Controller.servo_controller_via_serial()
-        self.servo_min: int = 4096
-        self.servo_neutral: int = 5376
-        self.servo_max: int = 8192
+        self.servo_min: int = 4000
+        self.servo_neutral: int = 6000
+        self.servo_max: int = 8000
+        self.motor_velocity_counter: int = self.servo_neutral
+        self.motor_turn_velocity_counter: int = self.servo_neutral
         if self.servo_controller is None:
             print(f"No servo controller found on {platform.system()} serial port")
             exit(1)
         else:
             print(f"Servo controller found on {self.servo_controller.name}")
+        self.drive_servo("turn_motors", self.servo_neutral)
 
     @staticmethod
     def servo_controller_via_serial():
@@ -86,12 +88,22 @@ class Controller:
     # Add data_input method. If not a supported method print("Unsupported input data format")
 
     def forward(self):
-        self.drive_servo("motor", )
         # < 6000 on channel 1
-        pass
+        self.motor_velocity_counter -= 16
+        if self.motor_velocity_counter < self.servo_min:
+            self.motor_velocity_counter = self.servo_min
+        if self.motor_velocity_counter > self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        self.drive_servo("motors", self.motor_velocity_counter)
 
     def reverse(self):
         # > 6000 on channel 1
+        self.motor_velocity_counter += 16
+        if self.motor_velocity_counter > self.servo_max:
+            self.motor_velocity_counter = self.servo_max
+        if self.motor_velocity_counter < self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        self.drive_servo("motors", self.motor_velocity_counter)
         pass
 
     def STOPDROPANDROLL(self):

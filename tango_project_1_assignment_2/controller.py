@@ -98,7 +98,7 @@ class Controller:
         #     serial_command += chr(int(self.servo_robot_anatomy_map.get(servos[i])))
         #     serial_command += chr(target & 0x7F)
         #     serial_command += chr((target >> 7) & 0x7F)
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(int(0x02)) + chr((7000 & 0x7F)) + chr((7000 >> 7) & 0x7F) + chr(int(0x01)) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F)
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((7000 & 0x7F)) + chr((7000 >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
 
 

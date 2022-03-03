@@ -1,10 +1,15 @@
 import tkinter
 
 from tango_project_1_assignment_2.controller import Controller
+#from controller import Controller on the robot's code
 
 
 class KeyboardInput:
     # TODO: make class for keyboard input
+    # local code (without a stream to another PC) doesn't seem to run any of the servos or motors despite printing
+    # controller class is properly imported but nothing else happens
+    # calls for motors seem correct though
+    # back swivel engages when robot turns on. possibly has to do with the 0 index being motors normally?
     # Hunter uses a window for keyboard controlling on the video, not sure how that's supposed to work.
     # Imported tkinter for later use. Guessing we need to be active on a specific window to record key inputs w/tkinter
     # Hunter doesn't have methods, he just has an if else chain for each keycode (23:49 on week 6 friday video)
@@ -17,6 +22,7 @@ class KeyboardInput:
         self.window.bind('<Left>', self.drive_robot)
         self.window.bind('<Right>', self.drive_robot)
         self.window.bind('<space>', self.stop_robot)
+        #on local keyboard with robot, space is not recognized for space bar
         self.window.bind('<z>', self.drive_robot)
         self.window.bind('<c>', self.drive_robot)
         self.window.bind('<w>', self.drive_robot)

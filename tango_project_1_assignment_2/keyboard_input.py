@@ -63,22 +63,22 @@ class KeyboardInput:
             self.robot_controller.right()
         elif pressed_key.keycode == 87:
             # w
-            pass
+            self.robot_controller.headnod(True)
         elif pressed_key.keycode == 83:
             # s
-            pass
+            self.robot_controller.headnod(False)
         elif pressed_key.keycode == 65:
             # a
-            pass
+            self.robot_controller.headshake(False)
         elif pressed_key.keycode == 68:
             # d
-            pass
+            self.robot_controller.headshake(True)
         elif pressed_key.keycode == 90:
             # z
-            pass
+            self.robot_controller.turnwaist(False)
         elif pressed_key.keycode == 67:
             # c
-            pass
+            self.robot_controller.turnwaist(True)
         print(pressed_key)
         pass
 

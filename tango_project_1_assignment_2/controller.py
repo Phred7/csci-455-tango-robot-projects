@@ -8,11 +8,11 @@ from serial import SerialException
 class Controller:
 
     def __init__(self) -> None:
-        self.fivestepsofPOWER: Dict[str:int] = {"rhigh": 4000,
-                                                "rmid": 5000,
-                                                "mid": 6000,
-                                                "lmid": 7000,
-                                                "lhigh": 8000}
+        self.fivestepsofPOWER: Dict[int:int] = {0: 4000, #rhigh
+                                                1: 5000, #rmid
+                                                2: 6000, #mid
+                                                3: 7000, #lmid
+                                                4: 8000} #lhigh
 
         self.servo_robot_anatomy_map: Dict[str: int] = {"waist": 0x00,
                                                         "motors": 0x01,
@@ -36,6 +36,8 @@ class Controller:
         self.servo_min: int = 4000
         self.servo_neutral: int = 6000
         self.servo_max: int = 8000
+        self.twist_neutral: int = 2
+        self.twist_position: int = self.twist_neutral
         self.motor_velocity_counter: int = self.servo_neutral
         self.motor_turn_velocity_counter: int = self.servo_neutral
         if self.servo_controller is None:
@@ -109,20 +111,50 @@ class Controller:
         # need to slowdown first!!
         pass
 
-    def turnwaist(self):
+    def turnwaist(self, turnright):
         # channel 0
         # from right to left 4096, 4688, 5376, 5968, 8192
-        pass
+        if turnright:
+            self.twist_position += 1
+        else:
+            self.twist_position -= 1
 
-    def shakehead(self):
+        if self.twist_position < 0:
+            self.twist_position = 0
+        if self.twist_position > 5:
+            self.twist_position = 5
+        self.drive_servo("waist", self.fivestepsofPOWER[self.twist_position])
+
+
+    def headnod(self, turnup):
         # channel 3
         # from right to left 4096, 4688, 5376, 5968, 8192
+        if turnup:
+            self.twist_position += 1
+        else:
+            self.twist_position -= 1
+
+        if self.twist_position < 0:
+            self.twist_position = 0
+        if self.twist_position > 5:
+            self.twist_position = 5
+        self.drive_servo("head_tilt", self.fivestepsofPOWER[self.twist_position])
         pass
 
-    def nodhead(self):
+
+    def headshake(self, turnright):
         # channel 4
         # from up to down 4096, 4688, 5376, 5968, 8192
-        pass
+        if turnright:
+            self.twist_position += 1
+        else:
+            self.twist_position -= 1
+
+        if self.twist_position < 0:
+            self.twist_position = 0
+        if self.twist_position > 5:
+            self.twist_position = 5
+        self.drive_servo("head_pan", self.fivestepsofPOWER[self.twist_position])
 
     def right(self):
         # > 6000 on channel 2

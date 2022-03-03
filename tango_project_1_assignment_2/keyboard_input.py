@@ -40,18 +40,18 @@ class KeyboardInput:
 
     def drive_robot(self, pressed_key) -> None:
         """
-        keyboard keycodes
-        Up: 38
-        Down: 40
-        Left: 37
-        Right: 39
-        Space: 32
-        w: 87
-        s: 83
-        a: 65
-        d: 68
-        z: 90
-        c: 67
+        keyboard keycodes (win | linux)
+        Up: 38 | 111
+        Down: 40 | 116
+        Left: 37 | 113
+        Right: 39 | 114
+        Space: 32 | unknown
+        w: 87 | 25
+        s: 83 | 39
+        a: 65 | 38
+        d: 68 | 40
+        z: 90 | 52
+        c: 67 | 54
         :param pressed_key:
         :return:
         """

@@ -1,5 +1,5 @@
 import platform
-from typing import Dict
+from typing import Dict, List
 
 import serial
 from serial import SerialException
@@ -67,17 +67,36 @@ class Controller:
         else:
             return None
 
-    @staticmethod
-    def print_me(key) -> None:
-        print(f"Printed: {key}")
-
     def drive_servo(self, servo: str, target: int) -> None:
+        """
+        Protocol: 0xAA, device number byte, command byte with MSB cleared, any necessary data
+bytes
+        :param servo:
+        :param target:
+        :return:
+        """
         lsb = target & 0x7F
         msb = (target >> 7) & 0x7F
         serial_command = chr(0xaa) + chr(0xC) + chr(0x04) + chr(int(self.servo_robot_anatomy_map.get(servo))) + chr(
             lsb) + chr(msb)
         self.servo_controller.write(serial_command.encode('utf-8'))
         print(f"moved {servo} on port 0x{int(self.servo_robot_anatomy_map.get(servo))} to {target}")
+
+    def drive_multiple_servos(self, servos: List[str], targets: List[int]) -> None:
+        """
+        MultiTarget Protocol: 0xAA, device number, 0x1F, number of targets, first channel number, first target
+low bits, first target high bits, second target low bits, second target high bits, …
+        :param target:
+        :return:
+        """
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x04) + chr(len(servos))
+        for i, target in enumerate(targets):
+            serial_command += chr(int(self.servo_robot_anatomy_map.get(servos[i])))
+            serial_command += chr(target & 0x7F)
+            serial_command += chr((target >> 7) & 0x7F)
+        self.servo_controller.write(serial_command.encode('utf-8'))
+        # print(f"moved {servo} on port 0x{int(self.servo_robot_anatomy_map.get(servo))} to {target}")
+
 
     # Keyboard input class contains arithmetic for doing and modifying each movement.
     # Add methods to this class to control specific movements (turn right, turn waist, pan_head, etc, etc)
@@ -140,10 +159,26 @@ class Controller:
 
     def right(self):
         # > 6000 on channel 2
+        self.drive_servo("motors", self.servo_neutral)
+
+        self.motor_velocity_counter += 16
+        if self.motor_velocity_counter > self.servo_max:
+            self.motor_velocity_counter = self.servo_max
+        if self.motor_velocity_counter < self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        self.drive_servo("turn_motors", self.motor_velocity_counter)
         pass
 
     def left(self):
         # < 6000 on channel 2
+        self.drive_servo("motors", self.servo_neutral)
+
+        self.motor_velocity_counter -= 16
+        if self.motor_velocity_counter < self.servo_min:
+            self.motor_velocity_counter = self.servo_min
+        if self.motor_velocity_counter > self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        self.drive_servo("turn_motors", self.motor_velocity_counter)
         pass
 
 

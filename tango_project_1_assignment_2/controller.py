@@ -1,9 +1,7 @@
 import os
 import platform
-import tkinter
 from typing import Dict
 
-import serial, tkinter as tk
 from serial import SerialException
 
 
@@ -128,10 +126,26 @@ class Controller:
 
     def right(self):
         # > 6000 on channel 2
+        self.drive_servo("motors", self.servo_neutral)
+
+        self.motor_velocity_counter += 16
+        if self.motor_velocity_counter > self.servo_max:
+            self.motor_velocity_counter = self.servo_max
+        if self.motor_velocity_counter < self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        self.drive_servo("turn_motors", self.motor_velocity_counter)
         pass
 
     def left(self):
         # < 6000 on channel 2
+        self.drive_servo("motors", self.servo_neutral)
+
+        self.motor_velocity_counter -= 16
+        if self.motor_velocity_counter < self.servo_min:
+            self.motor_velocity_counter = self.servo_min
+        if self.motor_velocity_counter > self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        self.drive_servo("turn_motors", self.motor_velocity_counter)
         pass
 
 

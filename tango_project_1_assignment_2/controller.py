@@ -78,15 +78,6 @@ class Controller:
     # Add data_input method. If not a supported method print("Unsupported input data format")
 
 
-class KeyboardInput:
-    # TODO: make class for keyboard input
-    # Hunter uses a window for keyboard controlling on the video, not sure how that's supposed to work.
-    # Imported tkinter for later use. Guessing we need to be active on a specific window to record key inputs w/tkinter
-    # Hunter doesn't have methods, he just has an if else chain for each keycode (23:49 on week 6 friday video)
-
 if __name__ == '__main__':
     # controller: Controller = Controller()
     # controller.drive_servo("waist", 4000)
-    window = tkinter.Tk()
-    window.bind('<Up>', Controller.print_me)
-    window.mainloop()

@@ -77,6 +77,32 @@ class Controller:
     # Add E-stop method that exit's the code and releases the servo controller.
     # Add data_input method. If not a supported method print("Unsupported input data format")
 
+    def forward(self):
+        pass
+
+    def reverse(self):
+        pass
+
+    def STOPDROPANDROLL(self):
+        pass
+
+    def turnwaist(self):
+        pass
+
+    def shakehead(self):
+        pass
+
+    def nodhead(self):
+        pass
+
+    def right(self):
+        pass
+
+    def left(self):
+        pass
+
+
+
 
 if __name__ == '__main__':
     # controller: Controller = Controller()

@@ -102,8 +102,7 @@ class Controller:
         pass
 
 
-
-
 if __name__ == '__main__':
+    pass
     # controller: Controller = Controller()
     # controller.drive_servo("waist", 4000)

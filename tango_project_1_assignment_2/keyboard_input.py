@@ -16,7 +16,7 @@ class KeyboardInput:
         self.window.bind('<Down>', self.drive_robot)
         self.window.bind('<Left>', self.drive_robot)
         self.window.bind('<Right>', self.drive_robot)
-        self.window.bind('<space>', self.drive_robot)
+        self.window.bind('<space>', self.stop_robot)
         self.window.bind('<z>', self.drive_robot)
         self.window.bind('<c>', self.drive_robot)
         self.window.bind('<w>', self.drive_robot)
@@ -26,6 +26,11 @@ class KeyboardInput:
 
     def run(self):
         self.window.mainloop()
+
+    def stop_robot(self, pressed_key) -> None:
+        if pressed_key.keycode == 32:
+            # space
+            self.robot_controller.STOPDROPANDROLL()
 
     def drive_robot(self, pressed_key) -> None:
         """
@@ -45,20 +50,17 @@ class KeyboardInput:
         :return:
         """
         if pressed_key.keycode == 38:
-            # up
-            pass
+            # up: forward
+            self.robot_controller.forward()
         elif pressed_key.keycode == 40:
-            # down
-            pass
+            # down: backwards
+            self.robot_controller.reverse()
         elif pressed_key.keycode == 37:
-            # left
-            pass
+            # left: left
+            self.robot_controller.left()
         elif pressed_key.keycode == 39:
-            # right
-            pass
-        elif pressed_key.keycode == 40:
-            # down
-            pass
+            # right: right
+            self.robot_controller.right()
         elif pressed_key.keycode == 87:
             # w
             pass
@@ -70,9 +72,6 @@ class KeyboardInput:
             pass
         elif pressed_key.keycode == 68:
             # d
-            pass
-        elif pressed_key.keycode == 32:
-            # space
             pass
         elif pressed_key.keycode == 90:
             # z

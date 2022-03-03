@@ -10,8 +10,9 @@ from serial import SerialException
 class Controller:
 
     def __init__(self) -> None:
-        self.servo_robot_anatomy_map: Dict[str: int] = {"motors": 0x01,
-                                                        "waist": 0x00,
+        self.servo_robot_anatomy_map: Dict[str: int] = {"waist": 0x00,
+                                                        "motors": 0x01,
+                                                        "turn_motors": 0x02,
                                                         "head_pan": 0x03,
                                                         "head_tilt": 0x04,
                                                         "r_shoulder": 0x05,
@@ -78,6 +79,7 @@ class Controller:
     # Add data_input method. If not a supported method print("Unsupported input data format")
 
     def forward(self):
+        self.drive_servo("motor", )
         pass
 
     def reverse(self):

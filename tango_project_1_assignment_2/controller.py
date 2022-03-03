@@ -1,5 +1,6 @@
 import os
 import platform
+import tkinter
 from typing import Dict
 
 import serial
@@ -10,7 +11,7 @@ class Controller:
 
     def __init__(self) -> None:
         self.servo_robot_anatomy_map: Dict[str: int] = {"motors": 0x01,
-                                                        "waist": 0x02,
+                                                        "waist": 0x00,
                                                         "head_pan": 0x03,
                                                         "head_tilt": 0x04,
                                                         "r_shoulder": 0x05,
@@ -26,9 +27,10 @@ class Controller:
                                                         "l_wrist_pan": 0x16,
                                                         "l_grip": 0x17
                                                         }
-        self.servo_robot_anatomy_map: Dict[str: int] = {"motors": 0x01, "waist": "02", "head_pan": "03",
-                                                        "head_tilt": "04"}
         self.servo_controller = Controller.servo_controller_via_serial()
+        self.servo_min: int = 4000
+        self.servo_neutral: int = 6000
+        self.servo_max: int = 8000
         if self.servo_controller is None:
             print(f"No servo controller found on {platform.system()} serial port")
             exit(1)
@@ -49,12 +51,16 @@ class Controller:
                     return None
         elif platform.system() == 'Windows':
             try:
-                device = serial.Serial('COM7')
+                device = serial.Serial('COM21')
                 return device
             except SerialException:
                 return None
         else:
             return None
+
+    @staticmethod
+    def print_me(key) -> None:
+        print(f"Printed: {key}")
 
     def drive_servo(self, servo: str, target: int) -> None:
         lsb = target & 0x7F
@@ -62,6 +68,7 @@ class Controller:
         serial_command = chr(0xaa) + chr(0xC) + chr(0x04) + chr(int(self.servo_robot_anatomy_map.get(servo))) + chr(
             lsb) + chr(msb)
         self.servo_controller.write(serial_command.encode('utf-8'))
+        print(f"moved {servo} on port 0x{int(self.servo_robot_anatomy_map.get(servo))} to {target}")
 
     # TODO: make class for keyboard input
     # Keyboard input class contains arithmetic for doing and modifying each movement.
@@ -73,5 +80,8 @@ class Controller:
 
 
 if __name__ == '__main__':
-    controller: Controller = Controller()
-    controller.drive_servo("waist", 8000)
+    # controller: Controller = Controller()
+    # controller.drive_servo("waist", 4000)
+    window = tkinter.Tk()
+    window.bind('<Up>', Controller.print_me)
+    window.mainloop()

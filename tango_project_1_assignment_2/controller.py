@@ -46,7 +46,7 @@ class Controller:
             exit(1)
         else:
             print(f"Servo controller found on {self.servo_controller.name}")
-        self.drive_servo("turn_motors", self.servo_neutral)
+        # self.drive_servo("turn_motors", self.servo_neutral)
 
     @staticmethod
     def servo_controller_via_serial():
@@ -72,7 +72,7 @@ class Controller:
     def drive_servo(self, servo: str, target: int) -> None:
         """
         Protocol: 0xAA, device number byte, command byte with MSB cleared, any necessary data
-bytes
+        bytes
         :param servo:
         :param target:
         :return:
@@ -87,17 +87,19 @@ bytes
     def drive_multiple_servos(self, servos: List[str], targets: List[int]) -> None:
         """
         MultiTarget Protocol: 0xAA, device number, 0x1F, number of targets, first channel number, first target
-low bits, first target high bits, second target low bits, second target high bits, …
-        :param target:
+        low bits, first target high bits, second target low bits, second target high bits, …
+        :param servos:
+        :param targets:
         :return:
         """
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x04) + chr(len(servos))
-        for i, target in enumerate(targets):
-            serial_command += chr(int(self.servo_robot_anatomy_map.get(servos[i])))
-            serial_command += chr(target & 0x7F)
-            serial_command += chr((target >> 7) & 0x7F)
+
+        # serial_command = chr(0xaa) + chr(0xC) + chr(0x1) + chr(0x0F) + chr(len(servos))
+        # for i, target in enumerate(targets):
+        #     serial_command += chr(int(self.servo_robot_anatomy_map.get(servos[i])))
+        #     serial_command += chr(target & 0x7F)
+        #     serial_command += chr((target >> 7) & 0x7F)
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(int(0x02)) + chr((7000 & 0x7F)) + chr((7000 >> 7) & 0x7F) + chr(int(0x01)) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
-        # print(f"moved {servo} on port 0x{int(self.servo_robot_anatomy_map.get(servo))} to {target}")
 
 
     # Keyboard input class contains arithmetic for doing and modifying each movement.
@@ -154,8 +156,8 @@ low bits, first target high bits, second target low bits, second target high bit
 
         if self.twist_position < 0:
             self.twist_position = 0
-        if self.twist_position > 5:
-            self.twist_position = 5
+        if self.twist_position > 4:
+            self.twist_position = 4
         self.drive_servo("waist", self.fivestepsofPOWER[self.twist_position])
 
 
@@ -169,8 +171,8 @@ low bits, first target high bits, second target low bits, second target high bit
 
         if self.twist_position < 0:
             self.twist_position = 0
-        if self.twist_position > 5:
-            self.twist_position = 5
+        if self.twist_position > 4:
+            self.twist_position = 4
         self.drive_servo("head_tilt", self.fivestepsofPOWER[self.twist_position])
         pass
 
@@ -185,8 +187,8 @@ low bits, first target high bits, second target low bits, second target high bit
 
         if self.twist_position < 0:
             self.twist_position = 0
-        if self.twist_position > 5:
-            self.twist_position = 5
+        if self.twist_position > 4:
+            self.twist_position = 4
         self.drive_servo("head_pan", self.fivestepsofPOWER[self.twist_position])
 
     def right(self):
@@ -215,6 +217,5 @@ low bits, first target high bits, second target low bits, second target high bit
 
 
 if __name__ == '__main__':
-    pass
-    # controller: Controller = Controller()
-    # controller.drive_servo("waist", 4000)
+    controller: Controller = Controller()
+    controller.drive_multiple_servos(["turn_motors", "motors"], [controller.servo_max, controller.servo_neutral])

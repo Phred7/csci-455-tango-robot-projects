@@ -10,6 +10,13 @@ from serial import SerialException
 class Controller:
 
     def __init__(self) -> None:
+        self.fivestepsofPOWER: Dict[str:int] = {"rhigh": 4096,
+                                                "rmid":4688,
+                                                "mid":5376,
+                                                "lmid":5968,
+                                                "lhigh": 8192
+
+        }
         self.servo_robot_anatomy_map: Dict[str: int] = {"motors": 0x01,
                                                         "waist": 0x00,
                                                         "head_pan": 0x03,
@@ -78,27 +85,39 @@ class Controller:
     # Add data_input method. If not a supported method print("Unsupported input data format")
 
     def forward(self):
+        # < 6000 on channel 1
         pass
 
     def reverse(self):
+        # > 6000 on channel 1
         pass
 
     def STOPDROPANDROLL(self):
+        # 6000 on channel 2 and 1
+        # need to slowdown first!!
         pass
 
     def turnwaist(self):
+        # channel 0
+        # from right to left 4096, 4688, 5376, 5968, 8192
         pass
 
     def shakehead(self):
+        # channel 3
+        # from right to left 4096, 4688, 5376, 5968, 8192
         pass
 
     def nodhead(self):
+        # channel 4
+        # from up to down 4096, 4688, 5376, 5968, 8192
         pass
 
     def right(self):
+        # > 6000 on channel 2
         pass
 
     def left(self):
+        # < 6000 on channel 2
         pass
 
 

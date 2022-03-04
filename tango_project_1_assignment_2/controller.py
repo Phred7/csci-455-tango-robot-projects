@@ -103,26 +103,6 @@ class Controller:
         self.servo_controller.write(serial_cmd.encode('utf-8'))
         sleep(0.05)
 
-    def __drive_left(self, target: int):
-        self.drive_servo("motors", 6000)
-        sleep(0.1)
-        target = 6000
-        turn = 6000
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((turn & 0x7F)) + chr((turn >> 7) & 0x7F)
-        self.servo_controller.write(serial_command.encode('utf-8'))
-        # print("turn left")
-        raise ValueError(f"incorrect serial command {serial_command}")
-
-    def __drive_right(self, target: int):
-        self.drive_servo("motors", 6000)
-        sleep(0.1)
-        target = 6000
-        turn = 4000
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((turn & 0x7F)) + chr((turn >> 7) & 0x7F)
-        self.servo_controller.write(serial_command.encode('utf-8'))
-        raise ValueError(f"incorrect serial command {serial_command}")
-        # print("turn right")
-
     def forward(self):
         # < 6000 on channel 1
         self.motor_velocity_counter -= self.motor_step_size
@@ -217,7 +197,7 @@ class Controller:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_multiple_servos(["motors", "turn_motors"],
                                          [self.servo_neutral, self.motor_turn_velocity_counter])
-        print(f"drive left with target {self.motor_turn_velocity_counter}")
+        # print(f"drive left with target {self.motor_turn_velocity_counter}")
         # sleep(0.05)
 
     def right_drive_servos(self):
@@ -230,7 +210,7 @@ class Controller:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_multiple_servos(["motors", "turn_motors"],
                                          [self.servo_neutral, self.motor_turn_velocity_counter])
-        print(f"drive right with target {self.motor_turn_velocity_counter}")
+        # print(f"drive right with target {self.motor_turn_velocity_counter}")
         # sleep(0.05)
 
 
@@ -240,8 +220,6 @@ if __name__ == '__main__':
         controller.drive_servo(servo, controller.servo_neutral)
         print(f"{servo} set to neutral position")
         sleep(0.05)
-        # controller.drive_servo("head_pan", controller.servo_neutral)
-        # controller.drive_servo("head_tilt", controller.servo_neutral)
     try:
         for _ in range(0, 35):
             controller.right_drive_servos()

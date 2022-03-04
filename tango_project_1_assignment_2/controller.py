@@ -106,12 +106,23 @@ class Controller:
         #     serial_command += chr((targets[i] >> 7) & 0x7F)
         self.drive_servo("motors", 6000)
         sleep(0.1)
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((5500 & 0x7F)) + chr((5500 >> 7) & 0x7F)
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((8000 & 0x7F)) + chr((8000 >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
         # sleep(0.1)
         # serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((7000 & 0x7F)) + chr((7000 >> 7) & 0x7F)
         # self.servo_controller.write(serial_command.encode('utf-8'))
 
+    def __drive_left(self, target: int):
+        # self.drive_servo("motors", 6000)
+        # sleep(0.1)
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((8000 & 0x7F)) + chr((8000 >> 7) & 0x7F)
+        self.servo_controller.write(serial_command.encode('utf-8'))
+
+    def __drive_right(self, target: int):
+        # self.drive_servo("motors", 6000)
+        # sleep(0.1)
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((4000 & 0x7F)) + chr((4000 >> 7) & 0x7F)
+        self.servo_controller.write(serial_command.encode('utf-8'))
     # Keyboard input class contains arithmetic for doing and modifying each movement.
     # Add methods to this class to control specific movements (turn right, turn waist, pan_head, etc, etc)
     # Add reset method (zero all servos)
@@ -210,7 +221,8 @@ class Controller:
             self.motor_velocity_counter = self.servo_max
         if self.motor_velocity_counter < self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
-        self.drive_servo("turn_motors", self.motor_velocity_counter)
+        # self.drive_servo("turn_motors", self.motor_velocity_counter)
+        self.__drive_right(self.motor_velocity_counter)
         pass
 
     def left(self):
@@ -222,7 +234,8 @@ class Controller:
             self.motor_velocity_counter = self.servo_min
         if self.motor_velocity_counter > self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
-        self.drive_servo("turn_motors", self.motor_velocity_counter)
+        #self.drive_servo("turn_motors", self.motor_velocity_counter)
+        self.__drive_left(self.motor_velocity_counter)
         pass
 
 

@@ -23,7 +23,7 @@ class KeyboardInput:
         self.window.bind('<Down>', self.drive_robot)
         self.window.bind('<Left>', self.drive_robot)
         self.window.bind('<Right>', self.drive_robot)
-        self.window.bind('<return>', self.stop_robot)
+        self.window.bind('<Return>', self.stop_robot)
         #on local keyboard with robot, space is not recognized for space bar
         self.window.bind('<z>', self.drive_robot)
         self.window.bind('<c>', self.drive_robot)

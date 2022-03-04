@@ -1,4 +1,5 @@
 import tkinter
+from time import sleep
 from typing import Dict
 import platform
 
@@ -61,10 +62,18 @@ class KeyboardInput:
 
     def run(self):
         try:
+            self.home_servos()
             self.window.mainloop()
-        finally:
+        except:
             print("crashed: stopping robot")
+        finally:
             self.robot_controller.STOPDROPANDROLL()
+
+    def home_servos(self):
+        for servo in self.robot_controller.servo_robot_anatomy_map.keys():
+            self.robot_controller.drive_servo(servo, self.robot_controller.servo_neutral)
+            print(f"{servo} set to neutral position")
+            sleep(0.05)
 
     def stop_robot(self, pressed_key) -> None:
         self.robot_controller.STOPDROPANDROLL()
@@ -94,10 +103,10 @@ class KeyboardInput:
             self.robot_controller.reverse()
         elif pressed_key.keycode == self.keydict[self.os]['Left']:
             # left: left
-            self.robot_controller.left()
+            self.robot_controller.left_drive_servos()
         elif pressed_key.keycode == self.keydict[self.os]['Right']:
             # right: right
-            self.robot_controller.right()
+            self.robot_controller.right_drive_servos()
         elif pressed_key.keycode == self.keydict[self.os]['w']:
             # w: head up
             self.robot_controller.headnod(True)

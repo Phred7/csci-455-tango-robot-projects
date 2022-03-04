@@ -66,6 +66,9 @@ class Controller:
                 return device
             except SerialException:
                 return None
+        elif platform.system() == 'Darwin':
+            print("Sorry mac os is not supported yet.")
+            return None
         else:
             return None
 
@@ -102,7 +105,6 @@ class Controller:
             serial_command += chr((targets[i] >> 7) & 0x7F)
         # serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((7000 & 0x7F)) + chr((7000 >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
-
 
     # Keyboard input class contains arithmetic for doing and modifying each movement.
     # Add methods to this class to control specific movements (turn right, turn waist, pan_head, etc, etc)

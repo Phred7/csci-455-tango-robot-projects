@@ -2,7 +2,7 @@ import tkinter
 from typing import Dict
 import platform
 
-from tango_project_1_assignment_2.controller import Controller
+from controller import Controller
 #from controller import Controller on the robot's code
 
 

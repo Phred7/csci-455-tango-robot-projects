@@ -3,7 +3,9 @@ from typing import Dict
 import platform
 
 from controller import Controller
-#from controller import Controller on the robot's code
+
+
+# from controller import Controller on the robot's code
 
 
 class KeyboardInput:
@@ -24,7 +26,7 @@ class KeyboardInput:
         self.window.bind('<Left>', self.drive_robot)
         self.window.bind('<Right>', self.drive_robot)
         self.window.bind('<Return>', self.stop_robot)
-        #on local keyboard with robot, space is not recognized for space bar
+        # on local keyboard with robot, space is not recognized for space bar
         self.window.bind('<z>', self.drive_robot)
         self.window.bind('<c>', self.drive_robot)
         self.window.bind('<w>', self.drive_robot)
@@ -33,32 +35,36 @@ class KeyboardInput:
         self.window.bind('<d>', self.drive_robot)
         self.os = 'Linux' if platform.system() == 'Linux' else 'Windows'
         self.keydict: Dict[str: Dict[str:int]] = {"Linux": {'Up': 111,
-                                                        'Down': 116,
-                                                        'Left': 113,
-                                                        'Right': 114,
-                                                        'Return': 36,
-                                                        'w': 25,
-                                                        's': 39,
-                                                        'a': 38,
-                                                        'd': 40,
-                                                        'z': 52,
-                                                        'c': 54 },
-                                            "Windows": {  'Up': 38,
-                                                        'Down': 40,
-                                                        'Left': 37,
-                                                        'Right': 39,
-                                                        'Return': 13,
-                                                        'w': 87,
-                                                        's': 83,
-                                                        'a': 65,
-                                                        'd': 68,
-                                                        'z': 90,
-                                                        'c': 67,},
+                                                            'Down': 116,
+                                                            'Left': 113,
+                                                            'Right': 114,
+                                                            'Return': 36,
+                                                            'w': 25,
+                                                            's': 39,
+                                                            'a': 38,
+                                                            'd': 40,
+                                                            'z': 52,
+                                                            'c': 54},
+                                                  "Windows": {'Up': 38,
+                                                              'Down': 40,
+                                                              'Left': 37,
+                                                              'Right': 39,
+                                                              'Return': 13,
+                                                              'w': 87,
+                                                              's': 83,
+                                                              'a': 65,
+                                                              'd': 68,
+                                                              'z': 90,
+                                                              'c': 67},
 
-                                            }
+                                                  }
 
     def run(self):
-        self.window.mainloop()
+        try:
+            self.window.mainloop()
+        finally:
+            print("crashed: stopping robot")
+            self.robot_controller.STOPDROPANDROLL()
 
     def stop_robot(self, pressed_key) -> None:
         self.robot_controller.STOPDROPANDROLL()
@@ -106,12 +112,12 @@ class KeyboardInput:
             self.robot_controller.headshake(True)
         elif pressed_key.keycode == self.keydict[self.os]['z']:
             # z: waist left
-            self.robot_controller.turnwaist(False)
+            self.robot_controller.turn_waist(False)
         elif pressed_key.keycode == self.keydict[self.os]['c']:
             # c: waist right
-            self.robot_controller.turnwaist(True)
-        print(pressed_key)
-        pass
+            self.robot_controller.turn_waist(True)
+        # print(pressed_key)
+
 
 if __name__ == '__main__':
     keyboard_input: KeyboardInput = KeyboardInput()

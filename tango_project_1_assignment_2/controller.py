@@ -63,12 +63,12 @@ class Controller:
                     return None
         elif platform.system() == 'Windows':
             try:
-                device = serial.Serial('COM21')
+                device = serial.Serial('COM7')  # COM21
                 return device
             except SerialException:
                 return None
         elif platform.system() == 'Darwin':
-            print("Sorry mac os is not supported yet.")
+            print("Sorry Connie... mac os is not supported yet.")
             return None
         else:
             return None
@@ -96,17 +96,15 @@ class Controller:
         :param targets:
         :return:
         """
-        # servo_addresses = [self.servo_robot_anatomy_map.get(servo) for servo in servos]
-        # servo_addresses, targets = zip(*sorted(zip(servo_addresses, targets)))
-        #
-        # serial_command = chr(0xaa) + chr(0xC) + chr(0x1) + chr(0x0F) + chr(len(servos))
-        # for i, servo_address in enumerate(servo_addresses):
-        #     serial_command += chr(int(servo_address))
-        #     serial_command += chr(targets[i] & 0x7F)
-        #     serial_command += chr((targets[i] >> 7) & 0x7F)
-        self.drive_servo("motors", 6000)
-        sleep(0.1)
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((8000 & 0x7F)) + chr((8000 >> 7) & 0x7F)
+        servo_addresses = [self.servo_robot_anatomy_map.get(servo) for servo in servos]
+        servo_addresses, targets = zip(*sorted(zip(servo_addresses, targets)))
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x1) + chr(0x0F) + chr(len(servos)) + chr(int(servo_addresses[0]))
+        for target in targets:
+            serial_command += chr(target & 0x7F)
+            serial_command += chr((target >> 7) & 0x7F)
+        # self.drive_servo("motors", 6000)
+        # sleep(0.1)
+        # serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr((8000 & 0x7F)) + chr((8000 >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
         # sleep(0.1)
         # serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((7000 & 0x7F)) + chr((7000 >> 7) & 0x7F)
@@ -119,7 +117,8 @@ class Controller:
         turn = 6000
         serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((turn & 0x7F)) + chr((turn >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
-        print("turn left")
+        # print("turn left")
+        raise ValueError(f"incorrect serial command {serial_command}")
 
     def __drive_right(self, target: int):
         self.drive_servo("motors", 6000)
@@ -128,7 +127,8 @@ class Controller:
         turn = 4000
         serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((turn & 0x7F)) + chr((turn >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
-        print("turn right")
+        raise ValueError(f"incorrect serial command {serial_command}")
+        # print("turn right")
 
     def forward(self):
         # < 6000 on channel 1
@@ -163,14 +163,14 @@ class Controller:
                 self.motor_velocity_counter -= self.motor_step_size
             else:
                 self.motor_velocity_counter += self.motor_step_size
-            self.drive_servo("turn_motors", self.motor_velocity_counter)
+            self.drive_servo("motors", self.motor_velocity_counter)  # changed from turn_motors
         print("stopped")
         return
 
-    def turnwaist(self, turnright):
+    def turn_waist(self, turn_right):
         # channel 0
         # from right to left 4096, 4688, 5376, 5968, 8192
-        if turnright:
+        if turn_right:
             self.twist_position += 1
         else:
             self.twist_position -= 1
@@ -181,10 +181,10 @@ class Controller:
             self.twist_position = 4
         self.drive_servo("waist", self.fivestepsofPOWER[self.twist_position])
 
-    def headnod(self, turnup):
+    def headnod(self, turn_up):
         # channel 3
         # from right to left 4096, 4688, 5376, 5968, 8192
-        if turnup:
+        if turn_up:
             self.twist_position += 1
         else:
             self.twist_position -= 1
@@ -212,35 +212,61 @@ class Controller:
 
     def right(self):
         # > 6000 on channel 2
-        self.drive_servo("motors", self.servo_neutral)
+        # self.drive_servo("motors", self.servo_neutral)
         #
         # self.motor_velocity_counter += 16
         # if self.motor_velocity_counter > self.servo_max:
         #     self.motor_velocity_counter = self.servo_max
         # if self.motor_velocity_counter < self.servo_neutral:
         #     self.motor_velocity_counter = self.servo_neutral
-        # # self.drive_servo("turn_motors", self.motor_velocity_counter)
-        self.__drive_right(self.motor_velocity_counter)
-        print("right")
+        # self.drive_servo("turn_motors", self.motor_velocity_counter)
+        # self.__drive_right(self.motor_velocity_counter)
+        # print("right")
         pass
+
+    def right_drive_servos(self):
+        self.motor_turn_velocity_counter += self.motor_step_size
+        if self.motor_velocity_counter > self.servo_max:
+            self.motor_velocity_counter = self.servo_max
+        if self.motor_velocity_counter < self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        controller.drive_multiple_servos(["turn_motors", "motors"],
+                                         [self.motor_turn_velocity_counter, controller.servo_neutral])
+        print(f"drive right with target {self.motor_turn_velocity_counter}")
+
+    def left_drive_servos(self):
+        self.motor_turn_velocity_counter -= self.motor_step_size
+        if self.motor_velocity_counter < self.servo_min:
+            self.motor_velocity_counter = self.servo_min
+        if self.motor_velocity_counter > self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        controller.drive_multiple_servos(["turn_motors", "motors"],
+                                         [self.motor_turn_velocity_counter, controller.servo_neutral])
+        print(f"drive left with target {self.motor_turn_velocity_counter}")
 
     def left(self):
         # < 6000 on channel 2
-        self.drive_servo("motors", self.servo_neutral)
+        # self.drive_servo("motors", self.servo_neutral)
         #
         # self.motor_velocity_counter -= 16
         # if self.motor_velocity_counter < self.servo_min:
         #     self.motor_velocity_counter = self.servo_min
         # if self.motor_velocity_counter > self.servo_neutral:
         #     self.motor_velocity_counter = self.servo_neutral
-        #self.drive_servo("turn_motors", self.motor_velocity_counter)
-        self.__drive_left(self.motor_velocity_counter)
-        print("left")
+        # self.drive_servo("turn_motors", self.motor_velocity_counter)
+        # self.__drive_left(self.motor_velocity_counter)
+        # print("left")
         pass
 
 
 if __name__ == '__main__':
     controller: Controller = Controller()
-    controller.drive_multiple_servos(["turn_motors", "motors"], [controller.servo_max, controller.servo_neutral])
-    # for i in range(4000, 8000):
-    #     controller.drive_multiple_servos(["turn_motors", "motors"], [controller.servo_max, controller.servo_neutral])
+    try:
+        # controller.drive_multiple_servos(["turn_motors", "motors"], [controller.servo_max, controller.servo_neutral])
+        print("sweeping turn values")
+        for target in controller.fivestepsofPOWER.values():
+            print(f"target: {target}")
+            controller.drive_multiple_servos(["turn_motors", "motors"], [target, controller.servo_neutral])
+            sleep(4)
+    finally:
+        controller.STOPDROPANDROLL()

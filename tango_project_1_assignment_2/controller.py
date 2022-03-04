@@ -221,6 +221,7 @@ class Controller:
         #     self.motor_velocity_counter = self.servo_neutral
         # # self.drive_servo("turn_motors", self.motor_velocity_counter)
         self.__drive_right(self.motor_velocity_counter)
+        print("right")
         pass
 
     def left(self):
@@ -234,6 +235,7 @@ class Controller:
         #     self.motor_velocity_counter = self.servo_neutral
         #self.drive_servo("turn_motors", self.motor_velocity_counter)
         self.__drive_left(self.motor_velocity_counter)
+        print("left")
         pass
 
 

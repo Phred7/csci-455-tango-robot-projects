@@ -41,7 +41,7 @@ class Controller:
         self.twist_position: int = self.twist_neutral
         self.motor_velocity_counter: int = self.servo_neutral
         self.motor_turn_velocity_counter: int = self.servo_neutral
-        self.motor_step_size: int = 16
+        self.motor_step_size: int = 64
         if self.servo_controller is None:
             print(f"No servo controller found on {platform.system()} serial port")
             exit(1)

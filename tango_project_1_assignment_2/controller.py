@@ -1,4 +1,5 @@
 import platform
+from time import sleep
 from typing import Dict, List
 
 import serial
@@ -95,16 +96,21 @@ class Controller:
         :param targets:
         :return:
         """
-        servo_addresses = [self.servo_robot_anatomy_map.get(servo) for servo in servos]
-        servo_addresses, targets = zip(*sorted(zip(servo_addresses, targets)))
-
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1) + chr(0x0F) + chr(len(servos))
-        for i, servo_address in enumerate(servo_addresses):
-            serial_command += chr(int(servo_address))
-            serial_command += chr(targets[i] & 0x7F)
-            serial_command += chr((targets[i] >> 7) & 0x7F)
-        # serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((7000 & 0x7F)) + chr((7000 >> 7) & 0x7F)
+        # servo_addresses = [self.servo_robot_anatomy_map.get(servo) for servo in servos]
+        # servo_addresses, targets = zip(*sorted(zip(servo_addresses, targets)))
+        #
+        # serial_command = chr(0xaa) + chr(0xC) + chr(0x1) + chr(0x0F) + chr(len(servos))
+        # for i, servo_address in enumerate(servo_addresses):
+        #     serial_command += chr(int(servo_address))
+        #     serial_command += chr(targets[i] & 0x7F)
+        #     serial_command += chr((targets[i] >> 7) & 0x7F)
+        self.drive_servo("motors", 6000)
+        sleep(0.1)
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((5500 & 0x7F)) + chr((5500 >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
+        # sleep(0.1)
+        # serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((7000 & 0x7F)) + chr((7000 >> 7) & 0x7F)
+        # self.servo_controller.write(serial_command.encode('utf-8'))
 
     # Keyboard input class contains arithmetic for doing and modifying each movement.
     # Add methods to this class to control specific movements (turn right, turn waist, pan_head, etc, etc)
@@ -223,3 +229,5 @@ class Controller:
 if __name__ == '__main__':
     controller: Controller = Controller()
     controller.drive_multiple_servos(["turn_motors", "motors"], [controller.servo_max, controller.servo_neutral])
+    # for i in range(4000, 8000):
+    #     controller.drive_multiple_servos(["turn_motors", "motors"], [controller.servo_max, controller.servo_neutral])

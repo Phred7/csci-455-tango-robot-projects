@@ -86,7 +86,7 @@ class Controller:
         serial_command = chr(0xaa) + chr(0xC) + chr(0x04) + chr(int(self.servo_robot_anatomy_map.get(servo))) + chr(
             lsb) + chr(msb)
         self.servo_controller.write(serial_command.encode('utf-8'))
-        print(f"moved {servo} on port 0x{int(self.servo_robot_anatomy_map.get(servo))} to {target}")
+        # print(f"moved {servo} on port 0x{int(self.servo_robot_anatomy_map.get(servo))} to {target}")
 
     def drive_multiple_servos(self, servos: List[str], targets: List[int]) -> None:
         """
@@ -113,22 +113,22 @@ class Controller:
         # self.servo_controller.write(serial_command.encode('utf-8'))
 
     def __drive_left(self, target: int):
-        # self.drive_servo("motors", 6000)
-        # sleep(0.1)
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((8000 & 0x7F)) + chr((8000 >> 7) & 0x7F)
+        self.drive_servo("motors", 6000)
+        sleep(0.1)
+        target = 6000
+        turn = 6000
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((turn & 0x7F)) + chr((turn >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
+        print("turn left")
 
     def __drive_right(self, target: int):
-        # self.drive_servo("motors", 6000)
-        # sleep(0.1)
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((4000 & 0x7F)) + chr((4000 >> 7) & 0x7F)
+        self.drive_servo("motors", 6000)
+        sleep(0.1)
+        target = 6000
+        turn = 4000
+        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((turn & 0x7F)) + chr((turn >> 7) & 0x7F)
         self.servo_controller.write(serial_command.encode('utf-8'))
-    # Keyboard input class contains arithmetic for doing and modifying each movement.
-    # Add methods to this class to control specific movements (turn right, turn waist, pan_head, etc, etc)
-    # Add reset method (zero all servos)
-    # Add stop method (slowly, decrease the motors to 0 vel.)
-    # Add E-stop method that exit's the code and releases the servo controller.
-    # Add data_input method. If not a supported method print("Unsupported input data format")
+        print("turn right")
 
     def forward(self):
         # < 6000 on channel 1
@@ -181,7 +181,6 @@ class Controller:
             self.twist_position = 4
         self.drive_servo("waist", self.fivestepsofPOWER[self.twist_position])
 
-
     def headnod(self, turnup):
         # channel 3
         # from right to left 4096, 4688, 5376, 5968, 8192
@@ -196,7 +195,6 @@ class Controller:
             self.twist_position = 4
         self.drive_servo("head_tilt", self.fivestepsofPOWER[self.twist_position])
         pass
-
 
     def headshake(self, turnright):
         # channel 4
@@ -215,25 +213,25 @@ class Controller:
     def right(self):
         # > 6000 on channel 2
         self.drive_servo("motors", self.servo_neutral)
-
-        self.motor_velocity_counter += 16
-        if self.motor_velocity_counter > self.servo_max:
-            self.motor_velocity_counter = self.servo_max
-        if self.motor_velocity_counter < self.servo_neutral:
-            self.motor_velocity_counter = self.servo_neutral
-        # self.drive_servo("turn_motors", self.motor_velocity_counter)
+        #
+        # self.motor_velocity_counter += 16
+        # if self.motor_velocity_counter > self.servo_max:
+        #     self.motor_velocity_counter = self.servo_max
+        # if self.motor_velocity_counter < self.servo_neutral:
+        #     self.motor_velocity_counter = self.servo_neutral
+        # # self.drive_servo("turn_motors", self.motor_velocity_counter)
         self.__drive_right(self.motor_velocity_counter)
         pass
 
     def left(self):
         # < 6000 on channel 2
         self.drive_servo("motors", self.servo_neutral)
-
-        self.motor_velocity_counter -= 16
-        if self.motor_velocity_counter < self.servo_min:
-            self.motor_velocity_counter = self.servo_min
-        if self.motor_velocity_counter > self.servo_neutral:
-            self.motor_velocity_counter = self.servo_neutral
+        #
+        # self.motor_velocity_counter -= 16
+        # if self.motor_velocity_counter < self.servo_min:
+        #     self.motor_velocity_counter = self.servo_min
+        # if self.motor_velocity_counter > self.servo_neutral:
+        #     self.motor_velocity_counter = self.servo_neutral
         #self.drive_servo("turn_motors", self.motor_velocity_counter)
         self.__drive_left(self.motor_velocity_counter)
         pass

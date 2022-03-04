@@ -32,7 +32,7 @@ class KeyboardInput:
         self.window.bind('<a>', self.drive_robot)
         self.window.bind('<d>', self.drive_robot)
         self.os = 'Linux' if platform.system() == 'Linux' else 'Windows'
-        self.keydict = Dict[str: Dict[str:int]] = {"Linux": {'Up': 111,
+        self.keydict: Dict[str: Dict[str:int]] = {"Linux": {'Up': 111,
                                                         'Down': 116,
                                                         'Left': 113,
                                                         'Right': 114,

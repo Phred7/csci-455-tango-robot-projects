@@ -63,12 +63,12 @@ class Controller:
                     return None
         elif platform.system() == 'Windows':
             try:
-                device = serial.Serial('COM21')
+                device = serial.Serial('COM21')  # COM21
                 return device
             except SerialException:
                 return None
         elif platform.system() == 'Darwin':
-            print("Sorry mac os is not supported yet.")
+            print("Sorry Connie... mac os is not supported yet.")
             return None
         else:
             return None
@@ -96,39 +96,12 @@ class Controller:
         :param targets:
         :return:
         """
-        # servo_addresses = [self.servo_robot_anatomy_map.get(servo) for servo in servos]
-        # servo_addresses, targets = zip(*sorted(zip(servo_addresses, targets)))
-        #
-        # serial_command = chr(0xaa) + chr(0xC) + chr(0x1) + chr(0x0F) + chr(len(servos))
-        # for i, servo_address in enumerate(servo_addresses):
-        #     serial_command += chr(int(servo_address))
-        #     serial_command += chr(targets[i] & 0x7F)
-        #     serial_command += chr((targets[i] >> 7) & 0x7F)
-        self.drive_servo("motors", 6000)
-        sleep(0.1)
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((8000 & 0x7F)) + chr((8000 >> 7) & 0x7F)
-        self.servo_controller.write(serial_command.encode('utf-8'))
-        # sleep(0.1)
-        # serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(0x01) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F) + chr(0x02) + chr((7000 & 0x7F)) + chr((7000 >> 7) & 0x7F)
-        # self.servo_controller.write(serial_command.encode('utf-8'))
-
-    def __drive_left(self, target: int):
-        self.drive_servo("motors", 6000)
-        sleep(0.1)
-        target = 6000
-        turn = 6000
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((turn & 0x7F)) + chr((turn >> 7) & 0x7F)
-        self.servo_controller.write(serial_command.encode('utf-8'))
-        print("turn left")
-
-    def __drive_right(self, target: int):
-        self.drive_servo("motors", 6000)
-        sleep(0.1)
-        target = 6000
-        turn = 4000
-        serial_command = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(2) + chr(0x01) + chr((target & 0x7F)) + chr((target >> 7) & 0x7F) + chr(0x02) + chr((turn & 0x7F)) + chr((turn >> 7) & 0x7F)
-        self.servo_controller.write(serial_command.encode('utf-8'))
-        print("turn right")
+        serial_cmd = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(int(self.servo_robot_anatomy_map.get(servos[0])))
+        for t in targets:
+            serial_cmd += chr(t & 0x7F)
+            serial_cmd += chr((t >> 7) & 0x7F)
+        self.servo_controller.write(serial_cmd.encode('utf-8'))
+        sleep(0.05)
 
     def forward(self):
         # < 6000 on channel 1
@@ -163,14 +136,14 @@ class Controller:
                 self.motor_velocity_counter -= self.motor_step_size
             else:
                 self.motor_velocity_counter += self.motor_step_size
-            self.drive_servo("turn_motors", self.motor_velocity_counter)
+            self.drive_servo("motors", self.motor_velocity_counter)  # changed from turn_motors
         print("stopped")
         return
 
-    def turnwaist(self, turnright):
+    def turn_waist(self, turn_right):
         # channel 0
         # from right to left 4096, 4688, 5376, 5968, 8192
-        if turnright:
+        if turn_right:
             self.twist_position += 1
         else:
             self.twist_position -= 1
@@ -181,10 +154,10 @@ class Controller:
             self.twist_position = 4
         self.drive_servo("waist", self.fivestepsofPOWER[self.twist_position])
 
-    def headnod(self, turnup):
+    def headnod(self, turn_up):
         # channel 3
         # from right to left 4096, 4688, 5376, 5968, 8192
-        if turnup:
+        if turn_up:
             self.twist_position += 1
         else:
             self.twist_position -= 1
@@ -210,37 +183,51 @@ class Controller:
             self.twist_position = 4
         self.drive_servo("head_pan", self.fivestepsofPOWER[self.twist_position])
 
-    def right(self):
+    def left_drive_servos(self):
         # > 6000 on channel 2
         self.drive_servo("motors", self.servo_neutral)
-        #
-        # self.motor_velocity_counter += 16
-        # if self.motor_velocity_counter > self.servo_max:
-        #     self.motor_velocity_counter = self.servo_max
-        # if self.motor_velocity_counter < self.servo_neutral:
-        #     self.motor_velocity_counter = self.servo_neutral
-        # # self.drive_servo("turn_motors", self.motor_velocity_counter)
-        self.__drive_right(self.motor_velocity_counter)
-        print("right")
-        pass
+        _serial_cmd = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(0x02) + chr(0x01) + chr((6000 & 0x7F)) + chr(
+            (6000 >> 7) & 0x7F) + chr((6000 & 0x7F)) + chr((6000 >> 7) & 0x7F)
+        self.servo_controller.write(_serial_cmd.encode('utf-8'))
+        # sleep(1)
+        self.motor_turn_velocity_counter += self.motor_step_size
+        if self.motor_velocity_counter > self.servo_max:
+            self.motor_velocity_counter = self.servo_max
+        if self.motor_velocity_counter < self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        self.drive_multiple_servos(["motors", "turn_motors"],
+                                         [self.servo_neutral, self.motor_turn_velocity_counter])
+        # print(f"drive left with target {self.motor_turn_velocity_counter}")
+        # sleep(0.05)
 
-    def left(self):
+    def right_drive_servos(self):
         # < 6000 on channel 2
         self.drive_servo("motors", self.servo_neutral)
-        #
-        # self.motor_velocity_counter -= 16
-        # if self.motor_velocity_counter < self.servo_min:
-        #     self.motor_velocity_counter = self.servo_min
-        # if self.motor_velocity_counter > self.servo_neutral:
-        #     self.motor_velocity_counter = self.servo_neutral
-        #self.drive_servo("turn_motors", self.motor_velocity_counter)
-        self.__drive_left(self.motor_velocity_counter)
-        print("left")
-        pass
+        self.motor_turn_velocity_counter -= self.motor_step_size
+        if self.motor_velocity_counter < self.servo_min:
+            self.motor_velocity_counter = self.servo_min
+        if self.motor_velocity_counter > self.servo_neutral:
+            self.motor_velocity_counter = self.servo_neutral
+        self.drive_multiple_servos(["motors", "turn_motors"],
+                                         [self.servo_neutral, self.motor_turn_velocity_counter])
+        # print(f"drive right with target {self.motor_turn_velocity_counter}")
+        # sleep(0.05)
 
 
 if __name__ == '__main__':
     controller: Controller = Controller()
-    controller.drive_multiple_servos(["turn_motors", "motors"], [controller.servo_max, controller.servo_neutral])
-    # for i in range(4000, 8000):
-    #     controller.drive_multiple_servos(["turn_motors", "motors"], [controller.servo_max, controller.servo_neutral])
+    for servo in controller.servo_robot_anatomy_map.keys():
+        controller.drive_servo(servo, controller.servo_neutral)
+        print(f"{servo} set to neutral position")
+        sleep(0.05)
+    try:
+        for _ in range(0, 35):
+            controller.right_drive_servos()
+        sleep(1)
+        controller.STOPDROPANDROLL()
+        sleep(4)
+        for _ in range(0, 35):
+            controller.left_drive_servos()
+        sleep(1)
+    finally:
+        controller.STOPDROPANDROLL()

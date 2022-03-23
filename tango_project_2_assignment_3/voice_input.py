@@ -41,10 +41,10 @@ class VoiceInput:
                         self.robot_controller.headshake(True)
                     elif 'waist' in arrayofwords and 'left' in arrayofwords:
                         # "waist", "left": waist left
-                        self.robot_controller.turnwaist(False)
+                        self.robot_controller.turn_waist(False)
                     elif 'waist' in arrayofwords and 'right' in arrayofwords:
                         # "waist", "right": waist right
-                        self.robot_controller.turnwaist(True)
+                        self.robot_controller.turn_waist(True)
                     elif 'forward' in arrayofwords or ('forward' in arrayofwords and 'body' in arrayofwords):
                         # "forward", or "body", "forward": forward
                         self.robot_controller.forward()
@@ -53,10 +53,10 @@ class VoiceInput:
                         self.robot_controller.reverse()
                     elif 'left' in arrayofwords or ('left' in arrayofwords and 'body' in arrayofwords):
                         # "left", or "body", "left": left
-                        self.robot_controller.left()
+                        self.robot_controller.left_drive_servos()
                     elif 'right' in arrayofwords or ('right' in arrayofwords and 'body' in arrayofwords):
                         # "right", or "body", "right": right
-                        self.robot_controller.right()
+                        self.robot_controller.right_drive_servos()
                     elif 'stop' in arrayofwords:
                         # "stop": stop
                         self.robot_controller.STOPDROPANDROLL()

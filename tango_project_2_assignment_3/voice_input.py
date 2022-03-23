@@ -57,7 +57,7 @@ class VoiceInput:
                     elif 'right' in arrayofwords or ('right' in arrayofwords and 'body' in arrayofwords):
                         # "right", or "body", "right": right
                         self.robot_controller.right_drive_servos()
-                    elif 'stop' in arrayofwords:
+                    elif 'stop' in arrayofwords or 'die' in arrayofwords or 'kill' in arrayofwords:
                         # "stop": stop
                         self.robot_controller.STOPDROPANDROLL()
 

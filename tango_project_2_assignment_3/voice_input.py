@@ -27,16 +27,16 @@ class VoiceInput:
                     userInput = r.recognize_google(audio)
                     print(userInput)
                     arrayofwords = userInput.split()
-                    if 'head' in arrayofwords and 'up' in arrayofwords:
+                    if ('head' in arrayofwords and 'up' in arrayofwords) or ('had' in arrayofwords and 'up' in arrayofwords):
                         # "head", "up": head up
                         self.robot_controller.headnod(True)
-                    elif 'head' in arrayofwords and 'down' in arrayofwords:
+                    elif ('head' in arrayofwords and 'down' in arrayofwords) or ('had' in arrayofwords and 'up' in arrayofwords):
                         # "head", "down": head down
                         self.robot_controller.headnod(False)
-                    elif 'head' in arrayofwords and 'left' in arrayofwords:
+                    elif ('head' in arrayofwords and 'left' in arrayofwords) or ('had' in arrayofwords and 'up' in arrayofwords):
                         # "head", "left": head left
                         self.robot_controller.headshake(False)
-                    elif 'head' in arrayofwords and 'right' in arrayofwords:
+                    elif ('head' in arrayofwords and 'right' in arrayofwords) or ('had' in arrayofwords and 'up' in arrayofwords):
                         # "head", "right": head right
                         self.robot_controller.headshake(True)
                     elif 'waist' in arrayofwords and 'left' in arrayofwords:

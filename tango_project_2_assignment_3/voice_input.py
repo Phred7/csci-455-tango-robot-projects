@@ -18,6 +18,8 @@ class VoiceInput:
                 r = sr.Recognizer()
                 r.adjust_for_ambient_noise(source)
                 r.dyanmic_energythreshhold = 3000
+                r.operation_timeout = 8
+                r.phrase_threshold = 0.15
 
                 try:
                     print("listening")

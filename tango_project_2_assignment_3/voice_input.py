@@ -12,7 +12,6 @@ class VoiceInput:
         self.window = tkinter.Tk()
 
     def drive_robot(self) -> None:
-
         listening = True
         while listening:
             with sr.Microphone() as source:

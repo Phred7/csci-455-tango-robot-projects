@@ -106,8 +106,8 @@ class Controller:
     def forward(self):
         # < 6000 on channel 1
         self.motor_velocity_counter -= self.motor_step_size
-        if self.motor_velocity_counter > 5300:
-            self.motor_velocity_counter = 5300
+        # if self.motor_velocity_counter > 5300:
+        #     self.motor_velocity_counter = 5300
         if self.motor_velocity_counter < self.servo_min:
             self.motor_velocity_counter = self.servo_min
         if self.motor_velocity_counter > self.servo_neutral:
@@ -118,8 +118,8 @@ class Controller:
     def reverse(self):
         # > 6000 on channel 1
         self.motor_velocity_counter += self.motor_step_size
-        if self.motor_velocity_counter < 6700:
-            self.motor_velocity_counter = 6700
+        # if self.motor_velocity_counter < 6700:
+        #     self.motor_velocity_counter = 6700
         if self.motor_velocity_counter > self.servo_max:
             self.motor_velocity_counter = self.servo_max
         if self.motor_velocity_counter < self.servo_neutral:

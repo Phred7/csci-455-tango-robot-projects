@@ -28,7 +28,10 @@ class VoiceInput:
                     userInput = r.recognize_google(audio)
                     print(userInput)
                     arrayofwords = userInput.split()
-                    if ('head' in arrayofwords and 'up' in arrayofwords) or ('had' in arrayofwords and 'up' in arrayofwords):
+                    if 'stop' in arrayofwords or 'die' in arrayofwords or 'kill' in arrayofwords or ("oh" in arrayofwords and "my" in arrayofwords and "god" in arrayofwords) or ("my" in arrayofwords and "god" in arrayofwords):
+                        # "stop": stop
+                        self.robot_controller.STOPDROPANDROLL()
+                    elif ('head' in arrayofwords and 'up' in arrayofwords) or ('had' in arrayofwords and 'up' in arrayofwords):
                         # "head", "up": head up
                         self.robot_controller.headnod(True)
                     elif ('head' in arrayofwords and 'down' in arrayofwords) or ('had' in arrayofwords and 'up' in arrayofwords):
@@ -49,7 +52,7 @@ class VoiceInput:
                     elif 'forward' in arrayofwords or ('forward' in arrayofwords and 'body' in arrayofwords):
                         # "forward", or "body", "forward": forward
                         self.robot_controller.forward()
-                    elif 'backwards' in arrayofwords or ('backwards' in arrayofwords and 'body' in arrayofwords):
+                    elif 'backwards' in arrayofwords or ('backwards' in arrayofwords and 'body' in arrayofwords) or 'backward' in arrayofwords:
                         # "backwards",or "body", "backwards": backwards
                         self.robot_controller.reverse()
                     elif 'left' in arrayofwords or ('left' in arrayofwords and 'body' in arrayofwords):
@@ -58,9 +61,9 @@ class VoiceInput:
                     elif 'right' in arrayofwords or ('right' in arrayofwords and 'body' in arrayofwords):
                         # "right", or "body", "right": right
                         self.robot_controller.right_drive_servos()
-                    elif 'stop' in arrayofwords or 'die' in arrayofwords or 'kill' in arrayofwords:
-                        # "stop": stop
-                        self.robot_controller.STOPDROPANDROLL()
+                    elif 'favorite' in arrayofwords:
+                        print("Connie, obviously")
+
 
                 except sr.UnknownValueError:
                     print("Don't knoe that werd")

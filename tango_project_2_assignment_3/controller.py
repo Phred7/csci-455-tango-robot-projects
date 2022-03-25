@@ -113,6 +113,7 @@ class Controller:
         if self.motor_velocity_counter > self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_servo("motors", self.motor_velocity_counter)
+        print(f"driving forward: {self.motor_velocity_counter}")
 
     def reverse(self):
         # > 6000 on channel 1
@@ -124,7 +125,7 @@ class Controller:
         if self.motor_velocity_counter < self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_servo("motors", self.motor_velocity_counter)
-        pass
+        print(f"driving reverse: {self.motor_velocity_counter}")
 
     def STOPDROPANDROLL(self):
         # 6000 on channel 2 and 1
@@ -201,6 +202,7 @@ class Controller:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_multiple_servos(["motors", "turn_motors"],
                                          [self.servo_neutral, self.motor_turn_velocity_counter])
+        print(f"driving left: {self.motor_turn_velocity_counter}")
         # print(f"drive left with target {self.motor_turn_velocity_counter}")
         # sleep(0.05)
 
@@ -214,6 +216,7 @@ class Controller:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_multiple_servos(["motors", "turn_motors"],
                                          [self.servo_neutral, self.motor_turn_velocity_counter])
+        print(f"driving right: {self.motor_turn_velocity_counter}")
         # print(f"drive right with target {self.motor_turn_velocity_counter}")
         # sleep(0.05)
 

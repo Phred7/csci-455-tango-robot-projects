@@ -18,12 +18,12 @@ class VoiceInput:
                 r = sr.Recognizer()
                 r.adjust_for_ambient_noise(source)
                 r.dyanmic_energythreshhold = 3000
-                r.operation_timeout = 8
-                r.phrase_threshold = 0.15
+                # r.operation_timeout = 8
+                # r.phrase_threshold = 0.15
 
                 try:
                     print("listening")
-                    audio = r.listen(source)
+                    audio = r.listen(source, timeout=8)
                     print("Got audio")
                     userInput = r.recognize_google(audio)
                     print(userInput)
@@ -64,6 +64,8 @@ class VoiceInput:
 
                 except sr.UnknownValueError:
                     print("Don't knoe that werd")
+                except sr.WaitTimeoutError:
+                    print("Listen timeout exceeded")
         pass
 
 if __name__ == '__main__':

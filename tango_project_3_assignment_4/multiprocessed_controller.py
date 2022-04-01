@@ -15,14 +15,27 @@ class MultiprocessingVoiceInputController:
         self.queue: Queue[str] = Queue()
         self.lock: multiprocessing.Lock = multiprocessing.Lock()
         self.processes: Dict["str": Process] = {"tts": Process(target=self.tts, args=(), name=f"tts_process"),
-                                                "controller": Process(target=self.controller, args=(), name=f"tts_process")}
-        self.processes_running: bool = True
+                                                "controller": Process(target=self.controller, args=(), name=f"controller_process")}
+        self.processes_running: bool = False
+
+    def run(self) -> None:
+        self.processes_running = True
+        try:
+            for process in self.processes.values():
+                process.start()
+        except Exception as e:
+            self.processes_running = False
+            print(e)
+        for process in self.processes.values():
+            process.join()
 
     def tts(self) -> None:
         while self.processes_running:
             if not self.queue.empty():
                 pop: str = self.queue.get(timeout=1)
-
+                self.lock.acquire()
+                print(f"{multiprocessing.process.current_process().name}: got \'{pop}\' from queue")
+                self.lock.release()
         pass
 
     def controller(self) -> None:
@@ -30,7 +43,7 @@ class MultiprocessingVoiceInputController:
         window = tkinter.Tk()
 
         listening = True
-        while listening:
+        while listening and self.processes_running:
             with sr.Microphone() as source:
                 r = sr.Recognizer()
                 r.adjust_for_ambient_noise(source)
@@ -39,15 +52,20 @@ class MultiprocessingVoiceInputController:
                 # r.phrase_threshold = 0.15
 
                 try:
-                    print("listening")
+                    self.__print("listening")
                     audio = r.listen(source, timeout=8)
-                    print("Got audio")
+                    self.__print("got audio")
                     user_input = r.recognize_google(audio)
                     self.queue.put(user_input)
-                    print(user_input)
+                    self.__print(user_input)
                     array_of_words: List[str] = user_input.split()
 
                 except sr.UnknownValueError:
-                    print("Don't knoe that werd")
+                    self.__print("Don't knoe that werd")
                 except sr.WaitTimeoutError:
-                    print("Listen timeout exceeded")
+                    self.__print("Listen timeout exceeded")
+
+    def __print(self, print_str: str) -> None:
+        self.lock.acquire()
+        print(print_str)
+        self.lock.release()

@@ -20,6 +20,11 @@ class TangoChatFileParser:
             line: str = ""
             try:
                 while not end_of_file:
+                    if "#" in line:
+                        line = line[:line.index("#")]
+                    if self.syntax_errors(line):
+                        line = next(chat_file)
+                        continue
                     # line = next(chat_file)
                     # parser here
                     pass
@@ -27,8 +32,13 @@ class TangoChatFileParser:
                 end_of_file = True
         pass
 
+    def syntax_errors(self, line: str) -> bool:
+        # for matching vars: ~(\w+):\s*\[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]
+        return False
+
     def user_input(self, level, input):
         pass
+
 
 
 if __name__ == "__main__":

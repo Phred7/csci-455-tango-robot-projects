@@ -6,7 +6,7 @@ class TangoChatFileParser:
     def __init__(self, chat_file: str) -> None:
         self.user_variables: Dict[str: str] = {}
         self.word_sets: Dict[str: List[str]] = {}
-        self.word_map: Dict[(str, str): str] = {}
+        self.word_map: Dict[(str, str): str] = {}  # Ex: (u1, do you remember my name), Yes
         self.chat_file: str = chat_file
         self.__parse()
         pass

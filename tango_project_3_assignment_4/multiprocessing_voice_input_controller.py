@@ -4,6 +4,7 @@ from multiprocessing import Process, Queue
 from typing import Dict, List
 import speech_recognition as sr
 import tkinter
+import pyttsx3
 
 from controller import Controller
 
@@ -30,12 +31,21 @@ class MultiprocessingVoiceInputController:
             process.join()
 
     def tts(self) -> None:
+        tts_engine = pyttsx3.init()
+        tts_engine.setProperty('rate', 150)
+        voices = tts_engine.getProperty('voices')
+        tts_engine.setProperty('voice', voices[2].id)
         while self.processes_running:
             if not self.queue.empty():
                 pop: str = self.queue.get(timeout=1)
                 self.lock.acquire()
                 print(f"{multiprocessing.process.current_process().name}: got \'{pop}\' from queue")
                 self.lock.release()
+
+                # text_to_say = "Hello Robot, Class! I am Tango!"
+
+                tts_engine.say(pop)
+                tts_engine.runAndWait()
         pass
 
     def controller(self) -> None:

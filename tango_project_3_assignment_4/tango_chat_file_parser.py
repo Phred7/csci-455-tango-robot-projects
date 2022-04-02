@@ -9,7 +9,7 @@ class TangoChatFileParser:
         self.word_map: Dict[(str, str): str] = {}  # Ex: (u1, do you remember my name), Yes
         self.chat_file: str = chat_file
         self.level: int = 0
-        self.past_valid_input: str = None
+        self.past_valid_input: str = ""
         self.__parse()
         pass
 

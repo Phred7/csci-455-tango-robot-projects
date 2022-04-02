@@ -7,6 +7,7 @@ import tkinter
 import pyttsx3
 
 from controller import Controller
+from tango_project_3_assignment_4.tango_chat_file_parser import TangoChatFileParser
 
 
 class MultiprocessingVoiceInputController:
@@ -43,6 +44,8 @@ class MultiprocessingVoiceInputController:
                 self.lock.release()
 
                 # text_to_say = "Hello Robot, Class! I am Tango!"
+                #while input is not 'goodbye'
+                #   call parser.userinput(input)
 
                 tts_engine.say(pop)
                 tts_engine.runAndWait()
@@ -51,7 +54,7 @@ class MultiprocessingVoiceInputController:
     def controller(self) -> None:
         robot_controller: Controller = Controller()
         window = tkinter.Tk()
-
+        tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
         listening = True
         while listening and self.processes_running:
             with sr.Microphone() as source:

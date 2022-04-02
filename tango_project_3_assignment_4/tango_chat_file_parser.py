@@ -13,6 +13,7 @@ class TangoChatFileParser:
             line: str = ""
             try:
                 while not end_of_file:
+                    # line = next(chat_file)
                     # parser here
                     pass
             except StopIteration:

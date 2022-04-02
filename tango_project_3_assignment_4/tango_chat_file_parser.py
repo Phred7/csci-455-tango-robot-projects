@@ -7,7 +7,14 @@ class TangoChatFileParser:
         pass
 
     def __parse(self):
+        end_of_file: bool = False
         with open(self.chat_file, 'r') as chat_file:
             chat_file = iter(chat_file)
             line: str = ""
+            try:
+                while not end_of_file:
+                    # parser here
+                    pass
+            except StopIteration:
+                end_of_file = True
         pass

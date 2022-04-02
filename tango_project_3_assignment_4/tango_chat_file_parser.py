@@ -19,3 +19,7 @@ class TangoChatFileParser:
             except StopIteration:
                 end_of_file = True
         pass
+
+
+if __name__ == "__main__":
+    tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")

@@ -6,7 +6,7 @@ u: (~greetings) : [hi hello "what up" sup]
 u: (test):two
 u: (my name is _): hello $name
     u1: (I am _ years old) : You are $age years old
-    u1: (do you remmeber my name) : Yes
+    u1: (do you remember my name) : Yes
     # comments are ignored
         u2: (what is it) : $name
             u3: (you are very smart) : I know

@@ -11,7 +11,17 @@ class TangoChatFileParser:
         self.level: int = 0
         self.past_valid_input: str = None
         self.__parse()
-        pass
+        self.sample_dict = {(0, '~greetings'): ['hi', 'hello', "what up", 'sup'],
+                            (1, 'you'): 'good',
+                            (1, 'and'): ['one', 'two'],
+                            (0, 'test'): 'two',
+                            (0, 'my name is _'): 'hello $name',
+                            (1, 'I am _ years old'): "You are $age years old",
+                            (1, 'do you remember my name'): 'Yes',
+                            (2, 'what is it'): '$name',
+                            (3, 'you are very smart'): 'I know',
+                            (0, 'what is my name'): 'your name is $name',
+                            (0, 'how old am I'): 'you are $age'}
 
     def __parse(self):
         end_of_file: bool = False
@@ -27,9 +37,13 @@ class TangoChatFileParser:
                 end_of_file = True
         pass
 
-    def user_input(self, level, input):
+    def user_input(self, userinput):
+
+
+
         pass
 
 
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
+

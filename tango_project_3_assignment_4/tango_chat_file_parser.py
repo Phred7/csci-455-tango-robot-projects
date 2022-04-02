@@ -8,6 +8,8 @@ class TangoChatFileParser:
         self.word_sets: Dict[str: List[str]] = {}
         self.word_map: Dict[(str, str): str] = {}
         self.chat_file: str = chat_file
+        self.level: int = 0
+        self.past_valid_input: str = None
         self.__parse()
         pass
 
@@ -23,6 +25,9 @@ class TangoChatFileParser:
                     pass
             except StopIteration:
                 end_of_file = True
+        pass
+
+    def user_input(self, level, input):
         pass
 
 

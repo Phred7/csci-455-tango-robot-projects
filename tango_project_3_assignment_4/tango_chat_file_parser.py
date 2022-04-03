@@ -36,7 +36,7 @@ class TangoChatFileParser:
                     if "#" in line:
                         line = line[:line.index("#")]
                     if self.syntax_errors(line):
-                        print(f"Syntax error on line: {self.__line_number}: \'{line}\'")
+                        print(f"Syntax error on line {self.__line_number}:\'{line}\'")
                         line = self.__next_line()
                         continue
                     line = self.__next_line()

@@ -1,9 +1,12 @@
+import re
 from typing import Dict, List
 
 
 class TangoChatFileParser:
 
     def __init__(self, chat_file: str) -> None:
+        self.__line_number: int = 0
+        self.__file_iterator: iter = None
         self.user_variables: Dict[str: str] = {}
         self.word_sets: Dict[str: List[str]] = {}
         self.word_map: Dict[(str, str): str] = {}  # Ex: (u1, do you remember my name), Yes
@@ -26,28 +29,48 @@ class TangoChatFileParser:
     def __parse(self):
         end_of_file: bool = False
         with open(self.chat_file, 'r') as chat_file:
-            chat_file = iter(chat_file)
-            line: str = ""
+            self.__file_iterator = iter(chat_file)
+            line: str = self.__next_line()
             try:
                 while not end_of_file:
                     if "#" in line:
                         line = line[:line.index("#")]
                     if self.syntax_errors(line):
-                        line = next(chat_file)
+                        print(f"Syntax error on line: {self.__line_number}: \'{line}\'")
+                        line = self.__next_line()
                         continue
-                    # line = next(chat_file)
-                    # parser here
-                    pass
+                    line = self.__next_line()
+
             except StopIteration:
                 end_of_file = True
+                self.__file_iterator = None
         pass
 
-    def user_input(self, level, input):
+    def __next_line(self) -> str:
+        self.__line_number += 1
+        return next(self.__file_iterator)
+
+    def user_input(self, level, _input):
         pass
 
-    def syntax_errors(self, line: str) -> bool:
-        # for matching vars: ~(\w+):\s*\[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]
-        return False
+    @staticmethod
+    def syntax_errors(line: str) -> bool:
+        """
+        Checks for syntax errors on the line in this chat_file.
+        :param line: str representation of the line to check for syntax errors.
+        :return: True if syntax errors were found in this chat_file otherwise, False.
+        """
+        # for matching in strings brackets: \[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]
+        # for matching strings: (\$?\w+\s?)+
+        if re.match(line, r"^(\n|\s|\t|\r)*$", flags=re.X) is not None or line == "":
+            return False
+        pattern_for_matching_variables: str = """~(\w+):\s*\[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]"""
+        pattern_for_matching_u_line: str = r"""^(\s|\t)*u\d*:\s?\(~?(\w+\s?)+\)\s?:\s?((\$?\w+\s?)+|(\[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]))(\n|\s|\t|\r)*$"""
+        variable_match = re.match(pattern_for_matching_variables, line, flags=re.IGNORECASE)
+        u_match = re.match(pattern_for_matching_u_line, line, flags=re.IGNORECASE)
+        if variable_match is None and u_match is None:
+            return True
+        return not ((variable_match is not None) != (u_match is not None))  # this is an inline xor
 
 
 if __name__ == "__main__":

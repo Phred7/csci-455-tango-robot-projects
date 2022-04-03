@@ -44,6 +44,8 @@ class MultiprocessingVoiceInputController:
                 self.lock.release()
 
                 # text_to_say = "Hello Robot, Class! I am Tango!"
+                #while input is not 'goodbye'
+                #   call parser.userinput(input)
 
                 tts_engine.say(pop)
                 tts_engine.runAndWait()

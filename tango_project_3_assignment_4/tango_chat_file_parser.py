@@ -55,7 +55,9 @@ class TangoChatFileParser:
                                 continue
                             user_variable_inputs.append(match.replace("\"", ""))
                         self.word_sets[line[line.index("~"):line.index(":")]] = user_variable_inputs
-
+                    else:
+                        # u matching
+                        pass
 
                     line = self.__next_line()
 

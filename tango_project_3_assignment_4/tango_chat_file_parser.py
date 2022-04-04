@@ -1,6 +1,8 @@
 import re
 from typing import Dict, List
 
+import treelib as treelib
+
 
 class TangoChatFileParser:
 
@@ -57,6 +59,14 @@ class TangoChatFileParser:
                         self.word_sets[line[line.index("~"):line.index(":")]] = user_variable_inputs
                     else:
                         # u matching
+                        # dict: {u0_input_string: treelib.tree}
+                        # tree: root is a node representing the first u in a set.
+                        # children are u's under a u (no number) tag. Ie. u1-n's
+                        # process... assume any line here is a u (without a number)
+                        # create a new node to for this line.
+                        # create a new tree. Make that node the root.
+                        # for each u# under this u make a new node and connect them to the tree
+                        # add the u0 input and the tree to the word_map dict.
                         pass
 
                     line = self.__next_line()
@@ -72,6 +82,10 @@ class TangoChatFileParser:
 
     def user_input(self, level, _input):
         pass
+
+    def new_node(self, u_number: int, u_input, u_response) -> treelib.Node:
+        return treelib.Node(tag=u_input, identifier=u_number, data=u_response)
+
 
     def syntax_errors(self, line: str) -> bool:
         """

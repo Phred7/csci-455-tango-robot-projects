@@ -41,8 +41,8 @@ class MultiprocessingVoiceInputController:
                 pop: str = self.queue.get(timeout=1)
                 self.lock.acquire()
                 print(f"{multiprocessing.process.current_process().name}: got \'{pop}\' from queue")
-                tts_engine.say(pop)
                 self.lock.release()
+                tts_engine.say(pop)
                 tts_engine.runAndWait()
         pass
 
@@ -69,8 +69,9 @@ class MultiprocessingVoiceInputController:
                     array_of_words: List[str] = user_input.split()
 
                 except sr.UnknownValueError:
-                    self.queue.put("Sorry good chap but I'm a little dull and didn't quite pick that one up.")
-                    self.__print("Sorry good chap but I'm a little dull and didn't quite pick that one up.")
+                    string: str = "Sorry good chap but I'm a little dull and didn't quite pick that one up."
+                    self.queue.put("Fool of a Took")
+                    self.__print(string)
                 except sr.WaitTimeoutError:
                     self.__print("Listen timeout exceeded")
 

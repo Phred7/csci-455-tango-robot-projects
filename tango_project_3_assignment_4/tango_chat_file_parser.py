@@ -174,7 +174,7 @@ class TangoChatFileParser:
                     reply.replace(list_of_vars[v], 'UNKNOWN VALUE')
         return reply
 
-    def check_input_with_current_lvl(self, keys_on_level, _input, *, bottomLevel = False):
+    def check_input_with_current_lvl(self, keys_on_level, _input, bottomLevel = False):
         reply = False
 
         for k in keys_on_level:
@@ -266,6 +266,7 @@ class TangoChatFileParser:
 
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
+
 
 
 

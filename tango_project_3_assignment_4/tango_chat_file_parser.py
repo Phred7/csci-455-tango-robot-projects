@@ -209,13 +209,15 @@ class TangoChatFileParser:
         reply = False
         counter = 1
         self.current_node = self.past_valid_input
+        keys_on_level = []
+        nodes_on_level = []
 
         if self.current_tree is None:  # first time through! we have nothing yet
             keys_on_level = self.word_map.keys()
             reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
         else:
-            while not reply and self.level != -1:
-                if self.level == 0:
+            while not reply and self.level != -2:
+                if self.level == -1:
                     keys_on_level = self.word_map.keys()
                     reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
                 else:

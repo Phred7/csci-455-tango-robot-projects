@@ -67,16 +67,6 @@ class TangoChatFileParser:
                             user_variable_inputs.append(match.replace("\"", ""))
                         self.word_sets[line[line.index("~"):line.index(":")]] = user_variable_inputs
                     else:
-                        # u matching
-                        # dict: {u0_input_string: treelib.tree}
-                        # tree: root is a node representing the first u in a set.
-                        # children are u's under a u (no number) tag. Ie. u1-n's
-                        # process... assume any line here is a u (without a number)
-                        # create a new node to for this line.
-                        # create a new tree. Make that node the root.
-                        # for each u# under this u make a new node and connect them to the tree
-                        # add the u0 input and the tree to the word_map dict.
-
                         u_tree: Tree = Tree()
                         user_input: str = line[line.index('(')+1:line.index(')')]
                         user_response: str = line[line.index(')'):]
@@ -250,7 +240,6 @@ class TangoChatFileParser:
         if isinstance(reply, str):
             reply = self.variable_swapper(reply)
         return reply
-
 
     def user_input(self, _input):
         #need to sterilize input - all lowercase? or all upper..

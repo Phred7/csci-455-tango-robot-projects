@@ -2,6 +2,7 @@ import re
 from typing import Dict, List
 import random
 import treelib as treelib
+import re
 
 
 class TangoChatFileParser:
@@ -17,11 +18,11 @@ class TangoChatFileParser:
         self.chat_file: str = chat_file
         self.level: int = 0
         self.current_tree: str = None
-        self.keys_on_level: None
         self.past_valid_input: str = None
+        self.current_node = None
         self.__parse()
         self.sample_dict = {(0, '~greetings'): ['hi', 'hello', "what up", 'sup'],
-                            (1, 'you'): 'good',
+                            (1, 'you'): '~greetings',
                             (1, 'and'): ['one', 'two'],
                             (0, 'test'): 'two',
                             (0, 'my name is _'): 'hello $name',
@@ -83,44 +84,6 @@ class TangoChatFileParser:
         self.__line_number += 1
         return next(self.__file_iterator)
 
-    def variable_swapper(self, reply):
-        # swaps $Name for Chloe
-        return reply
-
-    def variable_taker(self, k, _input):
-        #checks 'if my name is _' mathces 'with my name is chloe'
-        # if it does will update the coresponding variable
-        return
-
-    def user_input(self, _input):
-        #need to sterilize input - all lowercase? or all upper..
-        reply = None
-        if self.current_tree is None and self.level is 0:
-            self.keys_on_level = self.word_map.keys()
-        else:
-            tree = self.word_map.get(self.current_tree)
-            self.keys_on_level = tree.siblings(self.past_valid_input) #needs to be a nid, might also need to put just the keys in the list
-        for k in self.keys_on_level:
-            if '_' in k:
-
-               pass
-            elif '~' in k:
-                possible_valid_input = self.word_sets.get(k)
-                if _input in possible_valid_input:
-                    reply = None #something like self.dict.get(currenttree).node(k).replys()
-                else:
-                    return "Not valid input"
-            elif _input in k:
-                reply = None
-            else:
-                return "Not valid input"
-        if isinstance(reply, list):
-            reply = reply[random.randrange(0, len(reply))]
-        if '$' in reply:
-            reply = self.variable_swapper(reply)
-        return reply
-        #set level and parent and past valid response
-
     def new_node(self, u_number: int, u_input, u_response) -> treelib.Node:
         return treelib.Node(tag=u_input, identifier=u_number, data=u_response)
 
@@ -141,6 +104,111 @@ class TangoChatFileParser:
             return True
         return not ((variable_match is not None) != (u_match is not None))  # this is an inline xor
 
+    def variable_swapper(self, reply):
+        '''
+        takes in the reply and puts a variable in place of $var
+        :param reply:
+        :return:
+        '''
+        # swaps '$Name' for 'Chloe'
+        if '$' in reply:
+            list_of_vars = re.findall(r'\$\w+', reply)
+            for v in list_of_vars:
+                try:
+                    reply.replace(list_of_vars[v], self.user_variables.get(v))
+                except KeyError:
+                    reply.replace(list_of_vars[v], 'UNKNOWN VALUE')
+        return reply
+
+    def check_input_with_current_lvl(self, keys_on_level, _input, *, bottomLevel = False):
+        reply = False
+
+        for k in keys_on_level:
+            if '_' in k:
+                k_substring = k[:k.index('_')]  # might need to add a -1 if it gets mad
+                if k_substring in _input:
+                    # set the variable
+                    reply = self.word_map.get(self.current_tree).get_node(k).data()
+                    if bottomLevel: self.current_tree = k
+                    self.past_valid_input = k
+                    self.level = self.word_map.get(self.current_tree).get_node(k).tag()
+
+                    var_name = re.findall(r'\$\w+', reply) #ex $name
+                    var = _input[k.index('_'):].split(' ', 1)[0]  # what the user said their name was ex Steven
+                    self.user_variables[var_name] = var
+                else:
+                    reply = False
+            elif '~' in k:
+                possible_valid_input = self.word_sets.get(k)
+                if _input in possible_valid_input:
+                    reply = self.word_map.get(self.current_tree).get_node(k).data()
+                    if bottomLevel: self.current_tree = k
+                    self.past_valid_input = k
+                    self.level = self.word_map.get(self.current_tree).get_node(k).tag()
+                else:
+                    reply = False
+            elif _input is k:
+                reply = self.word_map.get(self.current_tree).get_node(k).data()
+                if bottomLevel: self.current_tree = k
+                self.past_valid_input = k
+                self.level = self.word_map.get(self.current_tree).get_node(k).tag()
+
+        if isinstance(reply, list):
+            reply = reply[random.randrange(0, (len(reply)-1))]
+        if isinstance(reply, str):
+            reply = self.variable_swapper(reply)
+        return reply
+
+
+    def user_input(self, _input):
+        #need to sterilize input - all lowercase? or all upper..
+        _input = _input.lower()
+        reply = False
+        counter = 1
+        self.current_node = self.past_valid_input
+
+        if self.current_tree is None:  # first time through! we have nothing yet
+            keys_on_level = self.word_map.keys()
+            reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
+        else:
+            while not reply and self.level is not -1:
+                if self.level is 0:
+                    keys_on_level = self.word_map.keys()
+                    reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
+                else:
+                # get all user inputs on current U level and put it in a list
+                # call check input with that list
+                    if counter is 1:
+                        # look at kids
+                        nodes_on_level = self.word_map.get(self.current_tree).children(self.past_valid_input)
+                        for n in nodes_on_level:
+                            keys_on_level.append(n.identifier)
+                        # make it a list of just ids
+                        reply = self.check_input_with_current_lvl(keys_on_level, _input)
+                    if counter is 2:
+                        # look at siblings
+                        keys_on_level = self.word_map.get(self.current_tree).siblings(self.past_valid_input)
+                        for n in nodes_on_level:
+                            keys_on_level.append(n.identifier)
+                        # make it a list of just ids
+                        reply = self.check_input_with_current_lvl(keys_on_level, _input)
+                    else:
+                        parent = self.word_map.get(self.current_tree).siblings(self.current_node)
+                        keys_on_level = self.word_map.get(self.current_tree).siblings(parent)
+                        for n in nodes_on_level:
+                            keys_on_level.append(n.identifier)
+                        # look at parents until we reach top
+                        reply = self.check_input_with_current_lvl(keys_on_level, _input)
+                        self.current_node = parent
+                    counter += 1
+                    self.level -= 1
+
+        #after all possible levels checked
+        if not reply:
+            return "Not valid input"
+        else:
+            # CONNIEE!!!! set level and parent and past valid response
+            return reply
 
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")

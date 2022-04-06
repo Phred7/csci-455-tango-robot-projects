@@ -164,38 +164,39 @@ class TangoChatFileParser:
                     reply.replace(list_of_vars[v], 'UNKNOWN VALUE')
         return reply
 
-    def check_input_with_current_lvl(self, keys_on_level, _input, *, bottomLevel = False):
+    def check_input_with_current_lvl(self, keys_on_level, _input, bottomLevel = False):
         reply = False
 
         for k in keys_on_level:
+            if bottomLevel: self.current_tree = k
             if '_' in k:
                 k_substring = k[:k.index('_')]  # might need to add a -1 if it gets mad
                 if k_substring in _input:
                     # set the variable
-                    reply = self.word_map.get(self.current_tree).get_node(k).data()
-                    if bottomLevel: self.current_tree = k
+                    reply = self.word_map.get(self.current_tree).get_node(k).data
                     self.past_valid_input = k
-                    self.level = self.word_map.get(self.current_tree).get_node(k).tag()
+                    self.level = self.word_map.get(self.current_tree).get_node(k).tag
 
                     var_name = re.findall(r'\$\w+', reply) #ex $name
                     var = _input[k.index('_'):].split(' ', 1)[0]  # what the user said their name was ex Steven
-                    self.user_variables[var_name] = var
+                    self.user_variables[var_name[0]] = var
+                    break
                 else:
                     reply = False
             elif '~' in k:
                 possible_valid_input = self.word_sets.get(k)
                 if _input in possible_valid_input:
-                    reply = self.word_map.get(self.current_tree).get_node(k).data()
-                    if bottomLevel: self.current_tree = k
+                    reply = self.word_map.get(self.current_tree).get_node(k).data
                     self.past_valid_input = k
-                    self.level = self.word_map.get(self.current_tree).get_node(k).tag()
+                    self.level = self.word_map.get(self.current_tree).get_node(k).tag
+                    break
                 else:
                     reply = False
             elif _input is k:
-                reply = self.word_map.get(self.current_tree).get_node(k).data()
+                reply = self.word_map.get(self.current_tree).get_node(k).data
                 if bottomLevel: self.current_tree = k
                 self.past_valid_input = k
-                self.level = self.word_map.get(self.current_tree).get_node(k).tag()
+                self.level = self.word_map.get(self.current_tree).get_node(k).tag
 
         if isinstance(reply, list):
             reply = reply[random.randrange(0, (len(reply)-1))]
@@ -250,12 +251,12 @@ class TangoChatFileParser:
         if not reply:
             return "Not valid input"
         else:
-            # CONNIEE!!!! set level and parent and past valid response
             return reply
 
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
-    print(tcfp.user_input("test"))
-    pass
 
+    print(tcfp.user_input('my name is THUNDER'))
+    print(tcfp.user_input('I am 22 years old'))
+    print(tcfp.user_input('how old am I'))
 

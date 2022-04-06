@@ -74,9 +74,25 @@ class TangoChatFileParser:
                         u_tree: Tree = Tree()
                         user_input: str = line[line.index('('):line.index(')')]
                         user_response: str = line[line.index(':'):]
-
-                        root = self.new_node(u_number=0, u_input=user_input, u_response=user_response)
-                        u_tree.create_node()
+                        # root = self.new_node(u_number=0, u_input=user_input, u_response=user_response)
+                        u_tree.create_node(tag=0, identifier=user_input, data=user_response)
+                        line = self.__next_line()
+                        last_number: int = 0
+                        parent: str = user_input
+                        stack_list = [user_input]
+                        while re.match(r"^u:", line, re.IGNORECASE) is None:
+                            u_number = int(line[line.index('u'):line.index(':')])
+                            user_input = line[line.index('('):line.index(')')]
+                            user_response = line[line.index(':'):]
+                            if last_number > u_number:
+                                stack_list = stack_list[:u_number]
+                            if len(stack_list) - 1 < u_number:
+                                stack_list.append(user_input)
+                            elif len(stack_list) - 1 == u_number:
+                                stack_list[u_number] = user_input
+                            u_tree.create_node(tag=u_number, identifier=user_input, data=user_response, parent=stack_list[u_number - 1])
+                            last_number = u_number
+                            line = self.__next_line()
                         pass
 
                     line = self.__next_line()

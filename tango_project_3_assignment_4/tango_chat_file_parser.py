@@ -1,8 +1,10 @@
 import re
+from copy import deepcopy
 from typing import Dict, List
 import random
 import treelib as treelib
-import re
+from treelib import Tree
+
 
 
 class TangoChatFileParser:
@@ -14,7 +16,7 @@ class TangoChatFileParser:
         self.pattern_for_matching_u_line: str = r"""^(\s|\t)*u\d*:\s?\(~?(\w+\s?)+\)\s?:\s?((\$?\w+\s?)+|(\[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]))(\n|\s|\t|\r)*$"""
         self.user_variables: Dict[str: str] = {}
         self.word_sets: Dict[str: List[str]] = {}
-        self.word_map: Dict[(str, str): str] = {}
+        self.word_map: Dict[str: Tree] = {}
         self.chat_file: str = chat_file
         self.level: int = 0
         self.current_tree: str = None
@@ -43,6 +45,9 @@ class TangoChatFileParser:
                     # need to sterilize input - all lowercase? or all upper..
                     if "#" in line:
                         line = line[:line.index("#")]
+                        if line.isspace():
+                            line = self.__next_line()
+                            continue
                     if self.syntax_errors(line):
                         print(f"Syntax error on line {self.__line_number}:\'{line}\'")
                         line = self.__next_line()
@@ -71,7 +76,47 @@ class TangoChatFileParser:
                         # create a new tree. Make that node the root.
                         # for each u# under this u make a new node and connect them to the tree
                         # add the u0 input and the tree to the word_map dict.
-                        pass
+
+                        u_tree: Tree = Tree()
+                        user_input: str = line[line.index('(')+1:line.index(')')]
+                        user_response: str = line[line.index(')'):]
+                        if '\n' in user_response:
+                            user_response = user_response[user_response.index(':')+1:user_response.index('\n')]
+                        else:
+                            user_response = user_response[user_response.index(':') + 1:-1]
+                        u_tree.create_node(tag=0, identifier=user_input, data=self.bracketizer(user_response))
+                        line = self.__next_line()
+                        last_number: int = 0
+
+                        stack_list = [user_input]
+                        while re.match(r"^u:", line, re.IGNORECASE) is None:
+                            if "#" in line:
+                                line = line[:line.index("#")]
+                                if line.isspace():
+                                    line = self.__next_line()
+                                    continue
+                            if self.syntax_errors(line):
+                                print(f"Syntax error on line {self.__line_number}:\'{line}\'")
+                                line = self.__next_line()
+                                continue
+                            if len(line) < 1:
+                                line = self.__next_line()
+                                continue
+                            u_number = int(line[line.index('u')+1:line.index(':')])
+                            user_input = line[line.index('(')+1:line.index(')')]
+                            user_response: str = line[line.index(')'):]
+                            user_response = user_response[user_response.index(':') + 1:user_response.index('\n')]
+                            if last_number > u_number:
+                                stack_list = stack_list[:u_number]
+                            if len(stack_list) - 1 < u_number:
+                                stack_list.append(user_input)
+                            elif len(stack_list) - 1 == u_number:
+                                stack_list[u_number] = user_input
+                            u_tree.create_node(tag=u_number, identifier=user_input, data=self.bracketizer(user_response), parent=stack_list[u_number - 1])
+                            last_number = u_number
+                            line = self.__next_line()
+                        self.word_map[stack_list[0]] = deepcopy(u_tree)
+                        continue
 
                     line = self.__next_line()
 
@@ -82,11 +127,58 @@ class TangoChatFileParser:
 
     def __next_line(self) -> str:
         self.__line_number += 1
-        return next(self.__file_iterator)
+        return str(next(self.__file_iterator)).lower()
 
-    def new_node(self, u_number: int, u_input, u_response) -> treelib.Node:
-        return treelib.Node(tag=u_input, identifier=u_number, data=u_response)
+    def bracketizer(self, input):
+        if "[" in input:
+            output = []
+            matches = [x.group() for x in
+                       re.finditer("""(((\w+)|\s)|"((\w+(\s|)+)+)")""", input, flags=re.IGNORECASE)]
+            for match in matches:
+                if match == " ":
+                    continue
+                output.append(match.replace("\"", ""))
+            return output
+        else:
+            return input
 
+    def variable_swapper(self, reply):
+        # swaps $Name for Chloe
+        return reply
+
+    def variable_taker(self, k, _input):
+        #checks 'if my name is _' mathces 'with my name is chloe'
+        # if it does will update the coresponding variable
+        return
+
+    def user_input(self, _input):
+        #need to sterilize input - all lowercase? or all upper..
+        reply = None
+        if self.current_tree is None and self.level == 0:
+            self.keys_on_level = self.word_map.keys()
+        else:
+            tree = self.word_map.get(self.current_tree)
+            self.keys_on_level = tree.siblings(self.past_valid_input) #needs to be a nid, might also need to put just the keys in the list
+        for k in self.keys_on_level:
+            if '_' in k:
+
+               pass
+            elif '~' in k:
+                possible_valid_input = self.word_sets.get(k)
+                if _input in possible_valid_input:
+                    reply = None #something like self.dict.get(currenttree).node(k).replys()
+                else:
+                    return "Not valid input"
+            elif _input in k:
+                reply = None
+            else:
+                return "Not valid input"
+        if isinstance(reply, list):
+            reply = reply[random.randrange(0, len(reply))]
+        if '$' in reply:
+            reply = self.variable_swapper(reply)
+        return reply
+        #set level and parent and past valid response
 
     def syntax_errors(self, line: str) -> bool:
         """

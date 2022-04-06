@@ -7,7 +7,7 @@ import tkinter
 import pyttsx3
 
 from controller import Controller
-from tango_project_3_assignment_4.tango_chat_file_parser import TangoChatFileParser
+from tango_chat_file_parser import TangoChatFileParser
 
 
 class MultiprocessingVoiceInputController:
@@ -74,7 +74,8 @@ class MultiprocessingVoiceInputController:
                     array_of_words: List[str] = user_input.split()
 
                 except sr.UnknownValueError:
-                    self.__print("Don't knoe that werd")
+                    self.queue.put("Sorry good chap but I'm a little dull and didn't quite pick that one up.")
+                    self.__print("Sorry good chap but I'm a little dull and didn't quite pick that one up.")
                 except sr.WaitTimeoutError:
                     self.__print("Listen timeout exceeded")
 
@@ -82,3 +83,8 @@ class MultiprocessingVoiceInputController:
         self.lock.acquire()
         print(print_str)
         self.lock.release()
+
+if __name__ == "__main__":
+    mvic: MultiprocessingVoiceInputController = MultiprocessingVoiceInputController()
+    mvic.run()
+    pass

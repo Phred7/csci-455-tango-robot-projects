@@ -199,7 +199,7 @@ class TangoChatFileParser:
                     break
                 else:
                     reply = False
-            elif _input is k:
+            elif _input == k:
                 reply = self.word_map.get(self.current_tree).get_node(k).data
                 if bottomLevel: self.current_tree = k
                 self.past_valid_input = k
@@ -285,14 +285,4 @@ if __name__ == "__main__":
     print(tcfp.user_input('my name is THUNDER'))
     print(tcfp.user_input('I am 22 years old'))
     print(tcfp.user_input('how old am I'))
-
-# def test_parser() -> None:
-#     tango_chat_file_parser: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
-#     assert tango_chat_file_parser.user_input('you are very smart').strip(' ') == "Not valid input"
-#     assert tango_chat_file_parser.user_input('my name is THUNDER').strip(' ') == "hello thunder"
-#     assert tango_chat_file_parser.user_input('I am 22 years old').strip(' ') == "you are 22 years old"
-#     assert tango_chat_file_parser.user_input('how old am I').strip(' ') == "you are 22"
-
-# def test_current_level() -> None:
-#     'how old am i'
 

@@ -238,7 +238,7 @@ class TangoChatFileParser:
                         # make it a list of just ids
                         reply = self.check_input_with_current_lvl(keys_on_level, _input)
                     else:
-                        parent = self.word_map.get(self.current_tree).siblings(self.current_node)
+                        parent = self.word_map.get(self.current_tree).parent(self.current_node)
                         keys_on_level = self.word_map.get(self.current_tree).siblings(parent)
                         for n in nodes_on_level:
                             keys_on_level.append(n.identifier)
@@ -261,3 +261,10 @@ if __name__ == "__main__":
     print(tcfp.user_input('I am 22 years old'))
     print(tcfp.user_input('how old am I'))
 
+
+def test_parser() -> None:
+    tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
+
+    assert tcfp.user_input('my name is THUNDER').strip(' ') == "hello thunder"
+    assert tcfp.user_input('I am 22 years old').strip(' ') == "You are 22 years old"
+    assert tcfp.user_input('how old am I').strip(' ') == "you are 22"

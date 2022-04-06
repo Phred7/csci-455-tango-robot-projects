@@ -2,6 +2,7 @@ import re
 from typing import Dict, List
 import random
 import treelib as treelib
+from treelib import Tree
 
 
 class TangoChatFileParser:
@@ -70,6 +71,12 @@ class TangoChatFileParser:
                         # create a new tree. Make that node the root.
                         # for each u# under this u make a new node and connect them to the tree
                         # add the u0 input and the tree to the word_map dict.
+                        u_tree: Tree = Tree()
+                        user_input: str = line[line.index('('):line.index(')')]
+                        user_response: str = line[line.index(':'):]
+
+                        root = self.new_node(u_number=0, u_input=user_input, u_response=user_response)
+                        u_tree.create_node()
                         pass
 
                     line = self.__next_line()
@@ -81,7 +88,7 @@ class TangoChatFileParser:
 
     def __next_line(self) -> str:
         self.__line_number += 1
-        return next(self.__file_iterator)
+        return str(next(self.__file_iterator)).lower()
 
     def variable_swapper(self, reply):
         # swaps $Name for Chloe

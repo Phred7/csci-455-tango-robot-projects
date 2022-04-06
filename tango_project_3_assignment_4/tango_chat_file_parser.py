@@ -67,16 +67,6 @@ class TangoChatFileParser:
                             user_variable_inputs.append(match.replace("\"", ""))
                         self.word_sets[line[line.index("~"):line.index(":")]] = user_variable_inputs
                     else:
-                        # u matching
-                        # dict: {u0_input_string: treelib.tree}
-                        # tree: root is a node representing the first u in a set.
-                        # children are u's under a u (no number) tag. Ie. u1-n's
-                        # process... assume any line here is a u (without a number)
-                        # create a new node to for this line.
-                        # create a new tree. Make that node the root.
-                        # for each u# under this u make a new node and connect them to the tree
-                        # add the u0 input and the tree to the word_map dict.
-
                         u_tree: Tree = Tree()
                         user_input: str = line[line.index('(')+1:line.index(')')]
                         user_response: str = line[line.index(')'):]
@@ -214,7 +204,6 @@ class TangoChatFileParser:
             reply = self.variable_swapper(reply)
         return reply
 
-
     def user_input(self, _input):
         #need to sterilize input - all lowercase? or all upper..
         _input = _input.lower()
@@ -226,14 +215,14 @@ class TangoChatFileParser:
             keys_on_level = self.word_map.keys()
             reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
         else:
-            while not reply and self.level is not -1:
-                if self.level is 0:
+            while not reply and self.level != -1:
+                if self.level == 0:
                     keys_on_level = self.word_map.keys()
                     reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
                 else:
                 # get all user inputs on current U level and put it in a list
                 # call check input with that list
-                    if counter is 1:
+                    if counter == 1:
                         # look at kids
                         nodes_on_level = self.word_map.get(self.current_tree).children(self.past_valid_input)
                         for n in nodes_on_level:
@@ -266,9 +255,8 @@ class TangoChatFileParser:
 
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
+
     print(tcfp.user_input('my name is THUNDER'))
     print(tcfp.user_input('I am 22 years old'))
     print(tcfp.user_input('how old am I'))
-
-
 

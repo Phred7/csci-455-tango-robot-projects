@@ -69,7 +69,7 @@ class MultiprocessingVoiceInputController:
                     audio = r.listen(source, timeout=8)
                     self.__print("got audio")
                     user_input = r.recognize_google(audio)
-                    self.queue.put(user_input)
+                    self.queue.put(tcfp.user_input(user_input))
                     self.__print(user_input)
                     array_of_words: List[str] = user_input.split()
 

@@ -214,14 +214,14 @@ class TangoChatFileParser:
             keys_on_level = self.word_map.keys()
             reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
         else:
-            while not reply and self.level is not -1:
-                if self.level is 0:
+            while not reply and self.level != -1:
+                if self.level == 0:
                     keys_on_level = self.word_map.keys()
                     reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
                 else:
                 # get all user inputs on current U level and put it in a list
                 # call check input with that list
-                    if counter is 1:
+                    if counter == 1:
                         # look at kids
                         nodes_on_level = self.word_map.get(self.current_tree).children(self.past_valid_input)
                         for n in nodes_on_level:
@@ -255,6 +255,7 @@ class TangoChatFileParser:
 
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
-
+    print(tcfp.user_input("test"))
+    pass
 
 

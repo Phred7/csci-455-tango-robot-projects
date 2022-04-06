@@ -74,7 +74,8 @@ class MultiprocessingVoiceInputController:
                     array_of_words: List[str] = user_input.split()
 
                 except sr.UnknownValueError:
-                    self.__print("Don't knoe that werd")
+                    self.queue.put("Sorry good chap but I'm a little dull and didn't quite pick that one up.")
+                    self.__print("Sorry good chap but I'm a little dull and didn't quite pick that one up.")
                 except sr.WaitTimeoutError:
                     self.__print("Listen timeout exceeded")
 

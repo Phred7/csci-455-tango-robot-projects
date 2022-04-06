@@ -71,19 +71,29 @@ class TangoChatFileParser:
                         # create a new tree. Make that node the root.
                         # for each u# under this u make a new node and connect them to the tree
                         # add the u0 input and the tree to the word_map dict.
+
                         u_tree: Tree = Tree()
-                        user_input: str = line[line.index('('):line.index(')')]
-                        user_response: str = line[line.index(':'):]
-                        # root = self.new_node(u_number=0, u_input=user_input, u_response=user_response)
+                        user_input: str = line[line.index('(')+1:line.index(')')]
+                        user_response: str = line[line.index(')'):]
+                        user_response = user_response[user_response.index(':')+1:user_response.index('\n')]
                         u_tree.create_node(tag=0, identifier=user_input, data=user_response)
                         line = self.__next_line()
                         last_number: int = 0
                         parent: str = user_input
                         stack_list = [user_input]
                         while re.match(r"^u:", line, re.IGNORECASE) is None:
-                            u_number = int(line[line.index('u'):line.index(':')])
-                            user_input = line[line.index('('):line.index(')')]
-                            user_response = line[line.index(':'):]
+                            if "#" in line:
+                                line = line[:line.index("#")]
+                            if self.syntax_errors(line):
+                                print(f"Syntax error on line {self.__line_number}:\'{line}\'")
+                                line = self.__next_line()
+                                continue
+                            if len(line) < 1:
+                                line = self.__next_line()
+                                continue
+                            u_number = int(line[line.index('u')+1:line.index(':')])
+                            user_input = line[line.index('(')+1:line.index(')')]
+                            user_response = line[line.index(':')+1:]
                             if last_number > u_number:
                                 stack_list = stack_list[:u_number]
                             if len(stack_list) - 1 < u_number:
@@ -118,7 +128,7 @@ class TangoChatFileParser:
     def user_input(self, _input):
         #need to sterilize input - all lowercase? or all upper..
         reply = None
-        if self.current_tree is None and self.level is 0:
+        if self.current_tree is None and self.level == 0:
             self.keys_on_level = self.word_map.keys()
         else:
             tree = self.word_map.get(self.current_tree)

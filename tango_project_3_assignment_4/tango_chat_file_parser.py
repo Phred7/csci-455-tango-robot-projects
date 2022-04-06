@@ -156,12 +156,11 @@ class TangoChatFileParser:
         '''
         # swaps '$Name' for 'Chloe'
         if '$' in reply:
-            list_of_vars = re.findall(r'\$\w+', reply)
-            for v in list_of_vars:
-                try:
-                    reply.replace(list_of_vars[v], self.user_variables.get(v))
-                except KeyError:
-                    reply.replace(list_of_vars[v], 'UNKNOWN VALUE')
+            vars_name = re.findall(r'\$\w+', reply)
+            try:
+                reply = reply.replace(vars_name[0], self.user_variables.get(vars_name[0]))
+            except KeyError:
+                reply = reply.replace(vars_name[0], "UNKNOWN VALUE")
         return reply
 
     def check_input_with_current_lvl(self, keys_on_level, _input, bottomLevel = False):

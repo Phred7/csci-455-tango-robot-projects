@@ -82,3 +82,8 @@ class MultiprocessingVoiceInputController:
         self.lock.acquire()
         print(print_str)
         self.lock.release()
+
+if __name__ == "__main__":
+    mvic: MultiprocessingVoiceInputController = MultiprocessingVoiceInputController()
+    mvic.run()
+    pass

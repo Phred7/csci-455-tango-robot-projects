@@ -132,44 +132,6 @@ class TangoChatFileParser:
         else:
             return input
 
-    def variable_swapper(self, reply):
-        # swaps $Name for Chloe
-        return reply
-
-    def variable_taker(self, k, _input):
-        #checks 'if my name is _' mathces 'with my name is chloe'
-        # if it does will update the coresponding variable
-        return
-
-    def user_input(self, _input):
-        #need to sterilize input - all lowercase? or all upper..
-        reply = None
-        if self.current_tree is None and self.level == 0:
-            self.keys_on_level = self.word_map.keys()
-        else:
-            tree = self.word_map.get(self.current_tree)
-            self.keys_on_level = tree.siblings(self.past_valid_input) #needs to be a nid, might also need to put just the keys in the list
-        for k in self.keys_on_level:
-            if '_' in k:
-
-               pass
-            elif '~' in k:
-                possible_valid_input = self.word_sets.get(k)
-                if _input in possible_valid_input:
-                    reply = None #something like self.dict.get(currenttree).node(k).replys()
-                else:
-                    return "Not valid input"
-            elif _input in k:
-                reply = None
-            else:
-                return "Not valid input"
-        if isinstance(reply, list):
-            reply = reply[random.randrange(0, len(reply))]
-        if '$' in reply:
-            reply = self.variable_swapper(reply)
-        return reply
-        #set level and parent and past valid response
-
     def syntax_errors(self, line: str) -> bool:
         """
         Checks for syntax errors on the line in this chat_file.
@@ -293,5 +255,6 @@ class TangoChatFileParser:
 
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
-    pass
+
+
 

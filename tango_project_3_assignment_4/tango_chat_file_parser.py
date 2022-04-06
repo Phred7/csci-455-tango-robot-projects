@@ -232,14 +232,17 @@ class TangoChatFileParser:
                         reply = self.check_input_with_current_lvl(keys_on_level, _input)
                     if counter == 2:
                         # look at siblings
-                        keys_on_level = self.word_map.get(self.current_tree).siblings(self.past_valid_input)
+                        nodes_on_level = self.word_map.get(self.current_tree).siblings(self.past_valid_input)
                         for n in nodes_on_level:
                             keys_on_level.append(n.identifier)
                         # make it a list of just ids
                         reply = self.check_input_with_current_lvl(keys_on_level, _input)
                     else:
-                        parent = self.word_map.get(self.current_tree).parent(self.current_node)
-                        keys_on_level = self.word_map.get(self.current_tree).siblings(parent)
+                        if self.level > 1:
+                            parent = self.word_map.get(self.current_tree).parent(self.current_node)
+                        else:
+                            parent = self.current_node
+                        nodes_on_level = self.word_map.get(self.current_tree).siblings(parent)
                         for n in nodes_on_level:
                             keys_on_level.append(n.identifier)
                         # look at parents until we reach top

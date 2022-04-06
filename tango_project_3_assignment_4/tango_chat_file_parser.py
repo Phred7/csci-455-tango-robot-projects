@@ -116,6 +116,19 @@ class TangoChatFileParser:
         self.__line_number += 1
         return str(next(self.__file_iterator)).lower()
 
+    def bracketizer(self, input):
+        if "[" in input:
+            output = []
+            matches = [x.group() for x in
+                       re.finditer("""(((\w+)|\s)|"((\w+(\s|)+)+)")""", input, flags=re.IGNORECASE)]
+            for match in matches:
+                if match == " ":
+                    continue
+                output.append(match.replace("\"", ""))
+            return output
+        else:
+            return input
+
     def variable_swapper(self, reply):
         # swaps $Name for Chloe
         return reply

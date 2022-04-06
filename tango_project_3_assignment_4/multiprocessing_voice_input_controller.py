@@ -7,7 +7,7 @@ import tkinter
 import pyttsx3
 
 from controller import Controller
-from tango_project_3_assignment_4.tango_chat_file_parser import TangoChatFileParser
+from tango_chat_file_parser import TangoChatFileParser
 
 
 class MultiprocessingVoiceInputController:
@@ -82,3 +82,8 @@ class MultiprocessingVoiceInputController:
         self.lock.acquire()
         print(print_str)
         self.lock.release()
+
+if __name__ == "__main__":
+    mvic: MultiprocessingVoiceInputController = MultiprocessingVoiceInputController()
+    mvic.run()
+    pass

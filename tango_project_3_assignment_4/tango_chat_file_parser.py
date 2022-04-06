@@ -1,4 +1,5 @@
 import re
+from copy import deepcopy
 from typing import Dict, List
 import random
 import treelib as treelib
@@ -14,7 +15,7 @@ class TangoChatFileParser:
         self.pattern_for_matching_u_line: str = r"""^(\s|\t)*u\d*:\s?\(~?(\w+\s?)+\)\s?:\s?((\$?\w+\s?)+|(\[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]))(\n|\s|\t|\r)*$"""
         self.user_variables: Dict[str: str] = {}
         self.word_sets: Dict[str: List[str]] = {}
-        self.word_map: Dict[(str, str): str] = {}
+        self.word_map: Dict[str: Tree] = {}
         self.chat_file: str = chat_file
         self.level: int = 0
         self.current_tree: str = None
@@ -43,6 +44,9 @@ class TangoChatFileParser:
                     # need to sterilize input - all lowercase? or all upper..
                     if "#" in line:
                         line = line[:line.index("#")]
+                        if line.isspace():
+                            line = self.__next_line()
+                            continue
                     if self.syntax_errors(line):
                         print(f"Syntax error on line {self.__line_number}:\'{line}\'")
                         line = self.__next_line()
@@ -75,15 +79,21 @@ class TangoChatFileParser:
                         u_tree: Tree = Tree()
                         user_input: str = line[line.index('(')+1:line.index(')')]
                         user_response: str = line[line.index(')'):]
-                        user_response = user_response[user_response.index(':')+1:user_response.index('\n')]
-                        u_tree.create_node(tag=0, identifier=user_input, data=user_response)
+                        if '\n' in user_response:
+                            user_response = user_response[user_response.index(':')+1:user_response.index('\n')]
+                        else:
+                            user_response = user_response[user_response.index(':') + 1:-1]
+                        u_tree.create_node(tag=0, identifier=user_input, data=self.bracketizer(user_response))
                         line = self.__next_line()
                         last_number: int = 0
-                        parent: str = user_input
+
                         stack_list = [user_input]
                         while re.match(r"^u:", line, re.IGNORECASE) is None:
                             if "#" in line:
                                 line = line[:line.index("#")]
+                                if line.isspace():
+                                    line = self.__next_line()
+                                    continue
                             if self.syntax_errors(line):
                                 print(f"Syntax error on line {self.__line_number}:\'{line}\'")
                                 line = self.__next_line()
@@ -93,17 +103,19 @@ class TangoChatFileParser:
                                 continue
                             u_number = int(line[line.index('u')+1:line.index(':')])
                             user_input = line[line.index('(')+1:line.index(')')]
-                            user_response = line[line.index(':')+1:]
+                            user_response: str = line[line.index(')'):]
+                            user_response = user_response[user_response.index(':') + 1:user_response.index('\n')]
                             if last_number > u_number:
                                 stack_list = stack_list[:u_number]
                             if len(stack_list) - 1 < u_number:
                                 stack_list.append(user_input)
                             elif len(stack_list) - 1 == u_number:
                                 stack_list[u_number] = user_input
-                            u_tree.create_node(tag=u_number, identifier=user_input, data=user_response, parent=stack_list[u_number - 1])
+                            u_tree.create_node(tag=u_number, identifier=user_input, data=self.bracketizer(user_response), parent=stack_list[u_number - 1])
                             last_number = u_number
                             line = self.__next_line()
-                        pass
+                        self.word_map[stack_list[0]] = deepcopy(u_tree)
+                        continue
 
                     line = self.__next_line()
 

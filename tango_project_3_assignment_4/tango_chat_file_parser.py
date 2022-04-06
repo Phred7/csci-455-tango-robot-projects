@@ -1,5 +1,7 @@
 import re
 from typing import Dict, List
+import random
+import treelib as treelib
 
 
 class TangoChatFileParser:
@@ -14,7 +16,9 @@ class TangoChatFileParser:
         self.word_map: Dict[(str, str): str] = {}
         self.chat_file: str = chat_file
         self.level: int = 0
-        self.past_valid_input: str = ""
+        self.current_tree: str = None
+        self.keys_on_level: None
+        self.past_valid_input: str = None
         self.__parse()
         self.sample_dict = {(0, '~greetings'): ['hi', 'hello', "what up", 'sup'],
                             (1, 'you'): 'good',
@@ -35,6 +39,7 @@ class TangoChatFileParser:
             line: str = self.__next_line()
             try:
                 while not end_of_file:
+                    # need to sterilize input - all lowercase? or all upper..
                     if "#" in line:
                         line = line[:line.index("#")]
                     if self.syntax_errors(line):
@@ -57,6 +62,14 @@ class TangoChatFileParser:
                         self.word_sets[line[line.index("~"):line.index(":")]] = user_variable_inputs
                     else:
                         # u matching
+                        # dict: {u0_input_string: treelib.tree}
+                        # tree: root is a node representing the first u in a set.
+                        # children are u's under a u (no number) tag. Ie. u1-n's
+                        # process... assume any line here is a u (without a number)
+                        # create a new node to for this line.
+                        # create a new tree. Make that node the root.
+                        # for each u# under this u make a new node and connect them to the tree
+                        # add the u0 input and the tree to the word_map dict.
                         pass
 
                     line = self.__next_line()
@@ -70,8 +83,47 @@ class TangoChatFileParser:
         self.__line_number += 1
         return next(self.__file_iterator)
 
-    def user_input(self, level, _input):
-        pass
+    def variable_swapper(self, reply):
+        # swaps $Name for Chloe
+        return reply
+
+    def variable_taker(self, k, _input):
+        #checks 'if my name is _' mathces 'with my name is chloe'
+        # if it does will update the coresponding variable
+        return
+
+    def user_input(self, _input):
+        #need to sterilize input - all lowercase? or all upper..
+        reply = None
+        if self.current_tree is None and self.level is 0:
+            self.keys_on_level = self.word_map.keys()
+        else:
+            tree = self.word_map.get(self.current_tree)
+            self.keys_on_level = tree.siblings(self.past_valid_input) #needs to be a nid, might also need to put just the keys in the list
+        for k in self.keys_on_level:
+            if '_' in k:
+
+               pass
+            elif '~' in k:
+                possible_valid_input = self.word_sets.get(k)
+                if _input in possible_valid_input:
+                    reply = None #something like self.dict.get(currenttree).node(k).replys()
+                else:
+                    return "Not valid input"
+            elif _input in k:
+                reply = None
+            else:
+                return "Not valid input"
+        if isinstance(reply, list):
+            reply = reply[random.randrange(0, len(reply))]
+        if '$' in reply:
+            reply = self.variable_swapper(reply)
+        return reply
+        #set level and parent and past valid response
+
+    def new_node(self, u_number: int, u_input, u_response) -> treelib.Node:
+        return treelib.Node(tag=u_input, identifier=u_number, data=u_response)
+
 
     def syntax_errors(self, line: str) -> bool:
         """

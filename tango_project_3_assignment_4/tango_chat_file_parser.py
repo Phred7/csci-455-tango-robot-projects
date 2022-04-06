@@ -230,7 +230,7 @@ class TangoChatFileParser:
                             keys_on_level.append(n.identifier)
                         # make it a list of just ids
                         reply = self.check_input_with_current_lvl(keys_on_level, _input)
-                    if counter is 2:
+                    if counter == 2:
                         # look at siblings
                         keys_on_level = self.word_map.get(self.current_tree).siblings(self.past_valid_input)
                         for n in nodes_on_level:

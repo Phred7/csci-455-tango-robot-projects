@@ -58,9 +58,10 @@ class TangoChatFileParser:
                     variable_match = re.match(self.pattern_for_matching_variables, line, flags=re.IGNORECASE)
                     if variable_match is not None:
                         line_inputs: str = line.split(":")[1]
-                        line_inputs = line_inputs[line_inputs.index('[')+1:line_inputs.index(']')]
+                        line_inputs = line_inputs[line_inputs.index('[') + 1:line_inputs.index(']')]
                         user_variable_inputs: List[str] = []
-                        matches = [x.group() for x in re.finditer("""(((\w+)|\s)|"((\w+(\s|)+)+)")""", line_inputs, flags=re.IGNORECASE)]
+                        matches = [x.group() for x in
+                                   re.finditer("""(((\w+)|\s)|"((\w+(\s|)+)+)")""", line_inputs, flags=re.IGNORECASE)]
                         for match in matches:
                             if match == " ":
                                 continue
@@ -68,14 +69,20 @@ class TangoChatFileParser:
                         self.word_sets[line[line.index("~"):line.index(":")]] = user_variable_inputs
                     else:
                         u_tree: Tree = Tree()
-                        user_input: str = line[line.index('(')+1:line.index(')')]
+                        user_input: str = line[line.index('(') + 1:line.index(')')]
                         user_response: str = line[line.index(')'):]
                         if '\n' in user_response:
-                            user_response = user_response[user_response.index(':')+1:user_response.index('\n')]
+                            user_response = user_response[user_response.index(':') + 1:user_response.index('\n')]
                         else:
                             user_response = user_response[user_response.index(':') + 1:-1]
                         u_tree.create_node(tag=0, identifier=user_input, data=self.bracketizer(user_response))
-                        line = self.__next_line()
+
+                        try:
+                            line = self.__next_line()
+                        except StopIteration:
+                            end_of_file = True
+                            self.__file_iterator = None
+                            self.word_map[user_input] = deepcopy(u_tree)
                         last_number: int = 0
 
                         stack_list = [user_input]
@@ -92,8 +99,8 @@ class TangoChatFileParser:
                             if len(line) < 1:
                                 line = self.__next_line()
                                 continue
-                            u_number = int(line[line.index('u')+1:line.index(':')])
-                            user_input = line[line.index('(')+1:line.index(')')]
+                            u_number = int(line[line.index('u') + 1:line.index(':')])
+                            user_input = line[line.index('(') + 1:line.index(')')]
                             user_response: str = line[line.index(')'):]
                             user_response = user_response[user_response.index(':') + 1:user_response.index('\n')]
                             if last_number > u_number:
@@ -102,7 +109,8 @@ class TangoChatFileParser:
                                 stack_list.append(user_input)
                             elif len(stack_list) - 1 == u_number:
                                 stack_list[u_number] = user_input
-                            u_tree.create_node(tag=u_number, identifier=user_input, data=self.bracketizer(user_response), parent=stack_list[u_number - 1])
+                            u_tree.create_node(tag=u_number, identifier=user_input,
+                                               data=self.bracketizer(user_response), parent=stack_list[u_number - 1])
                             last_number = u_number
                             line = self.__next_line()
                         self.word_map[stack_list[0]] = deepcopy(u_tree)
@@ -163,7 +171,7 @@ class TangoChatFileParser:
                 reply = reply.replace(vars_name[0], "UNKNOWN VALUE")
         return reply
 
-    def check_input_with_current_lvl(self, keys_on_level, _input, bottomLevel = False):
+    def check_input_with_current_lvl(self, keys_on_level, _input, bottomLevel=False):
         reply = False
 
         for k in keys_on_level:
@@ -176,7 +184,7 @@ class TangoChatFileParser:
                     self.past_valid_input = k
                     self.level = self.word_map.get(self.current_tree).get_node(k).tag
 
-                    var_name = re.findall(r'\$\w+', reply) #ex $name
+                    var_name = re.findall(r'\$\w+', reply)  # ex $name
                     var = _input[k.index('_'):].split(' ', 1)[0]  # what the user said their name was ex Steven
                     self.user_variables[var_name[0]] = var
                     break
@@ -198,13 +206,13 @@ class TangoChatFileParser:
                 self.level = self.word_map.get(self.current_tree).get_node(k).tag
 
         if isinstance(reply, list):
-            reply = reply[random.randrange(0, (len(reply)-1))]
+            reply = reply[random.randrange(0, (len(reply) - 1))]
         if isinstance(reply, str):
             reply = self.variable_swapper(reply)
         return reply
 
     def user_input(self, _input):
-        #need to sterilize input - all lowercase? or all upper..
+        # need to sterilize input - all lowercase? or all upper..
         _input = _input.lower()
         reply = False
         counter = 1
@@ -270,10 +278,21 @@ class TangoChatFileParser:
         else:
             return reply
 
+
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
 
     print(tcfp.user_input('my name is THUNDER'))
     print(tcfp.user_input('I am 22 years old'))
     print(tcfp.user_input('how old am I'))
+
+# def test_parser() -> None:
+#     tango_chat_file_parser: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
+#     assert tango_chat_file_parser.user_input('you are very smart').strip(' ') == "Not valid input"
+#     assert tango_chat_file_parser.user_input('my name is THUNDER').strip(' ') == "hello thunder"
+#     assert tango_chat_file_parser.user_input('I am 22 years old').strip(' ') == "you are 22 years old"
+#     assert tango_chat_file_parser.user_input('how old am I').strip(' ') == "you are 22"
+
+# def test_current_level() -> None:
+#     'how old am i'
 

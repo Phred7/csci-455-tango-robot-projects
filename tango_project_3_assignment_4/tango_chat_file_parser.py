@@ -210,16 +210,19 @@ class TangoChatFileParser:
         counter = 1
         self.current_node = self.past_valid_input
         keys_on_level = []
-        nodes_on_level = []
+        current_level = self.level
 
         if self.current_tree is None:  # first time through! we have nothing yet
-            keys_on_level = self.word_map.keys()
+            keys_on_level = list(self.word_map.keys())
             reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
         else:
-            while not reply and self.level != -2:
-                if self.level == -1:
-                    keys_on_level = self.word_map.keys()
+            while not reply and current_level != -2:
+                if current_level == -1:
+                    keys_on_level = list(self.word_map.keys())
                     reply = self.check_input_with_current_lvl(keys_on_level, _input, True)
+                    if isinstance(reply, str):
+                        self.level = -1
+                        break
                 else:
                 # get all user inputs on current U level and put it in a list
                 # call check input with that list
@@ -230,6 +233,9 @@ class TangoChatFileParser:
                             keys_on_level.append(n.identifier)
                         # make it a list of just ids
                         reply = self.check_input_with_current_lvl(keys_on_level, _input)
+                        if isinstance(reply, str):
+                            self.level += 1
+                            break
                     if counter == 2:
                         # look at siblings
                         nodes_on_level = self.word_map.get(self.current_tree).siblings(self.past_valid_input)
@@ -237,19 +243,26 @@ class TangoChatFileParser:
                             keys_on_level.append(n.identifier)
                         # make it a list of just ids
                         reply = self.check_input_with_current_lvl(keys_on_level, _input)
+                        if isinstance(reply, str):
+                            self.level = self.level
+                            break
                     else:
-                        if self.level > 1:
+                        if current_level > -1:
                             parent = self.word_map.get(self.current_tree).parent(self.current_node)
+                            keys_on_level = list(self.word_map.keys())
                         else:
                             parent = self.current_node
-                        nodes_on_level = self.word_map.get(self.current_tree).siblings(parent)
-                        for n in nodes_on_level:
-                            keys_on_level.append(n.identifier)
+                            nodes_on_level = self.word_map.get(self.current_tree).siblings(parent)
+                            for n in nodes_on_level:
+                                keys_on_level.append(n.identifier)
                         # look at parents until we reach top
                         reply = self.check_input_with_current_lvl(keys_on_level, _input)
                         self.current_node = parent
+                        if isinstance(reply, str):
+                            self.level = self.level - counter + 2
+                            break
                     counter += 1
-                    self.level -= 1
+                current_level -= 1
 
         #after all possible levels checked
         if not reply:

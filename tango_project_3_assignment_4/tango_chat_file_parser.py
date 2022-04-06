@@ -20,7 +20,7 @@ class TangoChatFileParser:
         self.current_tree: str = None
         self.keys_on_level: None
         self.past_valid_input: str = None
-        self.__parse()
+        #self.__parse()
         self.sample_dict = {(0, '~greetings'): ['hi', 'hello', "what up", 'sup'],
                             (1, 'you'): 'good',
                             (1, 'and'): ['one', 'two'],
@@ -74,7 +74,6 @@ class TangoChatFileParser:
                         u_tree: Tree = Tree()
                         user_input: str = line[line.index('('):line.index(')')]
                         user_response: str = line[line.index(':'):]
-
                         root = self.new_node(u_number=0, u_input=user_input, u_response=user_response)
                         u_tree.create_node()
                         pass
@@ -89,6 +88,19 @@ class TangoChatFileParser:
     def __next_line(self) -> str:
         self.__line_number += 1
         return str(next(self.__file_iterator)).lower()
+
+    def bracketizer(self, input):
+        if "[" in input:
+            output = []
+            matches = [x.group() for x in
+                       re.finditer("""(((\w+)|\s)|"((\w+(\s|)+)+)")""", input, flags=re.IGNORECASE)]
+            for match in matches:
+                if match == " ":
+                    continue
+                output.append(match.replace("\"", ""))
+            return output
+        else:
+            return input
 
     def variable_swapper(self, reply):
         # swaps $Name for Chloe
@@ -152,4 +164,3 @@ class TangoChatFileParser:
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
     pass
-

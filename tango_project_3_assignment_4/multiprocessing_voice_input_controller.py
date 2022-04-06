@@ -41,13 +41,8 @@ class MultiprocessingVoiceInputController:
                 pop: str = self.queue.get(timeout=1)
                 self.lock.acquire()
                 print(f"{multiprocessing.process.current_process().name}: got \'{pop}\' from queue")
-                self.lock.release()
-
-                # text_to_say = "Hello Robot, Class! I am Tango!"
-                #while input is not 'goodbye'
-                #   call parser.userinput(input)
-
                 tts_engine.say(pop)
+                self.lock.release()
                 tts_engine.runAndWait()
         pass
 

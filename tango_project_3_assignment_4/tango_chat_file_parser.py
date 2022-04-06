@@ -74,7 +74,7 @@ class TangoChatFileParser:
                         if '\n' in user_response:
                             user_response = user_response[user_response.index(':') + 1:user_response.index('\n')]
                         else:
-                            user_response = user_response[user_response.index(':') + 1:-1]
+                            user_response = user_response[user_response.index(':') + 1:]
                         u_tree.create_node(tag=0, identifier=user_input, data=self.bracketizer(user_response))
 
                         try:

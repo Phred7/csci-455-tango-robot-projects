@@ -2,7 +2,6 @@ import re
 from copy import deepcopy
 from typing import Dict, List
 import random
-import treelib as treelib
 from treelib import Tree
 
 
@@ -22,17 +21,6 @@ class TangoChatFileParser:
         self.past_valid_input: str = None
         self.current_node = None
         self.__parse()
-        self.sample_dict = {(0, '~greetings'): ['hi', 'hello', "what up", 'sup'],
-                            (1, 'you'): '~greetings',
-                            (1, 'and'): ['one', 'two'],
-                            (0, 'test'): 'two',
-                            (0, 'my name is _'): 'hello $name',
-                            (1, 'I am _ years old'): "You are $age years old",
-                            (1, 'do you remember my name'): 'Yes',
-                            (2, 'what is it'): '$name',
-                            (3, 'you are very smart'): 'I know',
-                            (0, 'what is my name'): 'your name is $name',
-                            (0, 'how old am I'): 'you are $age'}
 
     def __parse(self):
         end_of_file: bool = False
@@ -277,7 +265,6 @@ if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
 
     print(tcfp.user_input('how old am I'))
-    #print(tcfp.user_input('you are very smart'))
     print(tcfp.user_input('my name is THUNDER'))
     print(tcfp.user_input('test'))
     print(tcfp.user_input('my name is STEVE'))

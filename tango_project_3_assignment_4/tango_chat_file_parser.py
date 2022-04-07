@@ -265,6 +265,7 @@ if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
 
     print(tcfp.user_input('how old am I'))
+    print(tcfp.user_input('you are very smart'))
     print(tcfp.user_input('my name is THUNDER'))
     print(tcfp.user_input('test'))
     print(tcfp.user_input('my name is STEVE'))

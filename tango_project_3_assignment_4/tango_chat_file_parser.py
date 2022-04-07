@@ -6,7 +6,6 @@ import treelib as treelib
 from treelib import Tree
 
 
-
 class TangoChatFileParser:
 
     def __init__(self, chat_file: str) -> None:
@@ -241,13 +240,13 @@ class TangoChatFileParser:
             reply = self.level_u(_input)
         else:
             while not reply:
-                if current_level is -1 and round is not 1:  # we made it back to the roots of the trees
+                if current_level == -1 and round != 1:  # we made it back to the roots of the trees
                     reply = self.level_u(_input)
                 else:  # we are in a tree somewhere
-                    if round is 1:
+                    if round == 1:
                         reply = self.deeper_level(_input, True, self.past_valid_input)
                         if isinstance(reply, str): break
-                    elif round is 2:
+                    elif round == 2:
                         reply = self.deeper_level(_input, False, self.past_valid_input)
                         if isinstance(reply, str): break
                     else:
@@ -266,19 +265,23 @@ class TangoChatFileParser:
                     round += 1
                 current_level -= 1
 
-        #after all possible levels checked
+        # after all possible levels checked
         if not reply:
             return "Not valid input"
         else:
             return reply
 
+
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
 
+    print(tcfp.user_input('how old am I'))
+    print(tcfp.user_input('you are very smart'))
     print(tcfp.user_input('my name is THUNDER'))
+    print(tcfp.user_input('test'))
+    print(tcfp.user_input('my name is STEVE'))
     print(tcfp.user_input('I am 22 years old'))
     print(tcfp.user_input('do you remember my name'))
     print(tcfp.user_input('what is it'))
     print(tcfp.user_input('you are very smart'))
     print(tcfp.user_input('how old am I'))
-

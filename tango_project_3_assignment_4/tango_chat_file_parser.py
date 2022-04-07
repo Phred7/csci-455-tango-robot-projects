@@ -166,7 +166,7 @@ class TangoChatFileParser:
             vars_name = re.findall(r'\$\w+', reply)
             try:
                 reply = reply.replace(vars_name[0], self.user_variables.get(vars_name[0]))
-            except KeyError:
+            except TypeError or KeyError:
                 reply = reply.replace(vars_name[0], "UNKNOWN VALUE")
         return reply
 
@@ -203,6 +203,7 @@ class TangoChatFileParser:
                 if bottomLevel: self.current_tree = k
                 self.past_valid_input = k
                 self.level = self.word_map.get(self.current_tree).get_node(k).tag
+                break
 
         if isinstance(reply, list):
             reply = reply[random.randrange(0, (len(reply) - 1))]
@@ -276,7 +277,7 @@ if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
 
     print(tcfp.user_input('how old am I'))
-    print(tcfp.user_input('you are very smart'))
+    #print(tcfp.user_input('you are very smart'))
     print(tcfp.user_input('my name is THUNDER'))
     print(tcfp.user_input('test'))
     print(tcfp.user_input('my name is STEVE'))

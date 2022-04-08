@@ -196,8 +196,9 @@ class TangoChatFileParser:
         # WALKER! this if statment shoudl allow for the reply to be a ~deal
         # you would still have to deal with syntax errors, but wouldnt have to
         # swap ~greetings with the list for the responses. use if helpful, dont if not
-        # if '~' in reply:
-        #     reply = self.word_sets.get(reply)
+        # if isinstance(reply, str):
+        #     if '~' in reply:
+        #         reply = self.word_sets.get(reply)
         if isinstance(reply, list):
             reply = reply[random.randrange(0, (len(reply) - 1))]
         if isinstance(reply, str):

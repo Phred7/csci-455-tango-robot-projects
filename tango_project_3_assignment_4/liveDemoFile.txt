@@ -1,11 +1,11 @@
 #comments are ignored
 ~choices: [choice robot "I am a robot"]
-u:(~greetings):[hi hello "what up" sup] #this line was modified from ~greetings to ~choicest
+u:(~choices):[hi hello "what up" sup] #this line was modified from ~greetings to ~choicest
     u1:(second level):good
 	u1:(different):[one two]
 u:(different):Should not be here
 u:(second test):second test worked
-    u1:(third test):~greetings
+    u1:(third test):~choices
 u:(my name is _): hello $var
 	u1:(I am _ years old):You are $age years old
 	u1:(do you remember my name) : Yes

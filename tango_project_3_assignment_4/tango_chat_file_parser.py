@@ -282,7 +282,7 @@ class TangoChatFileParser:
 if __name__ == "__main__":
     tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="liveDemoFile.txt")
     print(tcfp.user_input('robot'))
-    # print(tcfp.user_input('\"I am a robot\"'))
+    print(tcfp.user_input('I am a robot'))
     print(tcfp.user_input('choice'))
     print(tcfp.user_input('second level'))
     print(tcfp.user_input('different'))

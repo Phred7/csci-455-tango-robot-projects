@@ -49,7 +49,7 @@ class MultiprocessingVoiceInputController:
     def controller(self) -> None:
         robot_controller: Controller = Controller()
         window = tkinter.Tk()
-        tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
+        tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="liveDemoFile.txt")
         listening = True
         while listening and self.processes_running:
             with sr.Microphone() as source:

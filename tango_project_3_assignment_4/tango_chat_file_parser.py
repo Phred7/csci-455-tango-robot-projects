@@ -241,13 +241,15 @@ class TangoChatFileParser:
         reply = False
         round = 1
         current_level = self.level
+        # if current_level == -2:
+        #     current_level = -1
         self.current_node = self.past_valid_input
 
         if self.current_tree is None:  # first time through! we have nothing yet
             reply = self.level_u(_input)
         else:
             while not reply:
-                if current_level == -1 and round != 1:  # we made it back to the roots of the trees
+                if current_level <= -1 and round != 1:  # we made it back to the roots of the trees
                     reply = self.level_u(_input)
                 else:  # we are in a tree somewhere
                     if round == 1:

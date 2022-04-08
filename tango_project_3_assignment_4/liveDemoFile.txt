@@ -1,6 +1,6 @@
 #comments are ignored
 ~choices: [choice robot "I am a robot"]
-u:(~greetings):[hi hello "what up" sup]
+u:(~choices):[hi hello "what up" sup] #this line was modified from ~greetings to ~choices
     u1:(second level):good
 	u1:(different):[one two]
 u:(different):Should not be here

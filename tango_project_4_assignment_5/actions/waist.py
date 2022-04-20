@@ -8,6 +8,5 @@ class Waist(ActionStrategy):
         self.waist_turn_left_bool: bool = waist_turn_left_bool
         self.turn_angle: int = turn_angle
 
-
     def execute_action(self) -> None:
         return

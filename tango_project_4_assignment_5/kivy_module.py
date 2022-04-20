@@ -39,11 +39,13 @@ class StressCanvasApp(App):
         self.add = 0
         wid.canvas.clear()
 
-    def addVals(self, val, *largs):
-        self.add = self.add + val
+    def addVals(self, val: Button, *largs):
+        print(val.text)
+        self.add += 500
         print(self.add)
 
     def mulVals(self, val, *largs):
+
         self.add = self.add * val
         print(self.add)
 
@@ -53,14 +55,14 @@ class StressCanvasApp(App):
         btn_add100 = Button(text='+ 100 rects')
         btn_add100.bind(on_press=partial(self.addVals, 100))
 
-        btn_add500 = Button(text='+ 500 rects',
-                            on_press=partial(self.addVals, 500))
+        btn_add500 = Button(text='+ 500 rects')
+        btn_add500.bind(on_press=self.addVals)
 
         btn_double = Button(text='x 2',
                             on_press=partial(self.mulVals, 2))
 
         btn_half = Button(text='x .5',
-                          on_press=partial(self.mulVals, 0.5))
+                          on_press=partial(print, "test x"))
 
         btn_delete = Button(text=' Delete',
                             on_press=partial(self.reset_rects, label, wid))

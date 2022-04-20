@@ -103,9 +103,9 @@ class Controller:
         self.servo_controller.write(serial_cmd.encode('utf-8'))
         sleep(0.05)
 
-    def forward(self):
+    def forward(self, velocity_pulse_microseconds: int):
         # < 6000 on channel 1
-        self.motor_velocity_counter -= self.motor_step_size
+        self.motor_velocity_counter = velocity_pulse_microseconds
         # if self.motor_velocity_counter > 5300:
         #     self.motor_velocity_counter = 5300
         if self.motor_velocity_counter < self.servo_min:
@@ -115,9 +115,9 @@ class Controller:
         self.drive_servo("motors", self.motor_velocity_counter)
         print(f"driving forward: {self.motor_velocity_counter}")
 
-    def reverse(self):
+    def reverse(self, velocity_pulse_microseconds: int):
         # > 6000 on channel 1
-        self.motor_velocity_counter += self.motor_step_size
+        self.motor_velocity_counter = velocity_pulse_microseconds
         # if self.motor_velocity_counter < 6700:
         #     self.motor_velocity_counter = 6700
         if self.motor_velocity_counter > self.servo_max:
@@ -145,10 +145,10 @@ class Controller:
         print("stopped")
         return
 
-    def turn_waist(self, turn_right):
+    def turn_waist(self, turn_right_bool: bool):
         # channel 0
         # from right to left 4096, 4688, 5376, 5968, 8192
-        if turn_right:
+        if turn_right_bool:
             self.twist_position += 1
         else:
             self.twist_position -= 1
@@ -159,10 +159,10 @@ class Controller:
             self.twist_position = 4
         self.drive_servo("waist", self.fivestepsofPOWER[self.twist_position])
 
-    def headnod(self, turn_up):
+    def headnod(self, turn_up_bool: bool):
         # channel 3
         # from right to left 4096, 4688, 5376, 5968, 8192
-        if turn_up:
+        if turn_up_bool:
             self.twist_position += 1
         else:
             self.twist_position -= 1
@@ -174,10 +174,10 @@ class Controller:
         self.drive_servo("head_tilt", self.fivestepsofPOWER[self.twist_position])
         pass
 
-    def headshake(self, turnright):
+    def headshake(self, turn_right_bool: bool):
         # channel 4
         # from up to down 4096, 4688, 5376, 5968, 8192
-        if turnright:
+        if turn_right_bool:
             self.twist_position += 1
         else:
             self.twist_position -= 1

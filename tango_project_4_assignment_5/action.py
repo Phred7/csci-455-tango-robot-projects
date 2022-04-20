@@ -1,4 +1,5 @@
 from tango_project_4_assignment_5.action_stategy import ActionStrategy
+from tango_project_4_assignment_5.controller import Controller
 
 
 class Action:
@@ -28,7 +29,7 @@ class Action:
             self._action_strategy = action_strategy
         return
 
-    def execute_action(self) -> None:
+    def execute_action(self, controller: Controller) -> None:
         """
         Method that calls the algorithm or process defined by the concrete strategy.
         :return: None.

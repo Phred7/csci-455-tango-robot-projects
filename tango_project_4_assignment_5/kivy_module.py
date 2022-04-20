@@ -20,8 +20,9 @@ from functools import partial
 
 
 class StressCanvasApp(App):
-
+    add = 0
     def add_rects(self, label, wid, count, *largs):
+        print("adding", count)
         label.text = str(int(label.text) + count)
         with wid.canvas:
             for x in range(count):
@@ -35,30 +36,45 @@ class StressCanvasApp(App):
 
     def reset_rects(self, label, wid, *largs):
         label.text = '0'
+        self.add=0
         wid.canvas.clear()
+
+    def addVals(self,val, *largs):
+        self.add = self.add + val
+        print(self.add)
+
+    def mulVals(self,val, *largs):
+        self.add = self.add * val
+        print(self.add)
 
     def build(self):
         wid = Widget()
-
         label = Label(text='0')
-
-        btn_add100 = Button(text='+ 100 rects',
-                            on_press=partial(self.add_rects, label, wid, 100))
+        btn_add100 = Button(text='+ 100 rects')
+        btn_add100.bind(on_press = partial(self.addVals,100))
 
         btn_add500 = Button(text='+ 500 rects',
-                            on_press=partial(self.add_rects, label, wid, 500))
+                            on_press=partial(self.addVals, 500))
 
         btn_double = Button(text='x 2',
-                            on_press=partial(self.double_rects, label, wid))
+                            on_press=partial(self.mulVals, 2))
 
-        btn_reset = Button(text='Reset',
-                           on_press=partial(self.reset_rects, label, wid))
+        btn_half = Button(text='x .5',
+                           on_press=partial(self.mulVals, 0.5))
 
-        layout = BoxLayout(size_hint=(1, None), height=50)
+        btn_delete = Button(text=' Delete',
+                            on_press=partial(self.reset_rects,label,wid))
+
+        btn_play = Button(text='Play',
+                            on_press=partial(self.add_rects, label, wid, self.add))
+
+        layout = BoxLayout(size_hint=(1, None), orientation = 'horizontal')
         layout.add_widget(btn_add100)
         layout.add_widget(btn_add500)
         layout.add_widget(btn_double)
-        layout.add_widget(btn_reset)
+        layout.add_widget(btn_half)
+        layout.add_widget(btn_delete)
+        layout.add_widget(btn_play)
         layout.add_widget(label)
 
         root = BoxLayout(orientation='vertical')

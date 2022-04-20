@@ -9,7 +9,7 @@ class HeadPopUp(Widget):
     checks = []
 
     def checkbox_click(self, instance, value, choice):
-        if value == True:
+        if value:
             HeadPopUp.checks.append(choice)
             tops = ''
             for x in HeadPopUp.checks:

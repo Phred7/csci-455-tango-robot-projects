@@ -1,0 +1,65 @@
+<Checkboxes>
+
+  # Create Box Layout
+  BoxLayout:
+    # set orientation and size
+    orientation: "vertical"
+    size: root.width, root.height
+
+    # Creating label
+
+
+    # create Grid Layout
+    GridLayout:
+      # Set number of column
+      cols:4
+
+      # create checkboxes
+      Label:
+        text: "Apple"
+
+      CheckBox:
+        # When check box selected, it will call checkboxes_click() method
+        on_active: root.checkboxes_click(self, self.active, "Apple")
+
+      Label:
+        text: "Bannana"
+
+      CheckBox:
+        on_active: root.checkboxes_click(self, self.active, "Bannana")
+
+      Label:
+        text: "Orange"
+
+      CheckBox:
+        on_active: root.checkboxes_click(self, self.active, "Orange")
+
+      Label:
+        text: "Grape"
+
+      CheckBox:
+        on_active: root.checkboxes_click(self, self.active, "Grape")
+
+      Label:
+        text: "Melon"
+
+      CheckBox:
+        on_active: root.checkboxes_click(self, self.active, "Melon")
+
+      Label:
+        text: "Peach"
+
+      CheckBox:
+        on_active: root.checkboxes_click(self, self.active, "Peach")
+
+      Label:
+        text: "Pineapple"
+
+      CheckBox:
+        on_active: root.checkboxes_click(self, self.active, "Pineapple")
+
+      Label:
+        text: "FINISH"
+
+      CheckBox:
+        on_active: root.checkboxes_click(self, self.active, "FINISH")

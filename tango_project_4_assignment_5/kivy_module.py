@@ -39,30 +39,38 @@ class StressCanvasApp(App):
         self.add = 0
         wid.canvas.clear()
 
-    def addVals(self, val: Button, *largs):
-        print(val.text)
-        self.add += 500
+    def addVals(self, val, *largs):
+        self.add = self.add + val
         print(self.add)
 
-    def mulVals(self, val, *largs):
+    # def addVals(self, val: Button, *largs):
+    #     print(val.text)
+    #     self.add += 500
+    #     print(self.add)
 
+    def mulVals(self, val, *largs):
         self.add = self.add * val
         print(self.add)
 
     def build(self):
         wid = Widget()
         label = Label(text='0')
-        btn_add100 = Button(text='+ 100 rects')
-        btn_add100.bind(on_press=partial(self.addVals, 100))
+        btn_turn = Button(text='Turn',
+                          on_press=partial(self.addVals, 100))
 
-        btn_add500 = Button(text='+ 500 rects')
-        btn_add500.bind(on_press=self.addVals)
+        btn_head = Button(text='Head',
+                            on_press=partial(self.addVals, 500))
 
-        btn_double = Button(text='x 2',
+        # btn_add500 = Button(text='+ 500 rects')
+        # btn_add500.bind(on_press=self.addVals)
+
+        btn_waist = Button(text='Waist',
                             on_press=partial(self.mulVals, 2))
 
-        btn_half = Button(text='x .5',
-                          on_press=partial(print, "test x"))
+        btn_move = Button(text='Move',
+                          on_press=partial(self.mulVals, 0.5))
+        btn_speech = Button(text='Speech',
+                          on_press=partial(self.mulVals, 0.5))
 
         btn_delete = Button(text=' Delete',
                             on_press=partial(self.reset_rects, label, wid))
@@ -71,10 +79,11 @@ class StressCanvasApp(App):
                           on_press=partial(self.add_rects, label, wid, self.add))
 
         layout = BoxLayout(size_hint=(1, None), orientation='horizontal')
-        layout.add_widget(btn_add100)
-        layout.add_widget(btn_add500)
-        layout.add_widget(btn_double)
-        layout.add_widget(btn_half)
+        layout.add_widget(btn_head)
+        layout.add_widget(btn_speech)
+        layout.add_widget(btn_move)
+        layout.add_widget(btn_waist)
+        layout.add_widget(btn_turn)
         layout.add_widget(btn_delete)
         layout.add_widget(btn_play)
         layout.add_widget(label)

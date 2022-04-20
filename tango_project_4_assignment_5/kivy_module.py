@@ -10,6 +10,7 @@ canvas.
 '''
 
 from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
@@ -17,7 +18,28 @@ from kivy.app import App
 from kivy.graphics import Color, Rectangle
 from random import random as r
 from functools import partial
+from kivy.uix.checkbox import CheckBox
 
+
+class Headcheckboxes(Widget):
+
+    def checkboxes_click(self, instance, value, text):
+        FruitsSellected = []
+        if value:
+
+            print(f"Select {text}")
+            self.myvar = FruitsSellected
+            #Close
+            if text == 'FINISH':
+                print(FruitsSellected)
+                App.get_running_app().stop()
+                return FruitsSellected
+
+            FruitsSellected.append(str(text))
+
+        else:
+            print(f"UnSelect {text}")
+            FruitsSellected.remove(str(text))
 
 class StressCanvasApp(App):
 
@@ -36,6 +58,11 @@ class StressCanvasApp(App):
     def reset_rects(self, label, wid, *largs):
         label.text = '0'
         wid.canvas.clear()
+
+    def head(self):
+        layout = Headcheckboxes()
+        popup3 = Popup(title='SELECT', content=layout)
+        popup3.open()
 
     def build(self):
         wid = Widget()

@@ -7,7 +7,6 @@ import tkinter
 import pyttsx3
 
 from controller import Controller
-from tango_chat_file_parser import TangoChatFileParser
 
 
 class MultiprocessingVoiceInputController:
@@ -49,7 +48,6 @@ class MultiprocessingVoiceInputController:
     def controller(self) -> None:
         robot_controller: Controller = Controller()
         window = tkinter.Tk()
-        tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="liveDemoFile.txt")
         listening = True
         while listening and self.processes_running:
             with sr.Microphone() as source:
@@ -64,7 +62,7 @@ class MultiprocessingVoiceInputController:
                     audio = r.listen(source, timeout=8)
                     self.__print("got audio")
                     user_input = r.recognize_google(audio)
-                    self.queue.put(tcfp.user_input(user_input))
+                    self.queue.put("")
                     self.__print(user_input)
                     array_of_words: List[str] = user_input.split()
 

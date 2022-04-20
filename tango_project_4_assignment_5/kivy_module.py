@@ -21,6 +21,7 @@ from functools import partial
 
 class StressCanvasApp(App):
     add = 0
+
     def add_rects(self, label, wid, count, *largs):
         print("adding", count)
         label.text = str(int(label.text) + count)
@@ -36,14 +37,14 @@ class StressCanvasApp(App):
 
     def reset_rects(self, label, wid, *largs):
         label.text = '0'
-        self.add=0
+        self.add = 0
         wid.canvas.clear()
 
-    def addVals(self,val, *largs):
+    def addVals(self, val, *largs):
         self.add = self.add + val
         print(self.add)
 
-    def mulVals(self,val, *largs):
+    def mulVals(self, val, *largs):
         self.add = self.add * val
         print(self.add)
 
@@ -51,7 +52,7 @@ class StressCanvasApp(App):
         wid = Widget()
         label = Label(text='0')
         btn_add100 = Button(text='+ 100 rects')
-        btn_add100.bind(on_press = partial(self.addVals,100))
+        btn_add100.bind(on_press=partial(self.addVals, 100))
 
         btn_add500 = Button(text='+ 500 rects',
                             on_press=partial(self.addVals, 500))
@@ -60,15 +61,15 @@ class StressCanvasApp(App):
                             on_press=partial(self.mulVals, 2))
 
         btn_half = Button(text='x .5',
-                           on_press=partial(self.mulVals, 0.5))
+                          on_press=partial(self.mulVals, 0.5))
 
         btn_delete = Button(text=' Delete',
-                            on_press=partial(self.reset_rects,label,wid))
+                            on_press=partial(self.reset_rects, label, wid))
 
         btn_play = Button(text='Play',
-                            on_press=partial(self.add_rects, label, wid, self.add))
+                          on_press=partial(self.add_rects, label, wid, self.add))
 
-        layout = BoxLayout(size_hint=(1, None), orientation = 'horizontal')
+        layout = BoxLayout(size_hint=(1, None), orientation='horizontal')
         layout.add_widget(btn_add100)
         layout.add_widget(btn_add500)
         layout.add_widget(btn_double)

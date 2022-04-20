@@ -1,4 +1,5 @@
 from tango_project_4_assignment_5.action_stategy import ActionStrategy
+from tango_project_4_assignment_5.controller import Controller
 
 
 class Waist(ActionStrategy):
@@ -8,5 +9,5 @@ class Waist(ActionStrategy):
         self.waist_turn_left_bool: bool = waist_turn_left_bool
         self.turn_angle: int = turn_angle
 
-    def execute_action(self) -> None:
+    def execute_action(self, controller: Controller) -> None:
         return

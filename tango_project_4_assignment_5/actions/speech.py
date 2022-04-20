@@ -1,6 +1,7 @@
 from functools import partial
 
 from tango_project_4_assignment_5.action_stategy import ActionStrategy
+from tango_project_4_assignment_5.controller import Controller
 
 
 class Speech(ActionStrategy):
@@ -11,7 +12,7 @@ class Speech(ActionStrategy):
         self.speech_string: str = speech_string
         self.arg_n = test_arg_n
 
-    def execute_action(self) -> None:
+    def execute_action(self, controller: Controller) -> None:
         return
 
     # def test_method(self, string: str) -> str:

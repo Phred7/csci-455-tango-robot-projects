@@ -44,6 +44,11 @@ class StressCanvasApp(App):
         self.add = self.add + val
         print(self.add)
 
+    # def addVals(self, val: Button, *largs):
+    #     print(val.text)
+    #     self.add += 500
+    #     print(self.add)
+
     def mulVals(self, val, *largs):
         self.add = self.add * val
         print(self.add)
@@ -57,6 +62,9 @@ class StressCanvasApp(App):
 
         btn_head = Button(text='Head',
                           on_press=partial(self.addVals, 500))
+
+        # btn_add500 = Button(text='+ 500 rects')
+        # btn_add500.bind(on_press=self.addVals)
 
         btn_waist = Button(text='Waist',
                            on_press=partial(self.mulVals, 2))

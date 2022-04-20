@@ -10,6 +10,7 @@ canvas.
 
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
+from kivy.uix.image import Image, AsyncImage
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
@@ -50,19 +51,20 @@ class StressCanvasApp(App):
     def build(self):
         wid = Widget()
         label = Label(text='0')
+        self.img = Image(source = 'spider.jpg')
         btn_turn = Button(text='Turn',
                           on_press=partial(self.addVals, 100))
 
         btn_head = Button(text='Head',
-                            on_press=partial(self.addVals, 500))
+                          on_press=partial(self.addVals, 500))
 
         btn_waist = Button(text='Waist',
-                            on_press=partial(self.mulVals, 2))
+                           on_press=partial(self.mulVals, 2))
 
         btn_move = Button(text='Move',
                           on_press=partial(self.mulVals, 0.5))
         btn_speech = Button(text='Speech',
-                          on_press=partial(self.mulVals, 0.5))
+                            on_press=partial(self.mulVals, 0.5))
 
         btn_delete = Button(text=' Delete',
                             on_press=partial(self.reset_rects, label, wid))
@@ -81,7 +83,14 @@ class StressCanvasApp(App):
         layout.add_widget(label)
 
         root = BoxLayout(orientation='vertical')
-        root.add_widget(wid)
+        # root.add_widget(box1)
+        # root.add_widget(box2)
+        # root.add_widget(box3)
+        # root.add_widget(box4)
+        # root.add_widget(box5)
+        # root.add_widget(box6)
+        # root.add_widget(box7)
+        # root.add_widget(box8)
         root.add_widget(layout)
 
         return root

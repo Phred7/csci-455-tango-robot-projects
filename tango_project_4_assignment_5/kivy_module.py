@@ -211,7 +211,14 @@ class StressCanvasApp(App):
 
     def build(self):
         label = Label(text='0')
-        self.img = Image(source='spider.jpg')
+        img = Image(source='spider.jpg')
+        img2 = Image(source='spider.jpg')
+        img3 = Image(source='spider.jpg')
+        img4 = Image(source='spider.jpg')
+        img5 = Image(source='spider.jpg')
+        img6 = Image(source='spider.jpg')
+        img7 = Image(source='spider.jpg')
+        img8 = Image(source='spider.jpg')
 
         btn_head = Button(text='Head')
         btn_head.bind(on_press=show_Head)
@@ -234,7 +241,8 @@ class StressCanvasApp(App):
         btn_play = Button(text='Play')
         btn_play.bind(on_press=play)
 
-        layout = BoxLayout(size_hint=(1, None), orientation='horizontal')
+        layout = BoxLayout(size_hint=(0.2, 1), orientation='vertical')
+
         layout.add_widget(btn_head)
         layout.add_widget(btn_speech)
         layout.add_widget(btn_move)
@@ -242,18 +250,21 @@ class StressCanvasApp(App):
         layout.add_widget(btn_turn)
         layout.add_widget(btn_delete)
         layout.add_widget(btn_play)
-        layout.add_widget(label)
+        #layout.add_widget(label)
 
-        root = BoxLayout(orientation='vertical')
-        # root.add_widget(box1)
-        # root.add_widget(box2)
-        # root.add_widget(box3)
-        # root.add_widget(box4)
-        # root.add_widget(box5)
-        # root.add_widget(box6)
-        # root.add_widget(box7)
-        # root.add_widget(box8)
+        rects = BoxLayout(orientation = 'horizontal')
+        rects.add_widget(img)
+        rects.add_widget(img2)
+        rects.add_widget(img3)
+        rects.add_widget(img4)
+        rects.add_widget(img5)
+        rects.add_widget(img6)
+        rects.add_widget(img7)
+        rects.add_widget(img8)
+
+        root = BoxLayout(orientation='horizontal')
         root.add_widget(layout)
+        root.add_widget(rects)
 
         return root
 

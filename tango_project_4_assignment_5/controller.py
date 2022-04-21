@@ -9,11 +9,11 @@ from serial import SerialException
 class Controller:
 
     def __init__(self) -> None:
-        self.fivestepsofPOWER: Dict[int:int] = {0: 4000, #rhigh
-                                                1: 5000, #rmid
-                                                2: 6000, #mid
-                                                3: 7000, #lmid
-                                                4: 8000} #lhigh
+        self.fivestepsofPOWER: Dict[int:int] = {0: 4000,  # rhigh
+                                                1: 5000,  # rmid
+                                                2: 6000,  # mid
+                                                3: 7000,  # lmid
+                                                4: 8000}  # lhigh
 
         self.servo_robot_anatomy_map: Dict[str: int] = {"waist": 0x00,
                                                         "motors": 0x01,
@@ -96,7 +96,8 @@ class Controller:
         :param targets:
         :return:
         """
-        serial_cmd = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(int(self.servo_robot_anatomy_map.get(servos[0])))
+        serial_cmd = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(
+            int(self.servo_robot_anatomy_map.get(servos[0])))
         for t in targets:
             serial_cmd += chr(t & 0x7F)
             serial_cmd += chr((t >> 7) & 0x7F)
@@ -201,7 +202,7 @@ class Controller:
         if self.motor_velocity_counter < self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_multiple_servos(["motors", "turn_motors"],
-                                         [self.servo_neutral, self.motor_turn_velocity_counter])
+                                   [self.servo_neutral, self.motor_turn_velocity_counter])
         print(f"driving left: {self.motor_turn_velocity_counter}")
         # print(f"drive left with target {self.motor_turn_velocity_counter}")
         # sleep(0.05)
@@ -215,7 +216,7 @@ class Controller:
         if self.motor_velocity_counter > self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_multiple_servos(["motors", "turn_motors"],
-                                         [self.servo_neutral, self.motor_turn_velocity_counter])
+                                   [self.servo_neutral, self.motor_turn_velocity_counter])
         print(f"driving right: {self.motor_turn_velocity_counter}")
         # print(f"drive right with target {self.motor_turn_velocity_counter}")
         # sleep(0.05)

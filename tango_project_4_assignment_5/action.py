@@ -35,7 +35,7 @@ class Action:
         :return: None.
         """
         print(f"Executing {self._action_strategy.type}")
-        self._action_strategy.execute_action()
+        self._action_strategy.execute_action(controller)
         print(f"Execution of {self._action_strategy.type} complete")
 
 

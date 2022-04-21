@@ -10,8 +10,9 @@ class TangoChatFileParser:
     def __init__(self, chat_file: str) -> None:
         self.__line_number: int = 0
         self.__file_iterator: iter = None
+        self.pattern_for_matching_tilda_word: str = r"~(\w+)+"
         self.pattern_for_matching_variables: str = """~(\w+):\s*\[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]"""
-        self.pattern_for_matching_u_line: str = r"""^(\s|\t)*u\d*:\s?\(~?(\w+\s?)+\)\s?:\s?((\$?\w+\s?)+|(\[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]))(\n|\s|\t|\r)*$"""
+        self.pattern_for_matching_u_line: str = rf"""^(\s|\t)*u\d*:\s?\(~?(\w+\s?)+\)\s?:\s?((\$?\w+\s?)+|{self.pattern_for_matching_tilda_word}|(\[(((\w+)|\s)|"((\w+(\s|)+)+)")+\]))(\n|\s|\t|\r)*$"""
         self.user_variables: Dict[str: str] = {}
         self.word_sets: Dict[str: List[str]] = {}
         self.word_map: Dict[str: Tree] = {}
@@ -90,6 +91,17 @@ class TangoChatFileParser:
                             user_input = line[line.index('(') + 1:line.index(')')]
                             user_response: str = line[line.index(')'):]
                             user_response = user_response[user_response.index(':') + 1:user_response.index('\n')]
+                            if '~' in user_response:
+                                match = re.search(self.pattern_for_matching_tilda_word, user_response, re.IGNORECASE)
+                                if match is not None:
+                                    replacement: List[str] = ["["]
+                                    for index, item in enumerate(deepcopy(self.word_sets[match.string])):
+                                        if " " in item:
+                                            replacement.append(f"\"{item}\"")
+                                        else:
+                                            replacement.append(item)
+                                    replacement.append("]")
+                                    user_response = user_response.replace(match.string, ' '.join([str(item) for item in replacement]))
                             if last_number > u_number:
                                 stack_list = stack_list[:u_number]
                             if len(stack_list) - 1 < u_number:
@@ -193,6 +205,12 @@ class TangoChatFileParser:
                 self.level = self.word_map.get(self.current_tree).get_node(k).tag
                 break
 
+        # WALKER! this if statment shoudl allow for the reply to be a ~deal
+        # you would still have to deal with syntax errors, but wouldnt have to
+        # swap ~greetings with the list for the responses. use if helpful, dont if not
+        # if isinstance(reply, str):
+        #     if '~' in reply:
+        #         reply = self.word_sets.get(reply)
         if isinstance(reply, list):
             reply = reply[random.randrange(0, (len(reply) - 1))]
         if isinstance(reply, str):
@@ -223,13 +241,15 @@ class TangoChatFileParser:
         reply = False
         round = 1
         current_level = self.level
+        # if current_level == -2:
+        #     current_level = -1
         self.current_node = self.past_valid_input
 
         if self.current_tree is None:  # first time through! we have nothing yet
             reply = self.level_u(_input)
         else:
             while not reply:
-                if current_level == -1 and round != 1:  # we made it back to the roots of the trees
+                if current_level <= -1 and round != 1:  # we made it back to the roots of the trees
                     reply = self.level_u(_input)
                 else:  # we are in a tree somewhere
                     if round == 1:
@@ -262,15 +282,30 @@ class TangoChatFileParser:
 
 
 if __name__ == "__main__":
-    tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="tango_chat.txt")
-
-    print(tcfp.user_input('how old am I'))
-    print(tcfp.user_input('you are very smart'))
-    print(tcfp.user_input('my name is THUNDER'))
-    print(tcfp.user_input('test'))
-    print(tcfp.user_input('my name is STEVE'))
-    print(tcfp.user_input('I am 22 years old'))
+    tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="liveDemoFile.txt")
+    print(tcfp.user_input('robot'))
+    print(tcfp.user_input('I am a robot'))
+    print(tcfp.user_input('choice'))
+    print(tcfp.user_input('second level'))
+    print(tcfp.user_input('different'))
+    print(tcfp.user_input('second test'))
+    print(tcfp.user_input("third test"))
+    print(tcfp.user_input('my name is thunder'))
+    print(tcfp.user_input('I am 69 years old'))
     print(tcfp.user_input('do you remember my name'))
     print(tcfp.user_input('what is it'))
-    print(tcfp.user_input('you are very smart'))
+    print(tcfp.user_input('level three test'))
+    print(tcfp.user_input('level four test'))
+    print(tcfp.user_input('fourth test'))
     print(tcfp.user_input('how old am I'))
+    pass
+
+    # print(tcfp.user_input('how old am I'))
+    # print(tcfp.user_input('my name is THUNDER'))
+    # print(tcfp.user_input('test'))
+    # print(tcfp.user_input('my name is STEVE'))
+    # print(tcfp.user_input('I am 22 years old'))
+    # print(tcfp.user_input('do you remember my name'))
+    # print(tcfp.user_input('what is it'))
+    # print(tcfp.user_input('you are very smart'))
+    # print(tcfp.user_input('how old am I'))

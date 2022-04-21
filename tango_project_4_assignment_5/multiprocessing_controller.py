@@ -7,17 +7,18 @@ import tkinter
 import pyttsx3
 
 from controller import Controller
-from tango_chat_file_parser import TangoChatFileParser
+from tango_project_4_assignment_5.kivy_module import StressCanvasApp
 
 
-class MultiprocessingVoiceInputController:
+class MultiprocessingController:
 
     def __init__(self) -> None:
         self.tts_process: Process
         self.queue: Queue[str] = Queue()
         self.lock: multiprocessing.Lock = multiprocessing.Lock()
-        self.processes: Dict["str": Process] = {"tts": Process(target=self.tts, args=(), name=f"tts_process"),
-                                                "controller": Process(target=self.controller, args=(), name=f"controller_process")}
+        self.processes: Dict["str": Process] = {"gui": Process(target=self.gui, args=(), name=f"gui_process"),
+                                                "controller": Process(target=self.controller, args=(),
+                                                                      name=f"controller_process")}
         self.processes_running: bool = False
 
     def run(self) -> None:
@@ -46,10 +47,12 @@ class MultiprocessingVoiceInputController:
                 tts_engine.runAndWait()
         pass
 
+    def gui(self) -> None:
+        StressCanvasApp().run()
+
     def controller(self) -> None:
         robot_controller: Controller = Controller()
         window = tkinter.Tk()
-        tcfp: TangoChatFileParser = TangoChatFileParser(chat_file="liveDemoFile.txt")
         listening = True
         while listening and self.processes_running:
             with sr.Microphone() as source:
@@ -64,7 +67,7 @@ class MultiprocessingVoiceInputController:
                     audio = r.listen(source, timeout=8)
                     self.__print("got audio")
                     user_input = r.recognize_google(audio)
-                    self.queue.put(tcfp.user_input(user_input))
+                    self.queue.put("")
                     self.__print(user_input)
                     array_of_words: List[str] = user_input.split()
 
@@ -82,6 +85,6 @@ class MultiprocessingVoiceInputController:
 
 
 if __name__ == "__main__":
-    mvic: MultiprocessingVoiceInputController = MultiprocessingVoiceInputController()
+    mvic: MultiprocessingController = MultiprocessingController()
     mvic.run()
     pass

@@ -22,8 +22,9 @@ from kivy.uix.popup import Popup
 from action import Action
 from tango_project_4_assignment_5.actions.head import Head
 
-#full of tuples (ActionObject, string pictureurl)
+# full of tuples (ActionObject, string pictureurl)
 globalarray = []
+
 
 class HeadPopup(FloatLayout):
     Choices = []
@@ -41,10 +42,12 @@ class HeadPopup(FloatLayout):
         print(self.Choices)
         self.parent.parent.parent.dismiss()
 
+
 def show_Head(trash):
     content = HeadPopup()
-    popup = Popup(title="Head Action", content=content, size_hint=(None,None),size=(600,600))
+    popup = Popup(title="Head Action", content=content, size_hint=(None, None), size=(600, 600))
     popup.open()
+
 
 class WaistPopup(FloatLayout):
     Choices = []
@@ -62,10 +65,12 @@ class WaistPopup(FloatLayout):
         print(self.Choices)
         self.parent.parent.parent.dismiss()
 
+
 def show_Waist(trash):
     content = WaistPopup()
-    popup = Popup(title="Waist Action", content=content, size_hint=(None,None),size=(600,600))
+    popup = Popup(title="Waist Action", content=content, size_hint=(None, None), size=(600, 600))
     popup.open()
+
 
 class MovePopup(FloatLayout):
     Choices = []
@@ -83,10 +88,12 @@ class MovePopup(FloatLayout):
         print(self.Choices)
         self.parent.parent.parent.dismiss()
 
+
 def show_Move(trash):
     content = MovePopup()
-    popup = Popup(title="Move Action", content=content, size_hint=(None,None),size=(600,1000))
+    popup = Popup(title="Move Action", content=content, size_hint=(None, None), size=(600, 1000))
     popup.open()
+
 
 class TurnPopup(FloatLayout):
     Choices = []
@@ -104,10 +111,12 @@ class TurnPopup(FloatLayout):
         print(self.Choices)
         self.parent.parent.parent.dismiss()
 
+
 def show_Turn(trash):
     content = TurnPopup()
-    popup = Popup(title="Turn Action", content=content, size_hint=(None,None),size=(600,1000))
+    popup = Popup(title="Turn Action", content=content, size_hint=(None, None), size=(600, 1000))
     popup.open()
+
 
 class SpeechPopup(FloatLayout):
     Choices = []
@@ -125,16 +134,18 @@ class SpeechPopup(FloatLayout):
         print(self.Choices)
         self.parent.parent.parent.dismiss()
 
+
 def show_Speech(trash):
     content = SpeechPopup()
-    popup = Popup(title="Speech Action", content=content, size_hint=(None,None),size=(600,600))
+    popup = Popup(title="Speech Action", content=content, size_hint=(None, None), size=(600, 600))
     popup.open()
+
 
 class StressCanvasApp(App):
 
     def build(self):
         label = Label(text='0')
-        self.img = Image(source = 'spider.jpg')
+        self.img = Image(source='spider.jpg')
 
         btn_head = Button(text='Head')
         btn_head.bind(on_press=show_Head)

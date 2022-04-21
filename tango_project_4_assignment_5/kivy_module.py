@@ -13,6 +13,7 @@ from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.uix.image import Image, AsyncImage
 from kivy.uix.label import Label
+from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
 from kivy.graphics import Color, Rectangle
@@ -194,10 +195,12 @@ class DeletePopup(FloatLayout):
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
 
+
 def show_Delete(trash):
     content = DeletePopup()
-    popup = Popup(title="ARE YOU SURE YOU WANT TO DELETE?", content=content, size_hint=(None,None),size=(600,600))
+    popup = Popup(title="ARE YOU SURE YOU WANT TO DELETE?", content=content, size_hint=(None, None), size=(600, 600))
     popup.open()
+
 
 def play(_button_value) -> None:
     robot_controller: Controller = Controller()
@@ -205,20 +208,21 @@ def play(_button_value) -> None:
         action.execute_action(robot_controller)
 
 
+Config.set('graphics', 'resizable', True)
+
+
 class StressCanvasApp(App):
-
-
 
     def build(self):
         label = Label(text='0')
-        img = Image(source='spider.jpg')
-        img2 = Image(source='spider.jpg')
-        img3 = Image(source='spider.jpg')
-        img4 = Image(source='spider.jpg')
-        img5 = Image(source='spider.jpg')
-        img6 = Image(source='spider.jpg')
-        img7 = Image(source='spider.jpg')
-        img8 = Image(source='spider.jpg')
+        img = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
+        img2 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
+        img3 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
+        img4 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
+        img5 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
+        img6 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
+        img7 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
+        img8 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
 
         btn_head = Button(text='Head')
         btn_head.bind(on_press=show_Head)
@@ -241,7 +245,7 @@ class StressCanvasApp(App):
         btn_play = Button(text='Play')
         btn_play.bind(on_press=play)
 
-        layout = BoxLayout(size_hint=(0.2, 1), orientation='vertical')
+        layout = BoxLayout(size_hint=(0.2, 1), orientation='vertical', padding=[0,10,0,10])
 
         layout.add_widget(btn_head)
         layout.add_widget(btn_speech)
@@ -250,9 +254,9 @@ class StressCanvasApp(App):
         layout.add_widget(btn_turn)
         layout.add_widget(btn_delete)
         layout.add_widget(btn_play)
-        #layout.add_widget(label)
+        # layout.add_widget(label)
 
-        rects = BoxLayout(orientation = 'horizontal')
+        rects = BoxLayout(size_hint=(0.8, 1), orientation='horizontal', padding=[50,0,50,0],spacing=10)
         rects.add_widget(img)
         rects.add_widget(img2)
         rects.add_widget(img3)

@@ -18,46 +18,31 @@
 
         # create checkboxes
         Label:
-            text: "Up"
+            text: "Input"
             pos_hint: {"x":0.2, "top":1}
 
 
         CheckBox:
             # When check box selected, it will call checkboxes_click() method
-            on_active: root.checkboxes_click(self, self.active, "Up")
+            on_active: root.checkboxes_click(self, self.active, "Input")
 
             size_hint: 0.5, 0.5
 
         Label:
-            text: "Down"
+            text: "Output"
             pos_hint: {"x":-0.2, "top":1.2}
 
         CheckBox:
             # When check box selected, it will call checkboxes_click() method
-            on_active: root.checkboxes_click(self, self.active, "Down")
+            on_active: root.checkboxes_click(self, self.active, "Output")
             pos_hint: {"x":-0.1, "y":1.2}
             size_hint: 0.5, 0.5
 
-        Label:
-            text: "Left"
-            pos_hint: {"x":-0.2, "top":1.2}
-
-        CheckBox:
-            # When check box selected, it will call checkboxes_click() method
-            on_active: root.checkboxes_click(self, self.active, "Left")
-            pos_hint: {"x":-0.1, "y":1.2}
-            size_hint: 0.5, 0.5
-
-        Label:
-            text: "Right"
-            pos_hint: {"x":-0.2, "top":1.2}
-
-        CheckBox:
-            # When check box selected, it will call checkboxes_click() method
-            on_active: root.checkboxes_click(self, self.active, "Right")
-            pos_hint: {"x":-0.1, "y":1.2}
-            size_hint: 0.5, 0.5
-
+    Button:
+        text: "Record Speech"
+        size_hint: 0.8, 0.2
+        pos_hint: {"x":0.1, "y":.3}
+        on_press: root.tts(self)
 
     Button:
         text: "Enter"

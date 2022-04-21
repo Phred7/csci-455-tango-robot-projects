@@ -17,68 +17,145 @@ from kivy.app import App
 from kivy.graphics import Color, Rectangle
 from random import random as r
 from functools import partial
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.popup import Popup
+from action import Action
+from tango_project_4_assignment_5.actions.head import Head
 
+#full of tuples (ActionObject, string pictureurl)
+globalarray = []
+
+class HeadPopup(FloatLayout):
+    Choices = []
+
+    def checkboxes_click(self, instance, value, text):
+        if value:
+            self.Choices.append(str(text))
+        else:
+            self.Choices.remove(str(text))
+
+    def button_press(self, idk):
+        print(self.Choices)
+        globalarray.append((Action(Head(self.Choices[0])), 'holderstring'))
+        self.Choices = []
+        print(self.Choices)
+        self.parent.parent.parent.dismiss()
+
+def show_Head(trash):
+    content = HeadPopup()
+    popup = Popup(title="Head Action", content=content, size_hint=(None,None),size=(600,600))
+    popup.open()
+
+class WaistPopup(FloatLayout):
+    Choices = []
+
+    def checkboxes_click(self, instance, value, text):
+        if value:
+            self.Choices.append(str(text))
+        else:
+            self.Choices.remove(str(text))
+
+    def button_press(self, idk):
+        print(self.Choices)
+        # TODO save the entered info here
+        self.Choices = []
+        print(self.Choices)
+        self.parent.parent.parent.dismiss()
+
+def show_Waist(trash):
+    content = WaistPopup()
+    popup = Popup(title="Waist Action", content=content, size_hint=(None,None),size=(600,600))
+    popup.open()
+
+class MovePopup(FloatLayout):
+    Choices = []
+
+    def checkboxes_click(self, instance, value, text):
+        if value:
+            self.Choices.append(str(text))
+        else:
+            self.Choices.remove(str(text))
+
+    def button_press(self, idk):
+        print(self.Choices)
+        # TODO save the entered info here
+        self.Choices = []
+        print(self.Choices)
+        self.parent.parent.parent.dismiss()
+
+def show_Move(trash):
+    content = MovePopup()
+    popup = Popup(title="Move Action", content=content, size_hint=(None,None),size=(600,1000))
+    popup.open()
+
+class TurnPopup(FloatLayout):
+    Choices = []
+
+    def checkboxes_click(self, instance, value, text):
+        if value:
+            self.Choices.append(str(text))
+        else:
+            self.Choices.remove(str(text))
+
+    def button_press(self, idk):
+        print(self.Choices)
+        # TODO save the entered info here
+        self.Choices = []
+        print(self.Choices)
+        self.parent.parent.parent.dismiss()
+
+def show_Turn(trash):
+    content = TurnPopup()
+    popup = Popup(title="Turn Action", content=content, size_hint=(None,None),size=(600,1000))
+    popup.open()
+
+class SpeechPopup(FloatLayout):
+    Choices = []
+
+    def checkboxes_click(self, instance, value, text):
+        if value:
+            self.Choices.append(str(text))
+        else:
+            self.Choices.remove(str(text))
+
+    def button_press(self, idk):
+        print(self.Choices)
+        # TODO save the entered info here
+        self.Choices = []
+        print(self.Choices)
+        self.parent.parent.parent.dismiss()
+
+def show_Speech(trash):
+    content = SpeechPopup()
+    popup = Popup(title="Speech Action", content=content, size_hint=(None,None),size=(600,600))
+    popup.open()
 
 class StressCanvasApp(App):
-    add = 0
-
-    def add_rects(self, label, wid, count, *largs):
-        print("adding", count)
-        label.text = str(int(label.text) + count)
-        with wid.canvas:
-            for x in range(count):
-                Color(r(), 1, 1, mode='hsv')
-                Rectangle(pos=(r() * wid.width + wid.x,
-                               r() * wid.height + wid.y), size=(20, 20))
-
-    def double_rects(self, label, wid, *largs):
-        count = int(label.text)
-        self.add_rects(label, wid, count, *largs)
-
-    def reset_rects(self, label, wid, *largs):
-        label.text = '0'
-        self.add = 0
-        wid.canvas.clear()
-
-    def addVals(self, val, *largs):
-        self.add = self.add + val
-        print(self.add)
-
-    # def addVals(self, val: Button, *largs):
-    #     print(val.text)
-    #     self.add += 500
-    #     print(self.add)
-
-    def mulVals(self, val, *largs):
-        self.add = self.add * val
-        print(self.add)
 
     def build(self):
-        wid = Widget()
         label = Label(text='0')
         self.img = Image(source = 'spider.jpg')
-        btn_turn = Button(text='Turn',
-                          on_press=partial(self.addVals, 100))
 
-        btn_head = Button(text='Head',
-                          on_press=partial(self.addVals, 500))
+        btn_head = Button(text='Head')
+        btn_head.bind(on_press=show_Head)
 
-        # btn_add500 = Button(text='+ 500 rects')
-        # btn_add500.bind(on_press=self.addVals)
+        btn_waist = Button(text='Waist')
+        btn_waist.bind(on_press=show_Waist)
 
-        btn_waist = Button(text='Waist',
-                           on_press=partial(self.mulVals, 2))
+        btn_move = Button(text='Move')
+        btn_move.bind(on_press=show_Move)
 
-        btn_move = Button(text='Move',
-                          on_press=partial(self.mulVals, 0.5))
-        btn_speech = Button(text='Speech',
-                            on_press=partial(self.mulVals, 0.5))
+        btn_turn = Button(text='Turn')
+        btn_turn.bind(on_press=show_Turn)
 
-        btn_delete = Button(text=' Delete',
-                            on_press=partial(self.reset_rects, label, wid))
+        btn_speech = Button(text='Speech')
+        btn_speech.bind(on_press=show_Speech)
 
-        btn_play = Button(text='Play',
-                          on_press=partial(self.add_rects, label, wid, self.add))
+        btn_delete = Button(text='Delete')
+        # btn_delete.bind(on_press=show_Speech)
+
+        btn_play = Button(text='Play')
+        # btn_play.bind(on_press=show_Speech)
 
         layout = BoxLayout(size_hint=(1, None), orientation='horizontal')
         layout.add_widget(btn_head)

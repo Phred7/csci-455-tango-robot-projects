@@ -376,3 +376,44 @@
         size_hint: 0.8, 0.2
         pos_hint: {"x":0.1, "y":0.1}
         on_press: root.button_press(self)
+
+<DeletePopup>:
+    Label:
+        text: "Delete all or last entry?"
+        size_hint: 0.6, 0.2
+        pos_hint: {"x":0.2, "top":1}
+
+    GridLayout:
+        # Set number of column
+        rows:2
+        row_force_default:True
+        row_default_height:80
+        pos_hint: {"x":0, "y":-.1}
+
+        # create checkboxes
+        Label:
+            text: "All"
+            pos_hint: {"x":-0.2, "top":1.2}
+
+        CheckBox:
+            # When check box selected, it will call checkboxes_click() method
+            on_active: root.checkboxes_click(self, self.active, "All")
+            pos_hint: {"x":-0.1, "y":1.2}
+            size_hint: 0.5, 0.5
+
+        Label:
+            text: "Last"
+            pos_hint: {"x":-0.2, "top":1.2}
+
+        CheckBox:
+            # When check box selected, it will call checkboxes_click() method
+            on_active: root.checkboxes_click(self, self.active, "LastDe")
+            pos_hint: {"x":-0.1, "y":1.2}
+            size_hint: 0.5, 0.5
+
+
+    Button:
+        text: "Delete"
+        size_hint: 0.8, 0.2
+        pos_hint: {"x":0.1, "y":0.1}
+        on_press: root.button_press(self)

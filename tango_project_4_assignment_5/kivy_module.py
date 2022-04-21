@@ -89,6 +89,7 @@ class MovePopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, idk):
+
         print(self.Choices)
         # TODO save the entered info here
         self.Choices = []
@@ -112,6 +113,8 @@ class TurnPopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, idk):
+        #StressCanvasApp.image_callback(StressCanvasApp.rects,'spider.jpg')
+        # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
         print(self.Choices)
         # TODO save the entered info here
         self.Choices = []
@@ -213,16 +216,19 @@ Config.set('graphics', 'resizable', True)
 
 class StressCanvasApp(App):
 
+    def image_callback(rectImage, value):
+        rectImage.source = value
+
     def build(self):
         label = Label(text='0')
-        img = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
-        img2 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
-        img3 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
-        img4 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
-        img5 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
-        img6 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
-        img7 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
-        img8 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top':0.75})
+        img = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
+        img2 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
+        img3 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
+        img4 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
+        img5 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
+        img6 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
+        img7 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
+        img8 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
 
         btn_head = Button(text='Head')
         btn_head.bind(on_press=show_Head)
@@ -245,7 +251,7 @@ class StressCanvasApp(App):
         btn_play = Button(text='Play')
         btn_play.bind(on_press=play)
 
-        layout = BoxLayout(size_hint=(0.2, 1), orientation='vertical', padding=[0,10,0,10])
+        layout = BoxLayout(size_hint=(0.2, 1), orientation='vertical', padding=[0, 10, 0, 10])
 
         layout.add_widget(btn_head)
         layout.add_widget(btn_speech)
@@ -256,7 +262,7 @@ class StressCanvasApp(App):
         layout.add_widget(btn_play)
         # layout.add_widget(label)
 
-        rects = BoxLayout(size_hint=(0.8, 1), orientation='horizontal', padding=[50,0,50,0],spacing=10)
+        rects = BoxLayout(size_hint=(0.8, 1), orientation='horizontal', padding=[50, 0, 50, 0], spacing=10)
         rects.add_widget(img)
         rects.add_widget(img2)
         rects.add_widget(img3)

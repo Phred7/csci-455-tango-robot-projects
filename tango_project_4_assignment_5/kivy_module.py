@@ -7,6 +7,7 @@ numbers of small squares. You should see a black canvas with buttons and a
 label at the bottom. Pressing the buttons adds small colored squares to the
 canvas.
 """
+from typing import Tuple, List
 
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
@@ -22,8 +23,10 @@ from kivy.uix.popup import Popup
 from action import Action
 from tango_project_4_assignment_5.actions.head import Head
 
-# full of tuples (ActionObject, string pictureurl)
-globalarray = []
+# full of tuples (Action, string pictureurl)
+from tango_project_4_assignment_5.controller import Controller
+
+connies_global_array: List[Tuple[Action, str]] = []
 
 
 class HeadPopup(FloatLayout):
@@ -37,7 +40,7 @@ class HeadPopup(FloatLayout):
 
     def button_press(self, idk):
         print(self.Choices)
-        globalarray.append((Action(Head(self.Choices[0])), 'holderstring'))
+        connies_global_array.append((Action(Head(self.Choices[0])), 'holderstring'))
         self.Choices = []
         print(self.Choices)
         self.parent.parent.parent.dismiss()
@@ -140,6 +143,11 @@ def show_Speech(trash):
     popup = Popup(title="Speech Action", content=content, size_hint=(None, None), size=(600, 600))
     popup.open()
 
+def play(_button_value) -> None:
+    robot_controller: Controller = Controller()
+    for action, string in connies_global_array:
+        action.execute_action(robot_controller)
+
 
 class StressCanvasApp(App):
 
@@ -166,7 +174,7 @@ class StressCanvasApp(App):
         # btn_delete.bind(on_press=show_Speech)
 
         btn_play = Button(text='Play')
-        # btn_play.bind(on_press=show_Speech)
+        btn_play.bind(on_press=play)
 
         layout = BoxLayout(size_hint=(1, None), orientation='horizontal')
         layout.add_widget(btn_head)

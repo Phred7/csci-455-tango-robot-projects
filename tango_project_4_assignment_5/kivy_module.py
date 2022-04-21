@@ -42,7 +42,7 @@ class HeadPopup(FloatLayout):
         print(self.Choices)
         connies_global_array.append((Action(Head(self.Choices[0])), 'holderstring'))
         self.Choices = []
-        print(self.Choices)
+        print(connies_global_array)
         self.parent.parent.parent.dismiss()
 
 
@@ -65,7 +65,7 @@ class WaistPopup(FloatLayout):
         print(self.Choices)
         # TODO save the entered info here
         self.Choices = []
-        print(self.Choices)
+        print(connies_global_array)
         self.parent.parent.parent.dismiss()
 
 
@@ -88,7 +88,7 @@ class MovePopup(FloatLayout):
         print(self.Choices)
         # TODO save the entered info here
         self.Choices = []
-        print(self.Choices)
+        print(connies_global_array)
         self.parent.parent.parent.dismiss()
 
 
@@ -111,7 +111,7 @@ class TurnPopup(FloatLayout):
         print(self.Choices)
         # TODO save the entered info here
         self.Choices = []
-        print(self.Choices)
+        print(connies_global_array)
         self.parent.parent.parent.dismiss()
 
 
@@ -134,13 +134,35 @@ class SpeechPopup(FloatLayout):
         print(self.Choices)
         # TODO save the entered info here
         self.Choices = []
-        print(self.Choices)
+        print(connies_global_array)
         self.parent.parent.parent.dismiss()
 
 
 def show_Speech(trash):
     content = SpeechPopup()
     popup = Popup(title="Speech Action", content=content, size_hint=(None, None), size=(600, 600))
+    popup.open()
+
+class DeletePopup(FloatLayout):
+    Choices = []
+
+    def checkboxes_click(self, instance, value, text):
+        if value:
+            self.Choices.append(str(text))
+        else:
+            self.Choices.remove(str(text))
+
+    def button_press(self, idk):
+        if self.Choices[0] == 'All':
+            connies_global_array = []
+        if self.Choices[0] == 'Last':
+            connies_global_array.pop()
+        print(connies_global_array)
+        self.parent.parent.parent.dismiss()
+
+def show_Delete(trash):
+    content = DeletePopup()
+    popup = Popup(title="ARE YOU SURE YOU WANT TO DELETE?", content=content, size_hint=(None,None),size=(600,600))
     popup.open()
 
 def play(_button_value) -> None:
@@ -150,6 +172,8 @@ def play(_button_value) -> None:
 
 
 class StressCanvasApp(App):
+
+
 
     def build(self):
         label = Label(text='0')
@@ -171,7 +195,7 @@ class StressCanvasApp(App):
         btn_speech.bind(on_press=show_Speech)
 
         btn_delete = Button(text='Delete')
-        # btn_delete.bind(on_press=show_Speech)
+        btn_delete.bind(on_press=show_Delete)
 
         btn_play = Button(text='Play')
         btn_play.bind(on_press=play)

@@ -49,9 +49,10 @@ class HeadPopup(FloatLayout):
 
     def button_press(self, idk):
         if len(self.Choices) > 0:
+            print(self.Choices)
             connies_global_array.append([Action(Head(self.Choices[0])), 'Jillian-45.jpeg'])
             self.Choices = []
-            print(connies_global_array)
+            # print(connies_global_array)
             self.parent.parent.parent.dismiss()
 
 
@@ -72,13 +73,13 @@ class WaistPopup(FloatLayout):
 
     def button_press(self, idk):
         if len(self.Choices) > 0:
-            print(self.Choices)
+            # print(self.Choices)
             if self.Choices[0] == "Left":
                 connies_global_array.append([Action(Waist(True)), 'waist.jpg'])
             else:
                 connies_global_array.append([Action(Waist(False)), 'waist.jpg'])
             self.Choices = []
-            print(connies_global_array)
+            # print(connies_global_array)
             self.parent.parent.parent.dismiss()
 
 
@@ -99,7 +100,7 @@ class MovePopup(FloatLayout):
 
     def button_press(self, idk):
         if len(self.Choices) > 0:
-            print(self.Choices)
+            # print(self.Choices)
             forward = False
             speed = False
             if self.Choices[0] == "Forward":
@@ -108,7 +109,7 @@ class MovePopup(FloatLayout):
                 speed = True
             connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'move.jpg'])
             self.Choices = []
-            print(connies_global_array)
+            # print(connies_global_array)
             self.parent.parent.parent.dismiss()
 
 
@@ -131,13 +132,13 @@ class TurnPopup(FloatLayout):
         if len(self.Choices) > 0:
             # StressCanvasApp.image_callback(StressCanvasApp.rects,'Jillian-45.jpeg')
             # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
-            print(self.Choices)
+            # print(self.Choices)
             left = False
             if self.Choices[0] == "Left":
                 left = True
             connies_global_array.append([Action(Turn(left, self.choices[1])), 'turn.jpg'])
             self.Choices = []
-            print(connies_global_array)
+            # print(connies_global_array)
             self.parent.parent.parent.dismiss()
 
 
@@ -281,7 +282,7 @@ class StressCanvasApp(App):
     def update_img1(blah):
         try:
             img.source = connies_global_array[0][1]
-            print('hey' + str(connies_global_array))
+            # print('hey' + str(connies_global_array))
         except IndexError:
             img.source = 'gray.jpg'
 

@@ -8,7 +8,7 @@ class Action:
     """
 
     def __init__(self, action_strategy: ActionStrategy) -> None:
-        self._action_strategy: ActionStrategy = action_strategy
+        self.action_strategy_obj: ActionStrategy = action_strategy
 
     @property
     def action_strategy(self) -> ActionStrategy:
@@ -16,7 +16,7 @@ class Action:
         Property representing the type of Concrete Strategy that this object contains a reference to.
         :return: The type of Concrete Strategy that this object contains a reference to.
         """
-        return self._action_strategy
+        return self.action_strategy_obj
 
     @action_strategy.setter
     def action_strategy(self, action_strategy: ActionStrategy) -> None:
@@ -26,7 +26,7 @@ class Action:
         :return: None.
         """
         if action_strategy is not None:
-            self._action_strategy = action_strategy
+            self.action_strategy_obj = action_strategy
         return
 
     def execute_action(self, controller: Controller) -> None:
@@ -34,8 +34,8 @@ class Action:
         Method that calls the algorithm or process defined by the concrete strategy.
         :return: None.
         """
-        print(f"Executing {self._action_strategy.type}")
-        self._action_strategy.execute_action(controller)
-        print(f"Execution of {self._action_strategy.type} complete")
+        print(f"Executing {self.action_strategy_obj.type}")
+        self.action_strategy_obj.execute_action(controller)
+        print(f"Execution of {self.action_strategy_obj.type} complete")
 
 

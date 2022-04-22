@@ -225,10 +225,10 @@ def show_Delete(trash):
 
 
 def play(_button_value) -> None:
-    pass
     # robot_controller: Controller = Controller()
-    # for action, string in connies_global_array:
-    #     action.execute_action(robot_controller)
+    for action, string in connies_global_array:
+        print(f"running {action.action_strategy_obj.type} with image \'{string}\'")
+        # action.execute_action(robot_controller)
 
 
 Config.set('graphics', 'resizable', True)

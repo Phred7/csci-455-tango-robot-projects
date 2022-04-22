@@ -21,7 +21,9 @@ class Speech(ActionStrategy):
         :return: None.
         """
         if self.speech_input_bool:
+            self.__say("Speak when ready.")
             self.speech_string = Speech.__get_speech()
+            self.__say(f"Got the string \'{self.speech_string}\'.")
         else:
             if self.speech_string != "":
                 Speech.__say(self.speech_string)
@@ -54,6 +56,7 @@ class Speech(ActionStrategy):
                     print("got audio")
                     user_input = speech_recognizer.recognize_google(audio)
                     return_string = user_input
+                    return
                 except speech_recognition.UnknownValueError:
                     print("Unknown input.")
                 except speech_recognition.WaitTimeoutError:

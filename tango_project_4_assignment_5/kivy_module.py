@@ -7,6 +7,7 @@ numbers of small squares. You should see a black canvas with buttons and a
 label at the bottom. Pressing the buttons adds small colored squares to the
 canvas.
 """
+import platform
 import random
 import threading
 from time import sleep
@@ -106,9 +107,9 @@ class MovePopup(FloatLayout):
             print(self.Choices)
             forward = False
             speed = False
-            if self.Choices[0] == "Forward":
+            if self.Choices[len(self.Choices)-3] == "Forward":
                 forward = True
-            if self.Choices == "Fast":
+            if self.Choices[len(self.Choices)-1] == "Fast":
                 speed = True
             connies_global_array.append([Action(Move(forward, int(self.Choices[len(self.Choices)-2]), speed)), 'move.jpg'])
             self.Choices = []
@@ -137,7 +138,7 @@ class TurnPopup(FloatLayout):
             # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
             print(self.Choices)
             left = False
-            if self.Choices[0] == "Left":
+            if self.Choices[len(self.Choices)-2] == "Left":
                 left = True
             connies_global_array.append([Action(Turn(left, int(self.Choices[len(self.Choices)-1]))), 'turn.jpg'])
             self.Choices = []
@@ -261,13 +262,15 @@ def play(_button: Button) -> None:
         playing = True
         _button.disabled = True
         robot_controller: Controller = Controller()
-        for servo in robot_controller.servo_robot_anatomy_map.keys():
-            robot_controller.drive_servo(servo, robot_controller.servo_neutral)
-            print(f"{servo} set to neutral position")
-            sleep(0.05)
-        robot_controller.drive_servo("motors", 6000+robot_controller.motor_velocity_counter)
-        sleep(.25)
-        robot_controller.STOPDROPANDROLL()
+        if platform.system() != "Windows":
+            for servo in robot_controller.servo_robot_anatomy_map.keys():
+                robot_controller.drive_servo(servo, robot_controller.servo_neutral)
+                print(f"{servo} set to neutral position")
+                sleep(0.05)
+            a = Action(Move(True, 3, False))
+            a.execute_action(robot_controller)
+            sleep(.25)
+            robot_controller.STOPDROPANDROLL()
         # global connies_global_array
         for i, (action, string) in enumerate(connies_global_array):
             # playImg = 'Basically-Mixer.jpeg'

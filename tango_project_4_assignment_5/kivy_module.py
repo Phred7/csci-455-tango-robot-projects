@@ -24,14 +24,14 @@ from kivy.uix.popup import Popup
 from action import Action
 import speech_recognition
 import pyttsx3
-from tango_project_4_assignment_5.actions.head import Head
+from actions.head import Head
 
 # full of tuples (Action, string pictureurl)
-from tango_project_4_assignment_5.actions.move import Move
-from tango_project_4_assignment_5.actions.speech import Speech
-from tango_project_4_assignment_5.actions.turn import Turn
-from tango_project_4_assignment_5.actions.waist import Waist
-from tango_project_4_assignment_5.controller import Controller
+from actions.move import Move
+from actions.speech import Speech
+from actions.turn import Turn
+from actions.waist import Waist
+from controller import Controller
 
 connies_global_array: List[Tuple[Action, str]] = []
 

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from tango_project_4_assignment_5.controller import Controller
+from controller import Controller
 
 
 class ActionStrategy(ABC):

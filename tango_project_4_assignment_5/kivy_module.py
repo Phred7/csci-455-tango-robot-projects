@@ -69,14 +69,15 @@ class WaistPopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, idk):
-        print(self.Choices)
-        if self.Choices[0] == "Left":
-            connies_global_array.append([Action(Waist(True)), 'holderstring'])
-        else:
-            connies_global_array.append([Action(Waist(False)), 'holderstring'])
-        self.Choices = []
-        print(connies_global_array)
-        self.parent.parent.parent.dismiss()
+        if len(self.Choices) > 0:
+            print(self.Choices)
+            if self.Choices[0] == "Left":
+                connies_global_array.append([Action(Waist(True)), 'holderstring'])
+            else:
+                connies_global_array.append([Action(Waist(False)), 'holderstring'])
+            self.Choices = []
+            print(connies_global_array)
+            self.parent.parent.parent.dismiss()
 
 
 def show_Waist(trash):
@@ -95,18 +96,18 @@ class MovePopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, idk):
-
-        print(self.Choices)
-        forward = False
-        speed = False
-        if self.Choices[0] == "Forward":
-            forward = True
-        if self.Choices == "Fast":
-            speed = True
-        connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'holderstring'])
-        self.Choices = []
-        print(connies_global_array)
-        self.parent.parent.parent.dismiss()
+        if len(self.Choices) > 0:
+            print(self.Choices)
+            forward = False
+            speed = False
+            if self.Choices[0] == "Forward":
+                forward = True
+            if self.Choices == "Fast":
+                speed = True
+            connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'holderstring'])
+            self.Choices = []
+            print(connies_global_array)
+            self.parent.parent.parent.dismiss()
 
 
 def show_Move(trash):
@@ -125,16 +126,17 @@ class TurnPopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, idk):
-        # StressCanvasApp.image_callback(StressCanvasApp.rects,'Jillian-45.jpeg')
-        # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
-        print(self.Choices)
-        left = False
-        if self.Choices[0] == "Left":
-            left = True
-        connies_global_array.append([Action(Turn(left, self.choices[1])), 'holderstring'])
-        self.Choices = []
-        print(connies_global_array)
-        self.parent.parent.parent.dismiss()
+        if len(self.Choices) > 0:
+            # StressCanvasApp.image_callback(StressCanvasApp.rects,'Jillian-45.jpeg')
+            # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
+            print(self.Choices)
+            left = False
+            if self.Choices[0] == "Left":
+                left = True
+            connies_global_array.append([Action(Turn(left, self.choices[1])), 'holderstring'])
+            self.Choices = []
+            print(connies_global_array)
+            self.parent.parent.parent.dismiss()
 
 
 def show_Turn(trash):
@@ -154,14 +156,15 @@ class SpeechPopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, _idk):
-        print(self.Choices)
-        input = False
-        if self.Choices[0] == "Input":
-            input = True
-        connies_global_array.append([Action(Speech(input, self.speech_string)), ""])
-        self.Choices = []
-        print(connies_global_array)
-        self.parent.parent.parent.dismiss()
+        if len(self.Choices) > 0:
+            print(self.Choices)
+            input = False
+            if self.Choices[0] == "Input":
+                input = True
+            connies_global_array.append([Action(Speech(input, self.speech_string)), ""])
+            self.Choices = []
+            print(connies_global_array)
+            self.parent.parent.parent.dismiss()
 
     def record_button(self, _button_value) -> None:
         self.speech_string = self.__get_speech()
@@ -208,15 +211,16 @@ class DeletePopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, idk):
-        global connies_global_array
-        if self.Choices[0] == 'All':
-            print('tired to delete last all')
-            connies_global_array = []
-        if self.Choices[0] == 'Last':
-            print('tired to delete last one')
-            connies_global_array.pop()
-        print(connies_global_array)
-        self.parent.parent.parent.dismiss()
+        if len(self.Choices) > 0:
+            global connies_global_array
+            if self.Choices[0] == 'All':
+                print('tired to delete last all')
+                connies_global_array = []
+            if self.Choices[0] == 'Last':
+                print('tired to delete last one')
+                connies_global_array.pop()
+            print(connies_global_array)
+            self.parent.parent.parent.dismiss()
 
 
 def show_Delete(trash):

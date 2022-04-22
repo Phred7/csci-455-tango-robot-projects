@@ -260,16 +260,13 @@ def play(_button: Button) -> None:
     if playing == False:
         playing = True
         _button.disabled = True
+        last_action: bool = False
         robot_controller: Controller = Controller()
         if platform.system() != "Windows":
             for servo in robot_controller.servo_robot_anatomy_map.keys():
                 robot_controller.drive_servo(servo, robot_controller.servo_neutral)
                 print(f"{servo} set to neutral position")
                 sleep(0.05)
-            a = Action(Move(True, 3, False))
-            a.execute_action(robot_controller)
-            sleep(.25)
-            robot_controller.STOPDROPANDROLL()
         # global connies_global_array
         for i, (action, string) in enumerate(connies_global_array):
             # playImg = 'Basically-Mixer.jpeg'
@@ -278,7 +275,21 @@ def play(_button: Button) -> None:
             # connies_global_array[i][1] = playImg
             # print(connies_global_array[i][1])
             # print(f"running {action.action_strategy_obj.type} with image \'{connies_global_array[i][1]}\'")
+            if not last_action and (action.action_strategy_obj.type == "Turn" or action.action_strategy_obj.type == "Move"):
+                print("restart movements\n")
+                a = Action(Move(True, 3, False))
+                a.execute_action(robot_controller)
+                sleep(.25)
+                robot_controller.STOPDROPANDROLL()
+                print("restart movements\n")
+
             action.execute_action(robot_controller)
+
+            if action.action_strategy_obj.type == "Move" or action.action_strategy_obj.type == "Turn":
+                last_action = True
+            else:
+                last_action = False
+
             # sleep(1)
             # connies_global_array[i][1] = currentImg
         _button.disabled = False

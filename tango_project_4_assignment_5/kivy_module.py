@@ -27,7 +27,10 @@ import pyttsx3
 from tango_project_4_assignment_5.actions.head import Head
 
 # full of tuples (Action, string pictureurl)
+from tango_project_4_assignment_5.actions.move import Move
 from tango_project_4_assignment_5.actions.speech import Speech
+from tango_project_4_assignment_5.actions.turn import Turn
+from tango_project_4_assignment_5.actions.waist import Waist
 from tango_project_4_assignment_5.controller import Controller
 
 connies_global_array: List[Tuple[Action, str]] = []
@@ -67,7 +70,10 @@ class WaistPopup(FloatLayout):
 
     def button_press(self, idk):
         print(self.Choices)
-        # TODO save the entered info here
+        if self.Choices[0] == "Left":
+            connies_global_array.append((Action(Waist(True)), 'holderstring'))
+        else:
+            connies_global_array.append((Action(Waist(False)), 'holderstring'))
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -91,7 +97,14 @@ class MovePopup(FloatLayout):
     def button_press(self, idk):
 
         print(self.Choices)
-        # TODO save the entered info here
+        forward = False
+        speed = False
+        if self.Choices[0] == "Forward":
+            forward = True
+        if self.Choices == "Fast":
+            speed = True
+        #TODO add speed button
+        connies_global_array.append((Action(Move(forward, self.choices[1], speed)), 'holderstring'))
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -116,7 +129,10 @@ class TurnPopup(FloatLayout):
         #StressCanvasApp.image_callback(StressCanvasApp.rects,'spider.jpg')
         # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
         print(self.Choices)
-        # TODO save the entered info here
+        left = False
+        if self.Choices[0] == "Left":
+            left = True
+        connies_global_array.append((Action(Turn(left, self.choices[1])), 'holderstring'))
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -140,7 +156,10 @@ class SpeechPopup(FloatLayout):
 
     def button_press(self, _idk):
         print(self.Choices)
-        connies_global_array.append((Action(Speech(self.Choices[0], self.speech_string)), ""))
+        input = False
+        if self.Choices[0] == "Input":
+            input = True
+        connies_global_array.append((Action(Speech(input, self.speech_string)), ""))
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -206,9 +225,10 @@ def show_Delete(trash):
 
 
 def play(_button_value) -> None:
-    robot_controller: Controller = Controller()
-    for action, string in connies_global_array:
-        action.execute_action(robot_controller)
+    pass
+    # robot_controller: Controller = Controller()
+    # for action, string in connies_global_array:
+    #     action.execute_action(robot_controller)
 
 
 Config.set('graphics', 'resizable', True)

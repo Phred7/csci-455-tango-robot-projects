@@ -166,13 +166,13 @@
         # Set number of column
         rows:2
         row_force_default:True
-        row_default_height:80
-        pos_hint: {"x":0, "y":-.1}
+        row_default_height:35
+        pos_hint: {"x":0, "y":-.15}
 
         # create checkboxes
         Label:
             text: "Forward"
-            pos_hint: {"x":0.2, "top":1}
+            pos_hint: {"x":0.2, "top":1.2}
 
 
         CheckBox:
@@ -194,15 +194,15 @@
     Label:
         text: "Select number of seconds"
         size_hint: 0.6, 0.2
-        pos_hint: {"x":0.2, "top":.7}
+        pos_hint: {"x":0.2, "top":.8}
 
 
     GridLayout:
         # Set number of column
         rows:3
         row_force_default:True
-        row_default_height:80
-        pos_hint: {"x":0, "y":-.4}
+        row_default_height:35
+        pos_hint: {"x":0, "y":-.35}
 
         # create checkboxes
         Label:
@@ -253,6 +253,41 @@
         CheckBox:
             # When check box selected, it will call checkboxes_click() method
             on_active: root.checkboxes_click(self, self.active, "5")
+            pos_hint: {"x":-0.1, "y":1.2}
+            size_hint: 0.5, 0.5
+
+    Label:
+        text: "Select speed"
+        size_hint: 0.6, 0.2
+        pos_hint: {"x":0.2, "top":.6}
+
+
+    GridLayout:
+        # Set number of column
+        cols: 2
+        row_force_default:True
+        row_default_height:35
+        pos_hint: {"x":0, "y":-.55}
+
+        # create checkboxes
+        Label:
+            text: "Fast"
+            pos_hint: {"x":0.2, "top":1}
+
+
+        CheckBox:
+            # When check box selected, it will call checkboxes_click() method
+            on_active: root.checkboxes_click(self, self.active, "Fast")
+
+            size_hint: 0.5, 0.5
+
+        Label:
+            text: "Slow"
+            pos_hint: {"x":-0.2, "top":1.2}
+
+        CheckBox:
+            # When check box selected, it will call checkboxes_click() method
+            on_active: root.checkboxes_click(self, self.active, "Slow")
             pos_hint: {"x":-0.1, "y":1.2}
             size_hint: 0.5, 0.5
 

@@ -63,7 +63,7 @@
         # size_hint: 0.3, 0.1
         # row_force_default:True
         col_default_width:3
-        # pos_hint: {"x":0, "y":-.15}
+        pos_hint: {"x":.05, "y":-.15}
 
 
         GridLayout:
@@ -71,12 +71,12 @@
             rows:2
             row_force_default:True
             row_default_height:40
-            pos_hint: {"x":0, "y":-.1}
+            pos_hint: {"x":7, "y":-.1}
 
             # create checkboxes
             Label:
                 text: "Left"
-                pos_hint: {"x":0.2, "top":1}
+                pos_hint: {"x":1, "top":1}
 
 
             CheckBox:
@@ -95,15 +95,9 @@
                 pos_hint: {"x":-0.1, "y":1.2}
                 size_hint: 0.5, 0.5
 
-        Label:
-            text: "Select number of seconds"
-            size_hint: 0.6, 0.2
-            pos_hint: {"x":0.2, "top":.7}
-
-
         GridLayout:
             # Set number of column
-            rows:3
+            rows:5
             row_force_default:True
             row_default_height:40
             pos_hint: {"x":0, "y":-.4}
@@ -178,73 +172,70 @@
         rows:1
         # size_hint: 0.3, 0.1
         # row_force_default:True
-        # row_default_height:35
-        # pos_hint: {"x":0, "y":-.15}
+        col_default_width:3
+        pos_hint: {"x":.05, "y":-.15}
+
 
         GridLayout:
             # Set number of column
-            rows:4
-            size_hint: 0.3, 0.1
+            rows:2
             row_force_default:True
-            row_default_height:35
-            pos_hint: {"x":1, "y":4}
+            row_default_height:40
+            pos_hint: {"x":7, "y":-.1}
 
             # create checkboxes
             Label:
-                text: "Forward"
-                #pos_hint: {"x":0.2, "top":1.2}
+                text: "Left"
+                pos_hint: {"x":1, "top":1}
 
 
             CheckBox:
                 # When check box selected, it will call checkboxes_click() method
-                on_active: root.checkboxes_click(self, self.active, "Forward")
-
+                on_active: root.checkboxes_click(self, self.active, "Left")
+                pos_hint: {"x":0.3, "top":1}
                 size_hint: 0.5, 0.5
 
             Label:
-                text: "Backward"
-                #pos_hint: {"x":-0.2, "top":1.2}
+                text: "Right"
+                pos_hint: {"x":-0.2, "top":1.2}
 
             CheckBox:
                 # When check box selected, it will call checkboxes_click() method
-                on_active: root.checkboxes_click(self, self.active, "Backward")
-                #pos_hint: {"x":-0.1, "y":1.2}
+                on_active: root.checkboxes_click(self, self.active, "Right")
+                pos_hint: {"x":-0.1, "y":1.2}
                 size_hint: 0.5, 0.5
 
-             # create checkboxes
             Label:
                 text: "Fast"
-                #pos_hint: {"x":0.2, "top":1}
-
+                pos_hint: {"x":-0.2, "top":1.2}
 
             CheckBox:
                 # When check box selected, it will call checkboxes_click() method
                 on_active: root.checkboxes_click(self, self.active, "Fast")
-
+                pos_hint: {"x":-0.1, "y":1.2}
                 size_hint: 0.5, 0.5
 
             Label:
                 text: "Slow"
-               # pos_hint: {"x":-0.2, "top":1.2}
+                pos_hint: {"x":-0.2, "top":1.2}
 
             CheckBox:
                 # When check box selected, it will call checkboxes_click() method
                 on_active: root.checkboxes_click(self, self.active, "Slow")
-                #pos_hint: {"x":-0.1, "y":1.2}
+                pos_hint: {"x":-0.1, "y":1.2}
                 size_hint: 0.5, 0.5
-
 
         GridLayout:
             # Set number of column
-            rows:3
+            rows:5
             row_force_default:True
-            row_default_height:35
-            pos_hint: {"x":-.2, "y":-.35}
+            row_default_height:40
+            pos_hint: {"x":0, "y":-.4}
 
             # create checkboxes
             Label:
                 text: "1"
-                #pos_hint: {"x":0.2, "top":1}
+                pos_hint: {"x":0.2, "top":1}
 
 
             CheckBox:
@@ -255,44 +246,43 @@
 
             Label:
                 text: "2"
-                #pos_hint: {"x":-0.2, "top":1.2}
+                pos_hint: {"x":-0.2, "top":1.2}
 
             CheckBox:
                 # When check box selected, it will call checkboxes_click() method
                 on_active: root.checkboxes_click(self, self.active, "2")
-                #pos_hint: {"x":-0.1, "y":1.2}
+                pos_hint: {"x":-0.1, "y":1.2}
                 size_hint: 0.5, 0.5
 
             Label:
                 text: "3"
-                #pos_hint: {"x":-0.2, "top":1.2}
+                pos_hint: {"x":-0.2, "top":1.2}
 
             CheckBox:
                 # When check box selected, it will call checkboxes_click() method
                 on_active: root.checkboxes_click(self, self.active, "3")
-               # pos_hint: {"x":-0.1, "y":1.2}
+                pos_hint: {"x":-0.1, "y":1.2}
                 size_hint: 0.5, 0.5
 
             Label:
                 text: "4"
-                #pos_hint: {"x":-0.2, "top":1.2}
+                pos_hint: {"x":-0.2, "top":1.2}
 
             CheckBox:
                 # When check box selected, it will call checkboxes_click() method
                 on_active: root.checkboxes_click(self, self.active, "4")
-                #pos_hint: {"x":-0.1, "y":1.2}
+                pos_hint: {"x":-0.1, "y":1.2}
                 size_hint: 0.5, 0.5
 
             Label:
                 text: "5"
-                #pos_hint: {"x":-0.2, "top":1.2}
+                pos_hint: {"x":-0.2, "top":1.2}
 
             CheckBox:
                 # When check box selected, it will call checkboxes_click() method
                 on_active: root.checkboxes_click(self, self.active, "5")
-                #pos_hint: {"x":-0.1, "y":1.2}
+                pos_hint: {"x":-0.1, "y":1.2}
                 size_hint: 0.5, 0.5
-
 
     Button:
         text: "Enter"

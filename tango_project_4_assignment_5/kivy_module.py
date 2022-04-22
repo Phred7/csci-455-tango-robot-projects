@@ -115,7 +115,7 @@ class MovePopup(FloatLayout):
 
 def show_Move(trash):
     content = MovePopup()
-    popup = Popup(title="Move Action", content=content, size_hint=(None, None), size=(1400, 600))
+    popup = Popup(title="Move Action", content=content, size_hint=(None, None), size=(1000, 600))
     popup.open()
 
 
@@ -144,7 +144,7 @@ class TurnPopup(FloatLayout):
 
 def show_Turn(trash):
     content = TurnPopup()
-    popup = Popup(title="Turn Action", content=content, size_hint=(None, None), size=(1400, 600))
+    popup = Popup(title="Turn Action", content=content, size_hint=(None, None), size=(1000, 600))
     popup.open()
 
 

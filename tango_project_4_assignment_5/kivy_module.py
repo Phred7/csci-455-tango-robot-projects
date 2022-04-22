@@ -108,7 +108,7 @@ class MovePopup(FloatLayout):
                 forward = True
             if self.Choices == "Fast":
                 speed = True
-            connies_global_array.append([Action(Move(forward, self.Choices[1], speed)), 'move.jpg'])
+            connies_global_array.append([Action(Move(forward, int(self.Choices[1]), speed)), 'move.jpg'])
             self.Choices = []
             # print(connies_global_array)
             self.parent.parent.parent.dismiss()
@@ -137,7 +137,7 @@ class TurnPopup(FloatLayout):
             left = False
             if self.Choices[0] == "Left":
                 left = True
-            connies_global_array.append([Action(Turn(left, self.Choices[1])), 'turn.jpg'])
+            connies_global_array.append([Action(Turn(left, int(self.Choices[1]))), 'turn.jpg'])
             self.Choices = []
             # print(connies_global_array)
             self.parent.parent.parent.dismiss()

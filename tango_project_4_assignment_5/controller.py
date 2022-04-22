@@ -86,7 +86,8 @@ class Controller:
         serial_command = chr(0xaa) + chr(0xC) + chr(0x04) + chr(int(self.servo_robot_anatomy_map.get(servo))) + chr(
             lsb) + chr(msb)
         self.servo_controller.write(serial_command.encode('utf-8'))
-        # print(f"moved {servo} on port 0x{int(self.servo_robot_anatomy_map.get(servo))} to {target}")
+        print(f"moved {servo} on port 0x{int(self.servo_robot_anatomy_map.get(servo))} to {target}")
+        sleep(0.5)
 
     def drive_multiple_servos(self, servos: List[str], targets: List[int]) -> None:
         """

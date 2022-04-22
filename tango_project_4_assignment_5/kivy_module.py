@@ -168,6 +168,7 @@ class SpeechPopup(FloatLayout):
 
     def record_button(self, _button_value) -> None:
         self.speech_string = self.__get_speech()
+        self.__say(f"Got the string \'{self.speech_string}\'")
 
     def __get_speech(self) -> str:
         user_input: str = ""
@@ -184,6 +185,7 @@ class SpeechPopup(FloatLayout):
                     audio = recognizer.listen(source, timeout=8)
                     user_input = recognizer.recognize_google(audio)
                     print(f"got audio {user_input}")
+                    break
 
                 except speech_recognition.UnknownValueError:
                     print("Unknown voice input")
@@ -194,6 +196,14 @@ class SpeechPopup(FloatLayout):
                 listening = False
                 break
         return user_input
+
+    def __say(self, string: str) -> None:
+        text_to_speech_engine = pyttsx3.init()
+        text_to_speech_engine.setProperty('rate', 150)
+        voices = text_to_speech_engine.getProperty('voices')
+        text_to_speech_engine.setProperty('voice', voices[2].id)
+        text_to_speech_engine.say(string)
+        text_to_speech_engine.runAndWait()
 
 
 def show_Speech(trash):

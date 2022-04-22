@@ -7,6 +7,7 @@ numbers of small squares. You should see a black canvas with buttons and a
 label at the bottom. Pressing the buttons adds small colored squares to the
 canvas.
 """
+import threading
 from time import sleep
 from typing import Tuple, List, Any
 
@@ -246,6 +247,11 @@ def show_Delete(trash):
 
 def play(_button: Button) -> None:
     _button.disabled = True
+    thread = threading.Thread(name="play program thread", target=play_thread, args=(_button,))
+    thread.start()
+    thread.join()
+
+def play_thread(_button: Button) -> None:
     robot_controller: Controller = Controller()
     # global connies_global_array
     for i, (action, string) in enumerate(connies_global_array):
@@ -259,7 +265,6 @@ def play(_button: Button) -> None:
         sleep(1)
         connies_global_array[i][1] = currentImg
     _button.disabled = False
-
 
 Config.set('graphics', 'resizable', True)
 

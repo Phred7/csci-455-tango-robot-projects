@@ -35,7 +35,7 @@ from actions.waist import Waist
 from controller import Controller
 
 global connies_global_array
-connies_global_array: List[List[Any]] = []
+connies_global_array = []
 
 
 class HeadPopup(FloatLayout):
@@ -260,15 +260,15 @@ def play_thread(_button: Button) -> None:
     robot_controller: Controller = Controller()
     # global connies_global_array
     for i, (action, string) in enumerate(connies_global_array):
-        playImg = 'Basically-Mixer.jpeg'
-        currentImg = string
-        print(connies_global_array[i][1])
-        connies_global_array[i][1] = playImg
-        print(connies_global_array[i][1])
+        # playImg = 'Basically-Mixer.jpeg'
+        # currentImg = string
+        # print(connies_global_array[i][1])
+        # connies_global_array[i][1] = playImg
+        # print(connies_global_array[i][1])
         print(f"running {action.action_strategy_obj.type} with image \'{playImg}\'")
         action.execute_action(robot_controller)
-        sleep(1)
-        connies_global_array[i][1] = currentImg
+        # sleep(1)
+        # connies_global_array[i][1] = currentImg
     _button.disabled = False
 
 Config.set('graphics', 'resizable', True)

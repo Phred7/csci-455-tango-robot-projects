@@ -46,7 +46,7 @@ class HeadPopup(FloatLayout):
 
     def button_press(self, idk):
         print(self.Choices)
-        connies_global_array.append([Action(Head(self.Choices[0])), 'Jillian-45.jpeg'])
+        connies_global_array.append([Action(Head(self.Choices[0])), 'head.jpg'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -70,9 +70,9 @@ class WaistPopup(FloatLayout):
     def button_press(self, idk):
         print(self.Choices)
         if self.Choices[0] == "Left":
-            connies_global_array.append([Action(Waist(True)), 'holderstring'])
+            connies_global_array.append([Action(Waist(True)), 'waist.jpg']) #only have one image for this, can make more later
         else:
-            connies_global_array.append([Action(Waist(False)), 'holderstring'])
+            connies_global_array.append([Action(Waist(False)), 'waist.jpg'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -102,7 +102,7 @@ class MovePopup(FloatLayout):
             forward = True
         if self.Choices == "Fast":
             speed = True
-        connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'holderstring'])
+        connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'move.jpg'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -125,12 +125,11 @@ class TurnPopup(FloatLayout):
 
     def button_press(self, idk):
         # StressCanvasApp.image_callback(StressCanvasApp.rects,'Jillian-45.jpeg')
-        # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
         print(self.Choices)
         left = False
         if self.Choices[0] == "Left":
             left = True
-        connies_global_array.append([Action(Turn(left, self.choices[1])), 'holderstring'])
+        connies_global_array.append([Action(Turn(left, self.choices[1])), 'turn.jpg'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -157,7 +156,7 @@ class SpeechPopup(FloatLayout):
         input = False
         if self.Choices[0] == "Input":
             input = True
-        connies_global_array.append([Action(Speech(input, self.speech_string)), ""])
+        connies_global_array.append([Action(Speech(input, self.speech_string)), "speech.jpg"])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()

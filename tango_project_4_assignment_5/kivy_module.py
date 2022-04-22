@@ -46,12 +46,11 @@ class HeadPopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, idk):
-        print(self.Choices)
-        print(self.Choices[0])
-        connies_global_array.append([Action(Head(self.Choices[0])), 'Jillian-45.jpeg'])
-        self.Choices = []
-        print(connies_global_array)
-        self.parent.parent.parent.dismiss()
+        if len(self.Choices) > 0:
+            connies_global_array.append([Action(Head(self.Choices[0])), 'Jillian-45.jpeg'])
+            self.Choices = []
+            print(connies_global_array)
+            self.parent.parent.parent.dismiss()
 
 
 def show_Head(trash):

@@ -105,10 +105,12 @@ class MovePopup(FloatLayout):
     def button_press(self, idk):
         if len(self.Choices) > 0:
             print(self.Choices)
-            forward = False
+            forward = True
             speed = False
             if self.Choices[len(self.Choices)-3] == "Forward":
                 forward = True
+            elif self.Choices[len(self.Choices)-3] == "Backwards":
+                forward = False
             if self.Choices[len(self.Choices)-1] == "Fast":
                 speed = True
             connies_global_array.append([Action(Move(forward, int(self.Choices[len(self.Choices)-2]), speed)), 'move.jpg'])

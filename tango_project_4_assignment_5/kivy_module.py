@@ -261,6 +261,7 @@ def play(_button: Button) -> None:
         playing = True
         _button.disabled = True
         robot_controller: Controller = Controller()
+        robot_controller.drive_servo("motors", 6000)
         # global connies_global_array
         for i, (action, string) in enumerate(connies_global_array):
             # playImg = 'Basically-Mixer.jpeg'

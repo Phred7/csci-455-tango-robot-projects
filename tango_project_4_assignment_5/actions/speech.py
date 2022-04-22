@@ -55,8 +55,8 @@ class Speech(ActionStrategy):
                     audio = speech_recognizer.listen(source, timeout=8)
                     print("got audio")
                     user_input = speech_recognizer.recognize_google(audio)
-                    return_string = user_input
-                    return
+                    return user_input
+
                 except speech_recognition.UnknownValueError:
                     print("Unknown input.")
                 except speech_recognition.WaitTimeoutError:

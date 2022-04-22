@@ -244,7 +244,8 @@ def show_Delete(trash):
     popup.open()
 
 
-def play(_button_value) -> None:
+def play(_button: Button) -> None:
+    _button.disabled = True
     robot_controller: Controller = Controller()
     # global connies_global_array
     for i, (action, string) in enumerate(connies_global_array):
@@ -257,6 +258,7 @@ def play(_button_value) -> None:
         action.execute_action(robot_controller)
         sleep(1)
         connies_global_array[i][1] = currentImg
+    _button.disabled = False
 
 
 Config.set('graphics', 'resizable', True)
@@ -267,7 +269,8 @@ class StressCanvasApp(App):
     Config.set('graphics', 'width', '800')
     Config.set('graphics', 'height', '400')
 
-    def update_img1(trash, blah):
+    @staticmethod
+    def update_img1(blah):
         try:
             img.source = connies_global_array[0][1]
             print('hey' + str(connies_global_array))
@@ -304,13 +307,15 @@ class StressCanvasApp(App):
         except IndexError:
             img6.source = 'gray.jpg'
 
-    def update_img7(trash, blah):
+    @staticmethod
+    def update_img7(blah):
         try:
             img7.source = connies_global_array[6][1]
         except IndexError:
             img7.source = 'gray.jpg'
 
-    def update_img8(trash, blah):
+    @staticmethod
+    def update_img8(blah):
         try:
             img8.source = connies_global_array[7][1]
         except IndexError:

@@ -265,7 +265,7 @@ def play_thread(_button: Button) -> None:
         # print(connies_global_array[i][1])
         # connies_global_array[i][1] = playImg
         # print(connies_global_array[i][1])
-        print(f"running {action.action_strategy_obj.type} with image \'{playImg}\'")
+        print(f"running {action.action_strategy_obj.type} with image \'{connies_global_array[i][1]}\'")
         action.execute_action(robot_controller)
         # sleep(1)
         # connies_global_array[i][1] = currentImg

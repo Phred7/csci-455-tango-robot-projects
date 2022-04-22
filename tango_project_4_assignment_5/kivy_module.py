@@ -182,8 +182,8 @@ class SpeechPopup(FloatLayout):
                 try:
                     print("listening")
                     audio = recognizer.listen(source, timeout=8)
-                    print("got audio")
                     user_input = recognizer.recognize_google(audio)
+                    print(f"got audio {user_input}")
 
                 except speech_recognition.UnknownValueError:
                     print("Unknown voice input")
@@ -192,6 +192,7 @@ class SpeechPopup(FloatLayout):
 
             if user_input != "":
                 listening = False
+                break
         return user_input
 
 

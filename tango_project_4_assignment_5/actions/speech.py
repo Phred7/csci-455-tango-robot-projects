@@ -1,3 +1,6 @@
+import random
+from typing import List
+
 from action_stategy import ActionStrategy
 from controller import Controller
 import speech_recognition
@@ -21,7 +24,9 @@ class Speech(ActionStrategy):
         :return: None.
         """
         if self.speech_input_bool:
+            self.__say("Speak when ready.")
             self.speech_string = Speech.__get_speech()
+            self.__say(f"Got the string \'{self.speech_string}\'.")
         else:
             if self.speech_string != "":
                 Speech.__say(self.speech_string)
@@ -53,9 +58,12 @@ class Speech(ActionStrategy):
                     audio = speech_recognizer.listen(source, timeout=8)
                     print("got audio")
                     user_input = speech_recognizer.recognize_google(audio)
-                    return_string = user_input
+                    return user_input
+
                 except speech_recognition.UnknownValueError:
                     print("Unknown input.")
+                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what'd you say?", "nani", "", "", "", "", "unrecognizable input"]
+                    Speech.__say(random.choice(strings))
                 except speech_recognition.WaitTimeoutError:
                     print("Listen timeout exceeded.")
 

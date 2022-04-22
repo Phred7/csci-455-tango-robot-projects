@@ -17,6 +17,7 @@ class Head(ActionStrategy):
         :param controller: Controller object to control this system.
         :return: None.
         """
+        print(f"head direction: {self.direction_to_move}")
         if self.direction_to_move == "Up":
             controller.headnod(True)
         elif self.direction_to_move == "Down":

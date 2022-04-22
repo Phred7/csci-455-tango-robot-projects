@@ -7,6 +7,8 @@ numbers of small squares. You should see a black canvas with buttons and a
 label at the bottom. Pressing the buttons adds small colored squares to the
 canvas.
 """
+import random
+import threading
 from time import sleep
 from typing import Tuple, List, Any
 
@@ -156,6 +158,7 @@ class SpeechPopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, _idk):
+        print(self.Choices)
         if len(self.Choices) > 0:
             print(self.Choices)
             input = False
@@ -167,9 +170,11 @@ class SpeechPopup(FloatLayout):
             self.parent.parent.parent.dismiss()
 
     def record_button(self, _button_value) -> None:
-        self.__say(f"Speak when ready.")
-        self.speech_string = self.__get_speech()
-        self.__say(f"Got the string \'{self.speech_string}\'.")
+        if self.speech_string == "":
+            self.__say(f"Speak when ready.")
+            self.speech_string = self.__get_speech()
+            self.__say(f"Got the string \'{self.speech_string}\'.")
+            return
 
     def __get_speech(self) -> str:
         user_input: str = ""
@@ -190,6 +195,8 @@ class SpeechPopup(FloatLayout):
 
                 except speech_recognition.UnknownValueError:
                     print("Unknown voice input")
+                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what'd you say?", "nani", "", "", "", ""]
+                    self.__say(random.choice(strings))
                 except speech_recognition.WaitTimeoutError:
                     print("Listen timeout exceeded")
 
@@ -241,7 +248,13 @@ def show_Delete(trash):
     popup.open()
 
 
-def play(_button_value) -> None:
+def play(_button: Button) -> None:
+    _button.disabled = True
+    thread = threading.Thread(name="play program thread", target=play_thread, args=(_button,))
+    thread.start()
+    thread.join()
+
+def play_thread(_button: Button) -> None:
     robot_controller: Controller = Controller()
     # global connies_global_array
     for i, (action, string) in enumerate(connies_global_array):
@@ -254,7 +267,7 @@ def play(_button_value) -> None:
         action.execute_action(robot_controller)
         sleep(1)
         connies_global_array[i][1] = currentImg
-
+    _button.disabled = False
 
 Config.set('graphics', 'resizable', True)
 
@@ -264,7 +277,8 @@ class StressCanvasApp(App):
     Config.set('graphics', 'width', '800')
     Config.set('graphics', 'height', '400')
 
-    def update_img1(trash, blah):
+    @staticmethod
+    def update_img1(blah):
         try:
             img.source = connies_global_array[0][1]
             print('hey' + str(connies_global_array))
@@ -301,13 +315,15 @@ class StressCanvasApp(App):
         except IndexError:
             img6.source = 'gray.jpg'
 
-    def update_img7(trash, blah):
+    @staticmethod
+    def update_img7(blah):
         try:
             img7.source = connies_global_array[6][1]
         except IndexError:
             img7.source = 'gray.jpg'
 
-    def update_img8(trash, blah):
+    @staticmethod
+    def update_img8(blah):
         try:
             img8.source = connies_global_array[7][1]
         except IndexError:

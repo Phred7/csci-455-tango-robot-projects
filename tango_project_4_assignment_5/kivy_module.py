@@ -167,9 +167,12 @@ class SpeechPopup(FloatLayout):
             self.parent.parent.parent.dismiss()
 
     def record_button(self, _button_value) -> None:
-        self.__say(f"Speak when ready.")
-        self.speech_string = self.__get_speech()
-        self.__say(f"Got the string \'{self.speech_string}\'.")
+        if self.speech_string == "":
+            self.__say(f"Speak when ready.")
+            self.speech_string = self.__get_speech()
+            self.__say(f"Got the string \'{self.speech_string}\'.")
+            self.Choices = []
+            return
 
     def __get_speech(self) -> str:
         user_input: str = ""
@@ -202,7 +205,7 @@ class SpeechPopup(FloatLayout):
         text_to_speech_engine = pyttsx3.init()
         text_to_speech_engine.setProperty('rate', 150)
         voices = text_to_speech_engine.getProperty('voices')
-        text_to_speech_engine.setProperty('voice', voices[2].id)
+        text_to_speech_engine.setProperty('voice', voices[1].id)
         text_to_speech_engine.say(string)
         text_to_speech_engine.runAndWait()
 

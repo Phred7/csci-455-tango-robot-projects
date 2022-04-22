@@ -251,6 +251,8 @@ def show_Delete(trash):
     content = DeletePopup()
     popup = Popup(title="ARE YOU SURE YOU WANT TO DELETE?", content=content, size_hint=(None, None), size=(600, 600))
     popup.open()
+    global playing
+    playing = False
 
 
 def play(_button: Button) -> None:

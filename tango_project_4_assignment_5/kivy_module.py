@@ -110,7 +110,7 @@ class MovePopup(FloatLayout):
                 forward = True
             if self.Choices == "Fast":
                 speed = True
-            connies_global_array.append([Action(Move(forward, int(self.Choices[1]), speed)), 'move.jpg'])
+            connies_global_array.append([Action(Move(forward, int(self.Choices[len(self.Choices)-2]), speed)), 'move.jpg'])
             self.Choices = []
             # print(connies_global_array)
             self.parent.parent.parent.dismiss()
@@ -135,11 +135,11 @@ class TurnPopup(FloatLayout):
         if len(self.Choices) > 0:
             # StressCanvasApp.image_callback(StressCanvasApp.rects,'Jillian-45.jpeg')
             # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
-            # print(self.Choices)
+            print(self.Choices)
             left = False
             if self.Choices[0] == "Left":
                 left = True
-            connies_global_array.append([Action(Turn(left, int(self.Choices[1]))), 'turn.jpg'])
+            connies_global_array.append([Action(Turn(left, int(self.Choices[len(self.Choices)-2]))), 'turn.jpg'])
             self.Choices = []
             # print(connies_global_array)
             self.parent.parent.parent.dismiss()

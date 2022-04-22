@@ -112,7 +112,7 @@ class Controller:
             self.motor_velocity_counter = self.servo_min
         if self.motor_velocity_counter > self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
-        self.drive_servo("motors", self.motor_velocity_counter)
+        self.drive_servo("motors", 4976)
 
     def reverse(self):
         # > 6000 on channel 1
@@ -121,7 +121,7 @@ class Controller:
             self.motor_velocity_counter = self.servo_max
         if self.motor_velocity_counter < self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
-        self.drive_servo("motors", self.motor_velocity_counter)
+        self.drive_servo("motors", 7024)
         pass
 
     def STOPDROPANDROLL(self):

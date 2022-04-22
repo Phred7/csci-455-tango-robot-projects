@@ -200,8 +200,7 @@ class SpeechPopup(FloatLayout):
 
                 except speech_recognition.UnknownValueError:
                     print("Unknown voice input")
-                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what'd you say?", "nani",
-                                          "", "", "", ""]
+                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what did you say?", "nani"]
                     self.__say(random.choice(strings))
                 except speech_recognition.WaitTimeoutError:
                     print("Listen timeout exceeded")

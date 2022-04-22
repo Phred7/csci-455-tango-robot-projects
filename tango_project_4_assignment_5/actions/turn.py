@@ -21,8 +21,10 @@ class Turn(ActionStrategy):
         :return: None.
         """
         if self.turn_left_bool:
+            controller.motor_turn_velocity_counter = controller.fivestepsofPOWER[3]
             controller.left_drive_servos()
         else:
+            controller.motor_turn_velocity_counter = controller.fivestepsofPOWER[1]
             controller.right_drive_servos()
         time.sleep(self.turn_time)
         controller.STOPDROPANDROLL()

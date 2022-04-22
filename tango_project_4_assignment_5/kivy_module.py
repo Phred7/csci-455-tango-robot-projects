@@ -250,7 +250,7 @@ class StressCanvasApp(App):
 
     from kivy.config import Config
     Config.set('graphics', 'width', '800')
-    Config.set('graphics', 'height', '440')
+    Config.set('graphics', 'height', '400')
 
     def update_img1(trash, blah):
         try:

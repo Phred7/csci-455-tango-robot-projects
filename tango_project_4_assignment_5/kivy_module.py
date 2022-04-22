@@ -72,9 +72,9 @@ class WaistPopup(FloatLayout):
         if len(self.Choices) > 0:
             print(self.Choices)
             if self.Choices[0] == "Left":
-                connies_global_array.append([Action(Waist(True)), 'holderstring'])
+                connies_global_array.append([Action(Waist(True)), 'waist.jpg'])
             else:
-                connies_global_array.append([Action(Waist(False)), 'holderstring'])
+                connies_global_array.append([Action(Waist(False)), 'waist.jpg'])
             self.Choices = []
             print(connies_global_array)
             self.parent.parent.parent.dismiss()
@@ -104,7 +104,7 @@ class MovePopup(FloatLayout):
                 forward = True
             if self.Choices == "Fast":
                 speed = True
-            connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'holderstring'])
+            connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'move.jpg'])
             self.Choices = []
             print(connies_global_array)
             self.parent.parent.parent.dismiss()
@@ -133,7 +133,7 @@ class TurnPopup(FloatLayout):
             left = False
             if self.Choices[0] == "Left":
                 left = True
-            connies_global_array.append([Action(Turn(left, self.choices[1])), 'holderstring'])
+            connies_global_array.append([Action(Turn(left, self.choices[1])), 'turn.jpg'])
             self.Choices = []
             print(connies_global_array)
             self.parent.parent.parent.dismiss()
@@ -161,7 +161,7 @@ class SpeechPopup(FloatLayout):
             input = False
             if self.Choices[0] == "Input":
                 input = True
-            connies_global_array.append([Action(Speech(input, self.speech_string)), ""])
+            connies_global_array.append([Action(Speech(input, self.speech_string)), "speech.jpg"])
             self.Choices = []
             print(connies_global_array)
             self.parent.parent.parent.dismiss()

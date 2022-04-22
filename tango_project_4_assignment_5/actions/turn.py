@@ -1,7 +1,7 @@
 import time
 
-from tango_project_4_assignment_5.action_stategy import ActionStrategy
-from tango_project_4_assignment_5.controller import Controller
+from action_stategy import ActionStrategy
+from controller import Controller
 
 
 class Turn(ActionStrategy):

@@ -22,6 +22,7 @@ from kivy.uix.popup import Popup
 
 from action import Action
 import speech_recognition
+import pyttsx3
 from actions.head import Head
 
 # full of tuples (Action, string pictureurl)
@@ -70,9 +71,9 @@ class WaistPopup(FloatLayout):
     def button_press(self, idk):
         print(self.Choices)
         if self.Choices[0] == "Left":
-            connies_global_array.append([Action(Waist(True)), 'waist.jpg']) #only have one image for this, can make more later
+            connies_global_array.append([Action(Waist(True)), 'holderstring'])
         else:
-            connies_global_array.append([Action(Waist(False)), 'waist.jpg'])
+            connies_global_array.append([Action(Waist(False)), 'holderstring'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -102,7 +103,7 @@ class MovePopup(FloatLayout):
             forward = True
         if self.Choices == "Fast":
             speed = True
-        connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'move.jpg'])
+        connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'holderstring'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -125,11 +126,12 @@ class TurnPopup(FloatLayout):
 
     def button_press(self, idk):
         # StressCanvasApp.image_callback(StressCanvasApp.rects,'Jillian-45.jpeg')
+        # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
         print(self.Choices)
         left = False
         if self.Choices[0] == "Left":
             left = True
-        connies_global_array.append([Action(Turn(left, self.choices[1])), 'turn.jpg'])
+        connies_global_array.append([Action(Turn(left, self.choices[1])), 'holderstring'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -156,7 +158,7 @@ class SpeechPopup(FloatLayout):
         input = False
         if self.Choices[0] == "Input":
             input = True
-        connies_global_array.append([Action(Speech(input, self.speech_string)), "speech.jpg"])
+        connies_global_array.append([Action(Speech(input, self.speech_string)), ""])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()

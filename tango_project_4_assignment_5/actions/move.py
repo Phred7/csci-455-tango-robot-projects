@@ -28,7 +28,7 @@ class Move(ActionStrategy):
                 f"moving {'forward' if self.move_forward_bool else 'backwards'} for {self.time_to_move}seconds {'slow' if not self.speed else 'fast'}")
         else:
             if self.move_forward_bool:
-                controller.motor_velocity_counter = 5725
+                controller.motor_velocity_counter = 4725
                 controller.forward()
                 # controller.forward(controller.fivestepsofPOWER[1 if not self.speed else 0])
             elif not self.move_forward_bool:

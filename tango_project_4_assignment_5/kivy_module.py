@@ -160,15 +160,15 @@ class SpeechPopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, _idk):
-        print(self.Choices)
+        # print(self.Choices)
         if len(self.Choices) > 0:
             print(self.Choices)
             input = False
-            if self.Choices[0] == "Input":
+            if self.Choices[len(self.Choices)-1] == "Input":
                 input = True
             connies_global_array.append([Action(Speech(input, self.speech_string)), "speech.jpg"])
             self.Choices = []
-            print(connies_global_array)
+            # print(connies_global_array)
             self.parent.parent.parent.dismiss()
 
     def record_button(self, _button_value) -> None:

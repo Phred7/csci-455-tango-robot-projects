@@ -52,6 +52,7 @@ class HeadPopup(FloatLayout):
             print(self.Choices)
             connies_global_array.append([Action(Head(self.Choices[0])), 'Jillian-45.jpeg'])
             self.Choices = []
+            print(len(self.Choices))
             # print(connies_global_array)
             self.parent.parent.parent.dismiss()
 

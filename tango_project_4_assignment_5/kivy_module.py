@@ -167,8 +167,9 @@ class SpeechPopup(FloatLayout):
             self.parent.parent.parent.dismiss()
 
     def record_button(self, _button_value) -> None:
+        self.__say(f"Speak when ready.")
         self.speech_string = self.__get_speech()
-        self.__say(f"Got the string \'{self.speech_string}\'")
+        self.__say(f"Got the string \'{self.speech_string}\'.")
 
     def __get_speech(self) -> str:
         user_input: str = ""
@@ -185,7 +186,7 @@ class SpeechPopup(FloatLayout):
                     audio = recognizer.listen(source, timeout=8)
                     user_input = recognizer.recognize_google(audio)
                     print(f"got audio {user_input}")
-                    break
+                    return user_input
 
                 except speech_recognition.UnknownValueError:
                     print("Unknown voice input")

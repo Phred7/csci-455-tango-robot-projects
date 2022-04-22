@@ -50,7 +50,7 @@ class HeadPopup(FloatLayout):
     def button_press(self, idk):
         if len(self.Choices) > 0:
             print(self.Choices)
-            connies_global_array.append([Action(Head(self.Choices[0])), 'Jillian-45.jpeg'])
+            connies_global_array.append([Action(Head(self.Choices[0])), 'head.jpg'])
             self.Choices = []
             print(len(self.Choices))
             # print(connies_global_array)

@@ -29,4 +29,5 @@ class Move(ActionStrategy):
         if self.time_to_move > self.max_time:
             self.time_to_move = self.max_time
         time.sleep(self.time_to_move)
+        controller.STOPDROPANDROLL()
         return

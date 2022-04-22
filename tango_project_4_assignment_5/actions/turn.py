@@ -25,4 +25,5 @@ class Turn(ActionStrategy):
         else:
             controller.right_drive_servos()
         time.sleep(self.turn_time)
+        controller.STOPDROPANDROLL()
         return

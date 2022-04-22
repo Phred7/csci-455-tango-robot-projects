@@ -15,7 +15,7 @@ class Move(ActionStrategy):
         self.move_forward_bool: bool = move_forward_bool
         self.time_to_move: int = time_to_move
         self.speed: bool = speed
-        self.max_time: int = 5
+        self.max_time: int = 10
 
     def execute_action(self, controller: Controller) -> None:
         """

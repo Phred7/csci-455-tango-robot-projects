@@ -87,7 +87,6 @@ class Controller:
             lsb) + chr(msb)
         self.servo_controller.write(serial_command.encode('utf-8'))
         print(f"moved {servo} on port 0x{int(self.servo_robot_anatomy_map.get(servo))} to {target}")
-        sleep(0.5)
 
     def drive_multiple_servos(self, servos: List[str], targets: List[int]) -> None:
         """
@@ -154,6 +153,7 @@ class Controller:
         if self.twist_position > 4:
             self.twist_position = 4
         self.drive_servo("waist", self.fivestepsofPOWER[self.twist_position])
+        sleep(0.5)
 
     def headnod(self, turn_up):
         # channel 3
@@ -168,6 +168,7 @@ class Controller:
         if self.twist_position > 4:
             self.twist_position = 4
         self.drive_servo("head_tilt", self.fivestepsofPOWER[self.twist_position])
+        sleep(0.5)
         pass
 
     def headshake(self, turnright):
@@ -183,6 +184,7 @@ class Controller:
         if self.twist_position > 4:
             self.twist_position = 4
         self.drive_servo("head_pan", self.fivestepsofPOWER[self.twist_position])
+        sleep(0.5)
 
     def left_drive_servos(self):
         # > 6000 on channel 2

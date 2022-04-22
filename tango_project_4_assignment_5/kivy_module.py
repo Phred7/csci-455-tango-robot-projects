@@ -7,7 +7,8 @@ numbers of small squares. You should see a black canvas with buttons and a
 label at the bottom. Pressing the buttons adds small colored squares to the
 canvas.
 """
-from typing import Tuple, List
+from time import sleep
+from typing import Tuple, List, Any
 
 from kivy.animation import Animation
 from kivy.uix.button import Button
@@ -38,7 +39,7 @@ from tango_project_4_assignment_5.actions.turn import Turn
 from tango_project_4_assignment_5.actions.waist import Waist
 from tango_project_4_assignment_5.controller import Controller
 
-connies_global_array: List[Tuple[Action, str]] = []
+connies_global_array: List[List[Any]] = []
 
 
 class HeadPopup(FloatLayout):
@@ -52,7 +53,7 @@ class HeadPopup(FloatLayout):
 
     def button_press(self, idk):
         print(self.Choices)
-        connies_global_array.append((Action(Head(self.Choices[0])), 'spider.jpg'))
+        connies_global_array.append([Action(Head(self.Choices[0])), 'Jillian-45.jpeg'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -76,9 +77,9 @@ class WaistPopup(FloatLayout):
     def button_press(self, idk):
         print(self.Choices)
         if self.Choices[0] == "Left":
-            connies_global_array.append((Action(Waist(True)), 'holderstring'))
+            connies_global_array.append([Action(Waist(True)), 'holderstring'])
         else:
-            connies_global_array.append((Action(Waist(False)), 'holderstring'))
+            connies_global_array.append([Action(Waist(False)), 'holderstring'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -108,7 +109,7 @@ class MovePopup(FloatLayout):
             forward = True
         if self.Choices == "Fast":
             speed = True
-        connies_global_array.append((Action(Move(forward, self.choices[1], speed)), 'holderstring'))
+        connies_global_array.append([Action(Move(forward, self.choices[1], speed)), 'holderstring'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -130,13 +131,13 @@ class TurnPopup(FloatLayout):
             self.Choices.remove(str(text))
 
     def button_press(self, idk):
-        # StressCanvasApp.image_callback(StressCanvasApp.rects,'spider.jpg')
+        # StressCanvasApp.image_callback(StressCanvasApp.rects,'Jillian-45.jpeg')
         # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
         print(self.Choices)
         left = False
         if self.Choices[0] == "Left":
             left = True
-        connies_global_array.append((Action(Turn(left, self.choices[1])), 'holderstring'))
+        connies_global_array.append([Action(Turn(left, self.choices[1])), 'holderstring'])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -163,7 +164,7 @@ class SpeechPopup(FloatLayout):
         input = False
         if self.Choices[0] == "Input":
             input = True
-        connies_global_array.append((Action(Speech(input, self.speech_string)), ""))
+        connies_global_array.append([Action(Speech(input, self.speech_string)), ""])
         self.Choices = []
         print(connies_global_array)
         self.parent.parent.parent.dismiss()
@@ -232,9 +233,17 @@ def show_Delete(trash):
 
 def play(_button_value) -> None:
     # robot_controller: Controller = Controller()
-    for action, string in connies_global_array:
-        print(f"running {action.action_strategy_obj.type} with image \'{string}\'")
+    # global connies_global_array
+    for i, (action, string) in enumerate(connies_global_array):
+        playImg = 'Basically-Mixer.jpeg'
+        currentImg = string
+        print(connies_global_array[i][1])
+        connies_global_array[i][1] = playImg
+        print(connies_global_array[i][1])
+        print(f"running {action.action_strategy_obj.type} with image \'{playImg}\'")
         # action.execute_action(robot_controller)
+        sleep(1)
+        connies_global_array[i][1] = currentImg
 
 
 Config.set('graphics', 'resizable', True)
@@ -245,6 +254,7 @@ class StressCanvasApp(App):
         try:
             connies_global_array[0]
             img.source = connies_global_array[0][1]
+            print('hey' + str(connies_global_array))
         except IndexError:
             img.source = 'gray.jpg'
 
@@ -301,7 +311,6 @@ class StressCanvasApp(App):
         rectImage.source = value
 
     def build(self):
-        label = Label(text='0')
         global img
         global img2
         global img3
@@ -319,7 +328,6 @@ class StressCanvasApp(App):
         Clock.schedule_interval(self.update_img6, 1)
         Clock.schedule_interval(self.update_img7, 1)
         Clock.schedule_interval(self.update_img8, 1)
-
 
 
         img = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})

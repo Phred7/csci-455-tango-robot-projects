@@ -231,17 +231,10 @@ def show_Delete(trash):
 
 
 def play(_button_value) -> None:
-    animation = Animation(pos=(100, 100), t='out_bounce')
-    animation += Animation(pos=(200, 100), t='out_bounce')
-    animation &= Animation(size=(500, 500))
-    animation += Animation(size=(100, 50))
     # robot_controller: Controller = Controller()
-    # for action, string in connies_global_array:
-    #     action.execute_action(robot_controller)
-    animation.start(_button_value)
-
-    e = Label(text= 'test')
-    e.canvas()
+    for action, string in connies_global_array:
+        print(f"running {action.action_strategy_obj.type} with image \'{string}\'")
+        # action.execute_action(robot_controller)
 
 
 Config.set('graphics', 'resizable', True)

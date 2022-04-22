@@ -242,7 +242,8 @@ class DeletePopup(FloatLayout):
                 connies_global_array = []
             if self.Choices[0] == 'Last':
                 print('tired to delete last one')
-                connies_global_array.pop()
+                if (len(connies_global_array) > 0):
+                    connies_global_array.pop()
             print(connies_global_array)
             self.parent.parent.parent.dismiss()
 

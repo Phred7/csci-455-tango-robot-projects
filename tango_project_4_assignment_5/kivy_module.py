@@ -10,34 +10,26 @@ canvas.
 from time import sleep
 from typing import Tuple, List, Any
 
-from kivy.animation import Animation
 from kivy.uix.button import Button
-from kivy.uix.widget import Widget
-from kivy.uix.image import Image, AsyncImage
+from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
 from kivy.clock import Clock
-from kivymd.app import MDApp
-from kivy.graphics import Color, Rectangle
-from random import random as r
-from functools import partial
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
-from kivymd.uix.spinner import MDSpinner
 
 from action import Action
 import speech_recognition
-import pyttsx3
-from tango_project_4_assignment_5.actions.head import Head
+from actions.head import Head
 
 # full of tuples (Action, string pictureurl)
-from tango_project_4_assignment_5.actions.move import Move
-from tango_project_4_assignment_5.actions.speech import Speech
-from tango_project_4_assignment_5.actions.turn import Turn
-from tango_project_4_assignment_5.actions.waist import Waist
-from tango_project_4_assignment_5.controller import Controller
+from actions.move import Move
+from actions.speech import Speech
+from actions.turn import Turn
+from actions.waist import Waist
+from controller import Controller
 
 connies_global_array: List[List[Any]] = []
 
@@ -252,7 +244,6 @@ class StressCanvasApp(App):
 
     def update_img1(trash, blah):
         try:
-            connies_global_array[0]
             img.source = connies_global_array[0][1]
             print('hey' + str(connies_global_array))
         except IndexError:
@@ -260,49 +251,42 @@ class StressCanvasApp(App):
 
     def update_img2(trash, blah):
         try:
-            connies_global_array[1]
             img2.source = connies_global_array[1][1]
         except IndexError:
             img2.source = 'gray.jpg'
 
     def update_img3(trash, blah):
         try:
-            connies_global_array[2]
             img3.source = connies_global_array[2][1]
         except IndexError:
             img3.source = 'gray.jpg'
 
     def update_img4(trash, blah):
         try:
-            connies_global_array[3]
             img4.source = connies_global_array[3][1]
         except IndexError:
             img4.source = 'gray.jpg'
 
     def update_img5(trash, blah):
         try:
-            connies_global_array[4]
             img5.source = connies_global_array[4][1]
         except IndexError:
             img5.source = 'gray.jpg'
 
     def update_img6(trash, blah):
         try:
-            connies_global_array[5]
             img6.source = connies_global_array[5][1]
         except IndexError:
             img6.source = 'gray.jpg'
 
     def update_img7(trash, blah):
         try:
-            connies_global_array[6]
             img7.source = connies_global_array[6][1]
         except IndexError:
             img7.source = 'gray.jpg'
 
     def update_img8(trash, blah):
         try:
-            connies_global_array[7]
             img8.source = connies_global_array[7][1]
         except IndexError:
             img8.source = 'gray.jpg'

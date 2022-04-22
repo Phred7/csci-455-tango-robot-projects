@@ -272,7 +272,7 @@ def play_thread(_button: Button) -> None:
         # sleep(1)
         # connies_global_array[i][1] = currentImg
     _button.disabled = False
-    # sleep(300)
+    sleep(300)
 
 
 Config.set('graphics', 'resizable', True)

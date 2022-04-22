@@ -9,11 +9,11 @@ from serial import SerialException
 class Controller:
 
     def __init__(self) -> None:
-        self.fivestepsofPOWER: Dict[int:int] = {0: 4000,  # rhigh
-                                                1: 5000,  # rmid
-                                                2: 6000,  # mid
-                                                3: 7000,  # lmid
-                                                4: 8000}  # lhigh
+        self.fivestepsofPOWER: Dict[int:int] = {0: 4000, #rhigh
+                                                1: 5000, #rmid
+                                                2: 6000, #mid
+                                                3: 7000, #lmid
+                                                4: 8000} #lhigh
 
         self.servo_robot_anatomy_map: Dict[str: int] = {"waist": 0x00,
                                                         "motors": 0x01,
@@ -41,10 +41,10 @@ class Controller:
         self.twist_position: int = self.twist_neutral
         self.motor_velocity_counter: int = self.servo_neutral
         self.motor_turn_velocity_counter: int = self.servo_neutral
-        self.motor_step_size: int = 250
+        self.motor_step_size: int = 64
         if self.servo_controller is None:
             print(f"No servo controller found on {platform.system()} serial port")
-            exit(1)
+            # exit(1)
         else:
             print(f"Servo controller found on {self.servo_controller.name}")
         # self.drive_servo("turn_motors", self.servo_neutral)
@@ -64,7 +64,7 @@ class Controller:
         elif platform.system() == 'Windows':
             try:
                 device = serial.Serial('COM21')  # COM21
-                return device
+                return None
             except SerialException:
                 return None
         elif platform.system() == 'Darwin':
@@ -96,37 +96,31 @@ class Controller:
         :param targets:
         :return:
         """
-        serial_cmd = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(
-            int(self.servo_robot_anatomy_map.get(servos[0])))
+        serial_cmd = chr(0xaa) + chr(0xC) + chr(0x1F) + chr(len(servos)) + chr(int(self.servo_robot_anatomy_map.get(servos[0])))
         for t in targets:
             serial_cmd += chr(t & 0x7F)
             serial_cmd += chr((t >> 7) & 0x7F)
         self.servo_controller.write(serial_cmd.encode('utf-8'))
         sleep(0.05)
 
-    def forward(self, velocity_pulse_microseconds: int):
+    def forward(self):
         # < 6000 on channel 1
-        self.motor_velocity_counter = velocity_pulse_microseconds
-        # if self.motor_velocity_counter > 5300:
-        #     self.motor_velocity_counter = 5300
+        self.motor_velocity_counter -= self.motor_step_size
         if self.motor_velocity_counter < self.servo_min:
             self.motor_velocity_counter = self.servo_min
         if self.motor_velocity_counter > self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_servo("motors", self.motor_velocity_counter)
-        print(f"driving forward: {self.motor_velocity_counter}")
 
-    def reverse(self, velocity_pulse_microseconds: int):
+    def reverse(self):
         # > 6000 on channel 1
-        self.motor_velocity_counter = velocity_pulse_microseconds
-        # if self.motor_velocity_counter < 6700:
-        #     self.motor_velocity_counter = 6700
+        self.motor_velocity_counter += self.motor_step_size
         if self.motor_velocity_counter > self.servo_max:
             self.motor_velocity_counter = self.servo_max
         if self.motor_velocity_counter < self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_servo("motors", self.motor_velocity_counter)
-        print(f"driving reverse: {self.motor_velocity_counter}")
+        pass
 
     def STOPDROPANDROLL(self):
         # 6000 on channel 2 and 1
@@ -146,10 +140,10 @@ class Controller:
         print("stopped")
         return
 
-    def turn_waist(self, turn_right_bool: bool):
+    def turn_waist(self, turn_right):
         # channel 0
         # from right to left 4096, 4688, 5376, 5968, 8192
-        if turn_right_bool:
+        if turn_right:
             self.twist_position += 1
         else:
             self.twist_position -= 1
@@ -160,10 +154,10 @@ class Controller:
             self.twist_position = 4
         self.drive_servo("waist", self.fivestepsofPOWER[self.twist_position])
 
-    def headnod(self, turn_up_bool: bool):
+    def headnod(self, turn_up):
         # channel 3
         # from right to left 4096, 4688, 5376, 5968, 8192
-        if turn_up_bool:
+        if turn_up:
             self.twist_position += 1
         else:
             self.twist_position -= 1
@@ -175,10 +169,10 @@ class Controller:
         self.drive_servo("head_tilt", self.fivestepsofPOWER[self.twist_position])
         pass
 
-    def headshake(self, turn_right_bool: bool):
+    def headshake(self, turnright):
         # channel 4
         # from up to down 4096, 4688, 5376, 5968, 8192
-        if turn_right_bool:
+        if turnright:
             self.twist_position += 1
         else:
             self.twist_position -= 1
@@ -202,8 +196,7 @@ class Controller:
         if self.motor_velocity_counter < self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_multiple_servos(["motors", "turn_motors"],
-                                   [self.servo_neutral, self.motor_turn_velocity_counter])
-        print(f"driving left: {self.motor_turn_velocity_counter}")
+                                         [self.servo_neutral, self.motor_turn_velocity_counter])
         # print(f"drive left with target {self.motor_turn_velocity_counter}")
         # sleep(0.05)
 
@@ -216,8 +209,7 @@ class Controller:
         if self.motor_velocity_counter > self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
         self.drive_multiple_servos(["motors", "turn_motors"],
-                                   [self.servo_neutral, self.motor_turn_velocity_counter])
-        print(f"driving right: {self.motor_turn_velocity_counter}")
+                                         [self.servo_neutral, self.motor_turn_velocity_counter])
         # print(f"drive right with target {self.motor_turn_velocity_counter}")
         # sleep(0.05)
 

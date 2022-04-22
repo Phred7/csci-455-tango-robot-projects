@@ -1,3 +1,5 @@
+import platform
+
 from action_stategy import ActionStrategy
 from controller import Controller
 
@@ -18,14 +20,17 @@ class Head(ActionStrategy):
         :return: None.
         """
         print(f"head direction: {self.direction_to_move}")
-        if self.direction_to_move == "Up":
-            controller.headnod(True)
-        elif self.direction_to_move == "Down":
-            controller.headnod(False)
-        elif self.direction_to_move == "Left":
-            controller.headshake(False)
-        elif self.direction_to_move == "Right":
-            controller.headshake(True)
+        if platform.system() == 'Windows':
+            pass
         else:
-            print("head movement direction not recognized.")
+            if self.direction_to_move == "Up":
+                controller.headnod(True)
+            elif self.direction_to_move == "Down":
+                controller.headnod(False)
+            elif self.direction_to_move == "Left":
+                controller.headshake(False)
+            elif self.direction_to_move == "Right":
+                controller.headshake(True)
+            else:
+                print("head movement direction not recognized.")
         return

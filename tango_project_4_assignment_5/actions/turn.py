@@ -1,3 +1,4 @@
+import platform
 import time
 
 from action_stategy import ActionStrategy
@@ -20,32 +21,55 @@ class Turn(ActionStrategy):
         :param controller: Controller object to control this system.
         :return: None.
         """
-        if self.turn_left_bool:
-            controller.left_drive_servos()
-            controller.left_drive_servos()
-            controller.left_drive_servos()
-            controller.left_drive_servos()
-            controller.left_drive_servos()
-            controller.left_drive_servos()
-            controller.left_drive_servos()
-            controller.left_drive_servos()
-            controller.left_drive_servos()
-            controller.left_drive_servos()
-            # controller.motor_turn_velocity_counter = controller.fivestepsofPOWER[3]
-            controller.left_drive_servos()
+        if platform.system() == 'Windows':
+            print(f"turning {'left' if self.turn_left_bool else 'right'} for {self.turn_time}seconds")
         else:
-            controller.right_drive_servos()
-            controller.right_drive_servos()
-            controller.right_drive_servos()
-            controller.right_drive_servos()
-            controller.right_drive_servos()
-            controller.right_drive_servos()
-            controller.right_drive_servos()
-            controller.right_drive_servos()
-            controller.right_drive_servos()
-            controller.right_drive_servos()
-            # controller.motor_turn_velocity_counter = controller.fivestepsofPOWER[1]
-            controller.right_drive_servos()
-        time.sleep(self.turn_time)
-        controller.STOPDROPANDROLL()
+            if self.turn_left_bool:
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                controller.left_drive_servos()
+                # controller.motor_turn_velocity_counter = controller.fivestepsofPOWER[3]
+                controller.left_drive_servos()
+            else:
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                controller.right_drive_servos()
+                # controller.motor_turn_velocity_counter = controller.fivestepsofPOWER[1]
+                controller.right_drive_servos()
+            time.sleep(self.turn_time)
+            controller.STOPDROPANDROLL()
         return

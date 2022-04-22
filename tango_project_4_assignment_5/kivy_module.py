@@ -50,7 +50,7 @@ class HeadPopup(FloatLayout):
     def button_press(self, idk):
         if len(self.Choices) > 0:
             print(self.Choices)
-            connies_global_array.append([Action(Head(self.Choices[0])), 'head.jpg'])
+            connies_global_array.append([Action(Head(self.Choices[len(self.Choices)-1])), 'head.jpg'])
             self.Choices = []
             print(len(self.Choices))
             # print(connies_global_array)
@@ -75,7 +75,7 @@ class WaistPopup(FloatLayout):
     def button_press(self, idk):
         if len(self.Choices) > 0:
             # print(self.Choices)
-            if self.Choices[0] == "Left":
+            if self.Choices[len(self.Choices)-1] == "Left":
                 connies_global_array.append([Action(Waist(True)), 'waist.jpg'])
             else:
                 connies_global_array.append([Action(Waist(False)), 'waist.jpg'])
@@ -101,7 +101,7 @@ class MovePopup(FloatLayout):
 
     def button_press(self, idk):
         if len(self.Choices) > 0:
-            # print(self.Choices)
+            print(self.Choices)
             forward = False
             speed = False
             if self.Choices[0] == "Forward":
@@ -197,7 +197,8 @@ class SpeechPopup(FloatLayout):
 
                 except speech_recognition.UnknownValueError:
                     print("Unknown voice input")
-                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what'd you say?", "nani", "", "", "", ""]
+                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what'd you say?", "nani",
+                                          "", "", "", ""]
                     self.__say(random.choice(strings))
                 except speech_recognition.WaitTimeoutError:
                     print("Listen timeout exceeded")
@@ -256,6 +257,7 @@ def play(_button: Button) -> None:
     thread.start()
     thread.join()
 
+
 def play_thread(_button: Button) -> None:
     robot_controller: Controller = Controller()
     # global connies_global_array
@@ -265,17 +267,18 @@ def play_thread(_button: Button) -> None:
         # print(connies_global_array[i][1])
         # connies_global_array[i][1] = playImg
         # print(connies_global_array[i][1])
-        print(f"running {action.action_strategy_obj.type} with image \'{connies_global_array[i][1]}\'")
+        # print(f"running {action.action_strategy_obj.type} with image \'{connies_global_array[i][1]}\'")
         action.execute_action(robot_controller)
         # sleep(1)
         # connies_global_array[i][1] = currentImg
     _button.disabled = False
-    sleep(300)
+    # sleep(300)
+
 
 Config.set('graphics', 'resizable', True)
 
-class StressCanvasApp(App):
 
+class StressCanvasApp(App):
     from kivy.config import Config
     Config.set('graphics', 'width', '800')
     Config.set('graphics', 'height', '400')
@@ -354,7 +357,6 @@ class StressCanvasApp(App):
         Clock.schedule_interval(self.update_img7, 1)
         Clock.schedule_interval(self.update_img8, 1)
 
-
         img = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
         img2 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
         img3 = Image(source='gray.jpg', allow_stretch=True, keep_ratio=False, size_hint_y=0.5, pos_hint={'top': 0.75})
@@ -383,7 +385,7 @@ class StressCanvasApp(App):
         btn_delete.bind(on_press=show_Delete)
 
         btn_play = Button(text='Play')
-        btn_play.bind(on_press=play)
+        btn_play.bind(on_release=play)
 
         layout = BoxLayout(size_hint=(0.2, 1), orientation='vertical', padding=[0, 10, 0, 10])
 

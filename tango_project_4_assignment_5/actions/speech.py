@@ -1,3 +1,4 @@
+import platform
 import random
 from typing import List
 
@@ -23,13 +24,16 @@ class Speech(ActionStrategy):
         :param controller: Controller object to control this system.
         :return: None.
         """
-        if self.speech_input_bool:
-            self.__say("Speak when ready.")
-            self.speech_string = Speech.__get_speech()
-            self.__say(f"Got the string \'{self.speech_string}\'.")
+        if platform.system() == 'Windows':
+            print("Getting a speech input" if self.speech_input_bool else f"Outputting: {self.speech_string}")
         else:
-            if self.speech_string != "":
-                Speech.__say(self.speech_string)
+            if self.speech_input_bool:
+                self.__say("Speak when ready.")
+                self.speech_string = Speech.__get_speech()
+                self.__say(f"Got the string \'{self.speech_string}\'.")
+            else:
+                if self.speech_string != "":
+                    Speech.__say(self.speech_string)
         return
 
     @staticmethod

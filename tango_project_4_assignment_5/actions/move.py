@@ -1,3 +1,4 @@
+import platform
 import time
 
 from action_stategy import ActionStrategy
@@ -22,12 +23,15 @@ class Move(ActionStrategy):
         :param controller: Controller object to control this system.
         :return: None.
         """
-        if self.move_forward_bool:
-            controller.forward(controller.fivestepsofPOWER[1 if not self.speed else 0])
-        elif not self.move_forward_bool:
-            controller.reverse(controller.fivestepsofPOWER[3 if not self.speed else 4])
-        if self.time_to_move > self.max_time:
-            self.time_to_move = self.max_time
-        time.sleep(self.time_to_move)
-        controller.STOPDROPANDROLL()
+        if platform.system() == 'Windows':
+            print(f"moving {'forward' if self.move_forward_bool else 'backwards'} for {self.time_to_move}seconds {'slow' if not self.speed else 'fast'}")
+        else:
+            if self.move_forward_bool:
+                controller.forward(controller.fivestepsofPOWER[1 if not self.speed else 0])
+            elif not self.move_forward_bool:
+                controller.reverse(controller.fivestepsofPOWER[3 if not self.speed else 4])
+            if self.time_to_move > self.max_time:
+                self.time_to_move = self.max_time
+            time.sleep(self.time_to_move)
+            controller.STOPDROPANDROLL()
         return

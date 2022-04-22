@@ -1,3 +1,5 @@
+import platform
+
 from action_stategy import ActionStrategy
 from controller import Controller
 
@@ -17,5 +19,8 @@ class Waist(ActionStrategy):
         :param controller: Controller object to control this system.
         :return: None.
         """
-        controller.turn_waist(not self.waist_turn_left_bool)
+        if platform.system() == 'Windows':
+            print(f"turning waist {'left' if self.waist_turn_left_bool else 'right'}")
+        else:
+            controller.turn_waist(not self.waist_turn_left_bool)
         return

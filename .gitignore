@@ -1,1 +1,4 @@
 .idea/
+*.pyc
+*.pyc
+tango_project_4_assignment_5/__pycache__/action_stategy.cpython-39.pyc

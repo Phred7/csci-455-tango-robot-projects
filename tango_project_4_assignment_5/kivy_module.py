@@ -7,6 +7,7 @@ numbers of small squares. You should see a black canvas with buttons and a
 label at the bottom. Pressing the buttons adds small colored squares to the
 canvas.
 """
+import random
 import threading
 from time import sleep
 from typing import Tuple, List, Any
@@ -194,6 +195,8 @@ class SpeechPopup(FloatLayout):
 
                 except speech_recognition.UnknownValueError:
                     print("Unknown voice input")
+                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what'd you say?", "nani", "", "", "", ""]
+                    self.__say(random.choice(strings))
                 except speech_recognition.WaitTimeoutError:
                     print("Listen timeout exceeded")
 

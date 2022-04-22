@@ -1,3 +1,6 @@
+import random
+from typing import List
+
 from action_stategy import ActionStrategy
 from controller import Controller
 import speech_recognition
@@ -59,6 +62,8 @@ class Speech(ActionStrategy):
 
                 except speech_recognition.UnknownValueError:
                     print("Unknown input.")
+                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what'd you say?", "nani", "", "", "", "", "unrecognizable input"]
+                    Speech.__say(random.choice(strings))
                 except speech_recognition.WaitTimeoutError:
                     print("Listen timeout exceeded.")
 

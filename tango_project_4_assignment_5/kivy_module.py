@@ -31,6 +31,7 @@ from actions.turn import Turn
 from actions.waist import Waist
 from controller import Controller
 
+global connies_global_array
 connies_global_array: List[List[Any]] = []
 
 
@@ -241,6 +242,10 @@ def play(_button_value) -> None:
 Config.set('graphics', 'resizable', True)
 
 class StressCanvasApp(App):
+
+    from kivy.config import Config
+    Config.set('graphics', 'width', '800')
+    Config.set('graphics', 'height', '440')
 
     def update_img1(trash, blah):
         try:

@@ -230,7 +230,7 @@ def show_Delete(trash):
 
 
 def play(_button_value) -> None:
-    # robot_controller: Controller = Controller()
+    robot_controller: Controller = Controller()
     # global connies_global_array
     for i, (action, string) in enumerate(connies_global_array):
         playImg = 'Basically-Mixer.jpeg'
@@ -239,7 +239,7 @@ def play(_button_value) -> None:
         connies_global_array[i][1] = playImg
         print(connies_global_array[i][1])
         print(f"running {action.action_strategy_obj.type} with image \'{playImg}\'")
-        # action.execute_action(robot_controller)
+        action.execute_action(robot_controller)
         sleep(1)
         connies_global_array[i][1] = currentImg
 

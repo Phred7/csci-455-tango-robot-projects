@@ -28,13 +28,41 @@ class Move(ActionStrategy):
                 f"moving {'forward' if self.move_forward_bool else 'backwards'} for {self.time_to_move}seconds {'slow' if not self.speed else 'fast'}")
         else:
             if self.move_forward_bool:
-                controller.motor_velocity_counter = 4725
+                # controller.motor_velocity_counter = 4976
                 controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+                controller.forward()
+
                 # controller.forward(controller.fivestepsofPOWER[1 if not self.speed else 0])
             elif not self.move_forward_bool:
-                controller.motor_velocity_counter = 7250
+                # controller.motor_velocity_counter = 7024
                 controller.reverse()
-                controller.reverse(controller.fivestepsofPOWER[3 if not self.speed else 4])
+                controller.reverse()
+                controller.reverse()
+                controller.reverse()
+                controller.reverse()
+                controller.reverse()
+                controller.reverse()
+                controller.reverse()
+                controller.reverse()
+                controller.reverse()
+                controller.reverse()
+                controller.reverse()
+
+                # controller.reverse(controller.fivestepsofPOWER[3 if not self.speed else 4])
             if self.time_to_move > self.max_time:
                 self.time_to_move = self.max_time
             time.sleep(self.time_to_move)

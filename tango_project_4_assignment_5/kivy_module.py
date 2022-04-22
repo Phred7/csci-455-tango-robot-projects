@@ -139,7 +139,7 @@ class TurnPopup(FloatLayout):
             left = False
             if self.Choices[0] == "Left":
                 left = True
-            connies_global_array.append([Action(Turn(left, int(self.Choices[len(self.Choices)-2]))), 'turn.jpg'])
+            connies_global_array.append([Action(Turn(left, int(self.Choices[len(self.Choices)-1]))), 'turn.jpg'])
             self.Choices = []
             # print(connies_global_array)
             self.parent.parent.parent.dismiss()

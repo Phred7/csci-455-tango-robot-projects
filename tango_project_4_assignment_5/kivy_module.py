@@ -261,7 +261,13 @@ def play(_button: Button) -> None:
         playing = True
         _button.disabled = True
         robot_controller: Controller = Controller()
-        robot_controller.drive_servo("motors", 6000)
+        for servo in robot_controller.servo_robot_anatomy_map.keys():
+            robot_controller.drive_servo(servo, robot_controller.servo_neutral)
+            print(f"{servo} set to neutral position")
+            sleep(0.05)
+        robot_controller.drive_servo("motors", 6000+robot_controller.motor_velocity_counter)
+        sleep(.25)
+        robot_controller.STOPDROPANDROLL()
         # global connies_global_array
         for i, (action, string) in enumerate(connies_global_array):
             # playImg = 'Basically-Mixer.jpeg'

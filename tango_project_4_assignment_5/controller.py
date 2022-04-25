@@ -38,6 +38,8 @@ class Controller:
         self.servo_neutral: int = 6000
         self.servo_max: int = 8000
         self.twist_neutral: int = 2
+        self.head_nod_pos: int = 2
+        self.head_pan_pos: int = 2
         self.twist_position: int = self.twist_neutral
         self.motor_velocity_counter: int = self.servo_neutral
         self.motor_turn_velocity_counter: int = self.servo_neutral
@@ -110,7 +112,7 @@ class Controller:
             self.motor_velocity_counter = self.servo_min
         if self.motor_velocity_counter > self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
-        self.drive_servo("motors", self.motor_velocity_counter)
+        self.drive_servo("motors", 4976)
 
     def reverse(self):
         # > 6000 on channel 1
@@ -119,7 +121,7 @@ class Controller:
             self.motor_velocity_counter = self.servo_max
         if self.motor_velocity_counter < self.servo_neutral:
             self.motor_velocity_counter = self.servo_neutral
-        self.drive_servo("motors", self.motor_velocity_counter)
+        self.drive_servo("motors", 7024)
         pass
 
     def STOPDROPANDROLL(self):
@@ -158,30 +160,30 @@ class Controller:
         # channel 3
         # from right to left 4096, 4688, 5376, 5968, 8192
         if turn_up:
-            self.twist_position += 1
+            self.head_nod_pos += 1
         else:
-            self.twist_position -= 1
+            self.head_nod_pos -= 1
 
-        if self.twist_position < 0:
-            self.twist_position = 0
-        if self.twist_position > 4:
-            self.twist_position = 4
-        self.drive_servo("head_tilt", self.fivestepsofPOWER[self.twist_position])
+        if self.head_nod_pos < 0:
+            self.head_nod_pos = 0
+        if self.head_nod_pos > 4:
+            self.head_nod_pos = 4
+        self.drive_servo("head_tilt", self.fivestepsofPOWER[self.head_nod_pos])
         pass
 
     def headshake(self, turnright):
         # channel 4
         # from up to down 4096, 4688, 5376, 5968, 8192
         if turnright:
-            self.twist_position += 1
+            self.head_pan_pos += 1
         else:
-            self.twist_position -= 1
+            self.head_pan_pos -= 1
 
-        if self.twist_position < 0:
-            self.twist_position = 0
-        if self.twist_position > 4:
-            self.twist_position = 4
-        self.drive_servo("head_pan", self.fivestepsofPOWER[self.twist_position])
+        if self.head_pan_pos < 0:
+            self.head_pan_pos = 0
+        if self.head_pan_pos > 4:
+            self.head_pan_pos = 4
+        self.drive_servo("head_pan", self.fivestepsofPOWER[self.head_pan_pos])
 
     def left_drive_servos(self):
         # > 6000 on channel 2

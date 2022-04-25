@@ -7,6 +7,7 @@ numbers of small squares. You should see a black canvas with buttons and a
 label at the bottom. Pressing the buttons adds small colored squares to the
 canvas.
 """
+import platform
 import random
 import threading
 from time import sleep
@@ -35,6 +36,8 @@ from actions.waist import Waist
 from controller import Controller
 
 global connies_global_array
+global playing
+playing = False
 connies_global_array = []
 
 
@@ -102,13 +105,15 @@ class MovePopup(FloatLayout):
     def button_press(self, idk):
         if len(self.Choices) > 0:
             print(self.Choices)
-            forward = False
+            forward = True
             speed = False
-            if self.Choices[0] == "Forward":
+            if self.Choices[len(self.Choices)-3] == "Forward":
                 forward = True
-            if self.Choices == "Fast":
+            elif self.Choices[len(self.Choices)-3] == "Backwards":
+                forward = False
+            if self.Choices[len(self.Choices)-1] == "Fast":
                 speed = True
-            connies_global_array.append([Action(Move(forward, int(self.Choices[1]), speed)), 'move.jpg'])
+            connies_global_array.append([Action(Move(forward, int(self.Choices[len(self.Choices)-2]), speed)), 'move.jpg'])
             self.Choices = []
             # print(connies_global_array)
             self.parent.parent.parent.dismiss()
@@ -133,11 +138,11 @@ class TurnPopup(FloatLayout):
         if len(self.Choices) > 0:
             # StressCanvasApp.image_callback(StressCanvasApp.rects,'Jillian-45.jpeg')
             # TODO find some way to access image widgets (method variables) from other classes (i might also just be stupid)
-            # print(self.Choices)
+            print(self.Choices)
             left = False
-            if self.Choices[0] == "Left":
+            if self.Choices[len(self.Choices)-2] == "Left":
                 left = True
-            connies_global_array.append([Action(Turn(left, int(self.Choices[1]))), 'turn.jpg'])
+            connies_global_array.append([Action(Turn(left, int(self.Choices[len(self.Choices)-1]))), 'turn.jpg'])
             self.Choices = []
             # print(connies_global_array)
             self.parent.parent.parent.dismiss()
@@ -197,8 +202,7 @@ class SpeechPopup(FloatLayout):
 
                 except speech_recognition.UnknownValueError:
                     print("Unknown voice input")
-                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what'd you say?", "nani",
-                                          "", "", "", ""]
+                    strings: List[str] = ["nope", "try again", "you're speaking too quietly", "what did you say?", "nani"]
                     self.__say(random.choice(strings))
                 except speech_recognition.WaitTimeoutError:
                     print("Listen timeout exceeded")
@@ -240,7 +244,8 @@ class DeletePopup(FloatLayout):
                 connies_global_array = []
             if self.Choices[0] == 'Last':
                 print('tired to delete last one')
-                connies_global_array.pop()
+                if (len(connies_global_array) > 0):
+                    connies_global_array.pop()
             print(connies_global_array)
             self.parent.parent.parent.dismiss()
 
@@ -249,13 +254,52 @@ def show_Delete(trash):
     content = DeletePopup()
     popup = Popup(title="ARE YOU SURE YOU WANT TO DELETE?", content=content, size_hint=(None, None), size=(600, 600))
     popup.open()
+    global playing
+    playing = False
 
 
 def play(_button: Button) -> None:
-    _button.disabled = True
-    thread = threading.Thread(name="play program thread", target=play_thread, args=(_button,))
-    thread.start()
-    thread.join()
+    global playing
+    if playing == False:
+        playing = True
+        _button.disabled = True
+        last_action: bool = False
+        robot_controller: Controller = Controller()
+        if platform.system() != "Windows":
+            for servo in robot_controller.servo_robot_anatomy_map.keys():
+                robot_controller.drive_servo(servo, robot_controller.servo_neutral)
+                print(f"{servo} set to neutral position")
+                sleep(0.05)
+        # global connies_global_array
+        for i, (action, string) in enumerate(connies_global_array):
+            # playImg = 'Basically-Mixer.jpeg'
+            # currentImg = string
+            # print(connies_global_array[i][1])
+            # connies_global_array[i][1] = playImg
+            # print(connies_global_array[i][1])
+            # print(f"running {action.action_strategy_obj.type} with image \'{connies_global_array[i][1]}\'")
+            if not last_action and (action.action_strategy_obj.type == "Turn" or action.action_strategy_obj.type == "Move"):
+                print("restart movements\n")
+                a = Action(Move(True, 3, False))
+                a.execute_action(robot_controller)
+                sleep(.25)
+                robot_controller.STOPDROPANDROLL()
+                print("restart movements\n")
+
+            action.execute_action(robot_controller)
+
+            if action.action_strategy_obj.type == "Move" or action.action_strategy_obj.type == "Turn":
+                last_action = True
+            else:
+                last_action = False
+
+            # sleep(1)
+            # connies_global_array[i][1] = currentImg
+        _button.disabled = False
+    # sleep(300)
+    # thread = threading.Thread(name="play program thread", target=play_thread, args=(_button,))
+    # thread.start()
+    # thread.join()
 
 
 def play_thread(_button: Button) -> None:
@@ -269,7 +313,6 @@ def play_thread(_button: Button) -> None:
         # print(connies_global_array[i][1])
         # print(f"running {action.action_strategy_obj.type} with image \'{connies_global_array[i][1]}\'")
         action.execute_action(robot_controller)
-        # sleep(1)
         # connies_global_array[i][1] = currentImg
     _button.disabled = False
     sleep(300)

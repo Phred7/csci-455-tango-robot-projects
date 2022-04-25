@@ -1,4 +1,5 @@
 import platform
+from time import sleep
 
 from action_stategy import ActionStrategy
 from controller import Controller
@@ -21,7 +22,7 @@ class Head(ActionStrategy):
         """
         print(f"head direction: {self.direction_to_move}")
         if platform.system() == 'Windows':
-            pass
+            print("Windows")
         else:
             if self.direction_to_move == "Up":
                 controller.headnod(True)
@@ -33,4 +34,5 @@ class Head(ActionStrategy):
                 controller.headshake(True)
             else:
                 print("head movement direction not recognized.")
+            sleep(2)
         return

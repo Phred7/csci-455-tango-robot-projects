@@ -145,7 +145,7 @@ class IdRatherRipMyNailOFF:
             # TODO affect robot stats
 
     """
-    NOTE: Yes, everything was moved... it wasn't deleted. See /node_activities/...
+    NOTE: Yes, everything was moved @justin... it wasn't deleted. See /node_activities/...
     """
 
     def on_finish(self):  # TODO: note we don't need the key for this to work

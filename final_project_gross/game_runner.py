@@ -1,11 +1,20 @@
 from speech import Speech
+from random import random
+from typing import Tuple
+
+from player_statistics import PlayerStatistics
+
 
 class IdRatherRipMyNailOFF:
 
-    def __int__(self):
-        self.currentCoords = self.initial_coords()
-        self.nextCoords = (0,0)
-        self.map
+    def __init__(self) -> None:
+        self.this_is_the_players_stats_they_gonna_die_lol: PlayerStatistics = PlayerStatistics(player_name="Steven the Slow to Die")
+        self.current_coordinates = self.initial_coordinates()
+        self.next_coordinates = (0, 0)
+
+    @staticmethod
+    def initial_coordinates() -> Tuple[int, int]:
+        return 0, 0
 
     def initial_coords(self):
         return (0,0)
@@ -122,3 +131,9 @@ class IdRatherRipMyNailOFF:
         #         print(f"left forward ({_x},{_y}) -> ({x},{y}))")
         #         self.ycoor += 1
         # return
+    """
+    NOTE: Yes, everything was moved... it wasn't deleted. See /node_activities/...
+    """
+
+    def on_finish(self):  # TODO: note we don't need the key for this to work
+        print('you finished')

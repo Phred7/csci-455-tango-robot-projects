@@ -27,7 +27,7 @@ class IdRatherRipMyNailOFF:
                     ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
                     [0, 0, 1, 0, 1, 0, 1, 0, 0],
                     ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
-        self.node_array = []
+        self.node_array = [] # TODO fill with needed nodes - 2 coffee shops, 6 easy enemies etc...
 
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completly arbitrary but we need it
@@ -36,7 +36,6 @@ class IdRatherRipMyNailOFF:
         self.lesser_x = {'north': 'left90', 'east': '180', 'south': 'right90', 'west': None}
         self.greater_x = {'north': 'right90', 'east': None, 'south': 'left90', 'west': '180'}
 
-    @staticmethod
     def initial_coordinates(self) -> Tuple[int, int]:
         '''
         given the map of the maze find all possible starting points along the edges, and return a random one
@@ -58,7 +57,6 @@ class IdRatherRipMyNailOFF:
         # return a random possible start coordinate
         return rand.choice(possible_start_coords)
 
-    @staticmethod
     def calc_end_coordinates(self) -> Tuple[int, int]:
         '''
         takes the initial coordinates and calculates and end coordinate on the opposite edge of the map
@@ -77,13 +75,20 @@ class IdRatherRipMyNailOFF:
         return coords
 
     def populate_map(self):
+        '''
+        swaps x's in the map for nodes, randomly populates the map
+        :return: None
+        '''
         for i in range(len(self.map)):
             for j in range(len(self.map[i])):
                 if self.map[i][j] == 'x':
                     node = rand.choice(self.node_array)
-                    while node.
+                    while not node.placed_in_map:
+                        node = rand.choice(self.node_array)
+                    self.map[i][j] = node
+                    node.placed_in_map = True
 
-    def userInput(self):
+    def user_input(self):
         '''
         Calculates possible directions the robot can move based on current coordinates
         Asks user what desired direction is
@@ -111,29 +116,29 @@ class IdRatherRipMyNailOFF:
         return possible_moves[user_choice]
 
     def move(self, new_coords):
-        if new_coords == self.end_coordinates:
-            print('you made it to the finish, end of the line pal')
-            # TODO update game lodgic acordingly
         x = self.current_coordinates[0]
         y = self.current_coordinates[1]
         new_x = new_coords[0]
         new_y = new_coords[1]
 
+        if new_coords == self.end_coordinates:
+            print('you made it to the finish, end of the line pal')
+            # TODO update game lodgic acordingly
         if self.total_moves < 30:
             if new_y < y:
                 self.lesser_y[self.direction_facing]  # TODO modify dict so value calls turn function
                 self.movefwd  # TODO actually call fwd
                 self.direction_facing = 'north'
             if new_y > y:
-                self.greater_y[self.direction_facing]
+                self.greater_y[self.direction_facing] # TODO modify dict so value calls turn function
                 self.movefwd  # TODO actually call fwd
                 self.direction_facing = 'south'
             if new_x < x:
-                self.lesser_x[self.direction_facing]
+                self.lesser_x[self.direction_facing] # TODO modify dict so value calls turn function
                 self.movefwd  # TODO actually call fwd
                 self.direction_facing = 'west'
             if new_x > x:
-                self.greater_x[self.direction_facing]
+                self.greater_x[self.direction_facing] # TODO modify dict so value calls turn function
                 self.movefwd  # TODO actually call fwd
                 self.direction_facing = 'east'
             self.total_moves += 1

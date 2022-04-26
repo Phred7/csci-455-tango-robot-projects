@@ -4,7 +4,7 @@ from node_activity import NodeActivity
 class Node:
     """
     Node.
-    Strategy Pattern Context.
+    Strategy Pattern Context. Allows for the abstraction of the node_activity.
     """
 
     def __init__(self, node_name: str, node_id: int, node_activity: NodeActivity) -> None:
@@ -38,3 +38,16 @@ class Node:
         :return: None.
         """
         self.node_activity_object.node_activity()
+
+    def visited(self) -> bool:
+        return self.visited_bool
+
+    def visit_node(self, *, define_visit: bool = None) -> None:
+        """
+        This method updates this Node to the visited state.
+        :param define_visit: If this param is defined, it sets the state of the visited field. I.e. This param can set the visited state to False.
+        :return: None.
+        """
+        self.visited_bool = define_visit if define_visit is not None else True
+
+

@@ -5,12 +5,18 @@ from player_statistics import PlayerStatistics
 
 
 class BattleDifficulty(Enum):
+    """
+    Conveniently stores easily comparable values for the difficulty rating of a Battle.
+    """
     EASY = 0
     MEDIUM = 1
     HARD = 2
 
 
 class Battle:
+    """
+    Encapsulates Battles.
+    """
 
     def __init__(self, difficulty: BattleDifficulty, player_stats: PlayerStatistics) -> None:
         self.battle_difficulty: BattleDifficulty = difficulty

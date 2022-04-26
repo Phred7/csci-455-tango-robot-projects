@@ -1,4 +1,7 @@
 class PlayerStatistics:
+    """
+    Stores and Encapsulates the Statistics for a player.
+    """
 
     def __init__(self, player_name: str) -> None:
         self.__player_name: str = player_name

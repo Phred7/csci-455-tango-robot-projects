@@ -143,7 +143,7 @@ class Controller:
         print("stopped")
         return
 
-    def turn_waist(self, turn_right):
+    def turn_waist(self, turn_right: bool):
         # channel 0
         # from right to left 4096, 4688, 5376, 5968, 8192
         if turn_right:

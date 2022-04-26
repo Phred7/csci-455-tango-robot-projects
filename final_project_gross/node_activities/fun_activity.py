@@ -10,9 +10,6 @@ class FunActivity(NodeActivity):
         super().__init__(player_statistics)
 
     def node_activity(self) -> None:
-        pass
-
-    def fun_node(self):
         fun_choices = ['die', 'heal', 'armor', 'nothing', 'lore']
         choice = random.choice(fun_choices)
 

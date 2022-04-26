@@ -8,5 +8,5 @@ class ChargingStationActivity(NodeActivity):
         super().__init__(player_statistics)
 
     def node_activity(self) -> None:
-        self.player_statistics.set_health(400)
+        self.player_statistics.set_health(400)  # TODO: should it recharge a random amount of health in a range that doesnt exceed some ceiling.
         print('recharged health i guess')

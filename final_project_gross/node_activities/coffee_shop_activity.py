@@ -9,8 +9,5 @@ class CoffeeShopActivity(NodeActivity):
 
     def node_activity(self) -> None:
         pass
-
-    def signal_station(self):
-        pass
         # depending on how node layout is we could either just have some value range determine a direction
         # or we can just figure something else out. This does nothing for now though

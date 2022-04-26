@@ -8,7 +8,7 @@ class TrickyChoiceTypeActivity(NodeActivity):
         NodeActivity.__init__(self, player_statistics)
 
     def node_activity(self) -> None:
-        resp = input('this is the riddle question')  # TODO: replace input with self.get_speech
+        resp = input('this is the riddle question')  # TODO: replace input with Speech.get_speech()
         if resp is not 'correct':
             self.player_statistics.set_health(0)
             print('you died wrong answer')

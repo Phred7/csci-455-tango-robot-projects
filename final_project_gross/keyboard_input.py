@@ -109,16 +109,16 @@ class KeyboardInput:
             self.robot_controller.right_drive_servos()
         elif pressed_key.keycode == self.keydict[self.os]['w']:
             # w: head up
-            self.robot_controller.headnod(True)
+            self.robot_controller.head_nod(True)
         elif pressed_key.keycode == self.keydict[self.os]['s']:
             # s: head down
-            self.robot_controller.headnod(False)
+            self.robot_controller.head_nod(False)
         elif pressed_key.keycode == self.keydict[self.os]['a']:
             # a: head left
-            self.robot_controller.headshake(False)
+            self.robot_controller.head_shake(False)
         elif pressed_key.keycode == self.keydict[self.os]['d']:
             # d: head right
-            self.robot_controller.headshake(True)
+            self.robot_controller.head_shake(True)
         elif pressed_key.keycode == self.keydict[self.os]['z']:
             # z: waist left
             self.robot_controller.turn_waist(False)

@@ -6,6 +6,9 @@ import pyttsx3
 
 
 class Speech:
+    """
+    Implements Text To Speech and a Speech Recognizer.
+    """
 
     @staticmethod
     def say(string: str) -> None:
@@ -23,7 +26,7 @@ class Speech:
             with speech_recognition.Microphone() as source:
                 speech_recognizer = speech_recognition.Recognizer()
                 speech_recognizer.adjust_for_ambient_noise(source)
-                speech_recognizer.dynamic_energy_threshold = 3000
+                speech_recognizer.dynamic_energy_threshold = 1000
                 # r.operation_timeout = 8
                 # r.phrase_threshold = 0.15
                 try:

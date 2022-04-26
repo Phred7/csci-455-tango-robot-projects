@@ -10,20 +10,27 @@ class IdRatherRipMyNailOFF:
     def __init__(self) -> None:
         self.this_is_the_players_stats_they_gonna_die_lol: PlayerStatistics = PlayerStatistics(
             player_name="Steven the Slow to Die")
+
+        # keeps track of location, and total moves levt
         self.current_coordinates = self.initial_coordinates()
         self.next_coordinates = (0, 0)
         self.end_coordinates = self.calc_end_coordinates()
         self.total_moves = 0
+
+        # x = placeholder for node, 1 = connecting path between nodes, 0 = no path
         self.map = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
-                    [  0,  0,  1,  0,  1,  0,  0,  0,  1],
+                    [0, 0, 1, 0, 1, 0, 0, 0, 1],
                     ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
-                    [  1,  0,  1,  0,  0,  0,  1,  0,  1],
+                    [1, 0, 1, 0, 0, 0, 1, 0, 1],
                     ['x', 0, 'x', 1, 'x', 1, 'x', 0, 'x'],
-                    [  1,  0,  0,  0,  0,  0,  1,  0,  1],
+                    [1, 0, 0, 0, 0, 0, 1, 0, 1],
                     ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
-                    [  0,  0,  1,  0,  1,  0,  1,  0,  0],
+                    [0, 0, 1, 0, 1, 0, 1, 0, 0],
                     ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
-        self.direction_facing = 'north'  # Completly arbitrary, since we dont have sensor, will either be north south west or east
+        self.node_array = []
+
+        # Used to move robot in correct directions
+        self.direction_facing = 'north'  # Completly arbitrary but we need it
         self.lesser_y = {'north': None, 'east': 'left90', 'south': '180', 'west': 'right90'}
         self.greater_y = {'north': '180', 'east': 'right90', 'south': None, 'west': 'left90'}
         self.lesser_x = {'north': 'left90', 'east': '180', 'south': 'right90', 'west': None}
@@ -73,8 +80,8 @@ class IdRatherRipMyNailOFF:
         for i in range(len(self.map)):
             for j in range(len(self.map[i])):
                 if self.map[i][j] == 'x':
-                    #TODO set x to a random node
-                    pass
+                    node = rand.choice(self.node_array)
+                    while node.
 
     def userInput(self):
         '''
@@ -106,7 +113,7 @@ class IdRatherRipMyNailOFF:
     def move(self, new_coords):
         if new_coords == self.end_coordinates:
             print('you made it to the finish, end of the line pal')
-            #TODO update game lodgic acordingly
+            # TODO update game lodgic acordingly
         x = self.current_coordinates[0]
         y = self.current_coordinates[1]
         new_x = new_coords[0]

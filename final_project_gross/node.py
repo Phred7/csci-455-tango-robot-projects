@@ -12,6 +12,7 @@ class Node:
         self.node_name: str = node_name
         self.node_id: int = node_id
         self.visited_bool: bool = False
+        self.placed_in_map: bool = False
 
     @property
     def node_activity(self) -> NodeActivity:

@@ -7,7 +7,7 @@ from player_statistics import PlayerStatistics
 class IdRatherRipMyNailOFF:
 
     def __init__(self) -> None:
-        self.this_is_the_player_they_gonna_die_lol: PlayerStatistics = PlayerStatistics("Steven the Slow")
+        self.this_is_the_player_they_gonna_die_lol: PlayerStatistics = PlayerStatistics("Steven the Slow to Die")
         self.current_coordinates = self.initial_coordinates()
         self.next_coordinates = (0, 0)
 

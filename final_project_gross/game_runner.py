@@ -21,12 +21,6 @@ class IdRatherRipMyNailOFF:
         self.this_is_the_players_stats_they_gonna_die_lol: PlayerStatistics = PlayerStatistics(
             player_name="Steven the Slow to Die")
 
-        # keeps track of location, and total moves levt
-        self.current_coordinates = self.initial_coordinates()
-        self.next_coordinates = (0, 0)
-        self.end_coordinates = self.calc_end_coordinates()
-        self.total_moves = 0
-
         # x = placeholder for node, 1 = connecting path between nodes, 0 = no path
         self.map = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
                     [0, 0, 1, 0, 1, 0, 0, 0, 1],
@@ -37,7 +31,13 @@ class IdRatherRipMyNailOFF:
                     ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
                     [0, 0, 1, 0, 1, 0, 1, 0, 0],
                     ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
-        self.node_array = self.generate_nodes()  # TODO fill with needed nodes - 2 coffee shops, 6 easy enemies etc...
+        self.node_array = self.generate_nodes()
+
+        # keeps track of location, and total moves levt
+        self.current_coordinates = self.initial_coordinates()
+        self.next_coordinates = (0, 0)
+        self.end_coordinates = self.calc_end_coordinates()
+        self.total_moves = 0
 
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completely arbitrary but we need it
@@ -93,7 +93,7 @@ class IdRatherRipMyNailOFF:
             for j in range(len(self.map[i])):
                 if self.map[i][j] == 'x':
                     node = rand.choice(self.node_array)
-                    while not node.placed_in_map:
+                    while node.placed_in_map:
                         node = rand.choice(self.node_array)
                     self.map[i][j] = node
                     node.placed_in_map = True
@@ -154,10 +154,6 @@ class IdRatherRipMyNailOFF:
             print('You moved too many times, ur done')
             # TODO affect robot stats
 
-    """
-    NOTE: Yes, everything was moved @justin... it wasn't deleted. See /node_activities/...
-    """
-
     def generate_nodes(self) -> List[Node]:
         return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
                 Node("End", EndActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
@@ -188,3 +184,7 @@ class IdRatherRipMyNailOFF:
 
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')
+
+if __name__ == '__main__':
+    test = IdRatherRipMyNailOFF()
+    test.populate_map()

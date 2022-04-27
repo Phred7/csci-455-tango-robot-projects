@@ -1,6 +1,16 @@
+from node_activities.charging_station_activity import ChargingStationActivity
+from node_activities.coffee_shop_activity import CoffeeShopActivity
+from node_activities.easy_battle_activity import EasyBattleActivity
+from node_activities.end_activity import EndActivity
+from node_activities.fun_activity import FunActivity
+from node_activities.hard_battle_activity import HardBattleActivity
+from node_activities.medium_battle_activity import MediumBattleActivity
+from node_activities.start_activity import StartActivity
+from node_activities.tricky_choice_type_activity import TrickyChoiceTypeActivity
 from speech import Speech
 import random as rand
-from typing import Tuple
+from typing import Tuple, List
+from node import Node
 
 from player_statistics import PlayerStatistics
 
@@ -27,7 +37,7 @@ class IdRatherRipMyNailOFF:
                     ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
                     [0, 0, 1, 0, 1, 0, 1, 0, 0],
                     ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
-        self.node_array = []  # TODO fill with needed nodes - 2 coffee shops, 6 easy enemies etc...
+        self.node_array = self.generate_nodes()  # TODO fill with needed nodes - 2 coffee shops, 6 easy enemies etc...
 
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completly arbitrary but we need it
@@ -147,6 +157,34 @@ class IdRatherRipMyNailOFF:
     """
     NOTE: Yes, everything was moved @justin... it wasn't deleted. See /node_activities/...
     """
+
+    def generate_nodes(self) -> List[Node]:
+        return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("End", EndActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Easy Fight 1", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Easy Fight 2", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Easy Fight 3", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Easy Fight 4", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Easy Fight 5", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Medium Fight 0", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Medium Fight 1", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Medium Fight 2", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Medium Fight 3", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Medium Fight 4", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Hard Fight 0", HardBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Hard Fight 1", HardBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Hard Fight 2", HardBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Charging Station 0", ChargingStationActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Charging Station 1", ChargingStationActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Charging Station 2", ChargingStationActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Coffee Shop 0", CoffeeShopActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Coffee Shop 1", CoffeeShopActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Fun 0", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Fun 1", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Fun 2", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                Node("Puzzle 0", TrickyChoiceTypeActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+                ]
 
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')

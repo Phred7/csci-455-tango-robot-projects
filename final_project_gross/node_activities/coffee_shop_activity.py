@@ -8,6 +8,8 @@ class CoffeeShopActivity(NodeActivity):
         super().__init__(player_statistics)
 
     def node_activity(self) -> None:
-        pass
+        # updates kivy graphics
+        with open('images/picture.txt', "w") as f:
+            f.write('images/coffee-shop.jpeg')
         # depending on how node layout is we could either just have some value range determine a direction
         # or we can just figure something else out. This does nothing for now though

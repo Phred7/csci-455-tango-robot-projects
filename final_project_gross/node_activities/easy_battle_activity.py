@@ -10,4 +10,7 @@ class EasyBattleActivity(NodeActivity, Battle):
         Battle.__init__(self, BattleDifficulty.EASY, self.player_statistics)
 
     def node_activity(self) -> None:
+        # updates kivy graphics
+        with open('images/picture.txt', "w") as f:
+            f.write('images/easy.png')
         pass

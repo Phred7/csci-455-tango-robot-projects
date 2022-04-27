@@ -9,6 +9,8 @@ class CoffeeShopActivity(NodeActivity):
 
     def __init__(self, player_statistics: PlayerStatistics) -> None:
         super().__init__(player_statistics)
+        self.x = None
+        self.y = None
 
     def node_activity(self) -> None:
         # updates kivy graphics

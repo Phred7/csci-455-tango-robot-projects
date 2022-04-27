@@ -26,6 +26,7 @@ class BackgroundApp(App):
 
         img = Image(source='images/gray.jpg', allow_stretch=True, keep_ratio=False)
 
+
         rect = BoxLayout(orientation='horizontal', padding=50)
         rect.add_widget(img)
 

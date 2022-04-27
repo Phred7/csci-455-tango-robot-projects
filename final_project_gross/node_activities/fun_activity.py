@@ -10,6 +10,10 @@ class FunActivity(NodeActivity):
         super().__init__(player_statistics)
 
     def node_activity(self) -> None:
+        # updates kivy graphics
+        with open('images/picture.txt', "w") as f:
+            f.write('images/fun.png')
+
         fun_choices = ['die', 'heal', 'armor', 'nothing', 'lore']
         choice = random.choice(fun_choices)
 

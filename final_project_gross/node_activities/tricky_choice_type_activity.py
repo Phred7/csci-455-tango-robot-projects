@@ -8,6 +8,10 @@ class TrickyChoiceTypeActivity(NodeActivity):
         NodeActivity.__init__(self, player_statistics)
 
     def node_activity(self) -> None:
+        # updates kivy graphics
+        with open('images/picture.txt', "w") as f:
+            f.write('images/tricky.jpeg')
+
         resp = input('this is the riddle question')  # TODO: replace input with Speech.get_speech()
         if resp is not 'correct':
             self.player_statistics.set_health(0)

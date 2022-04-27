@@ -8,6 +8,8 @@ class PlayerStatistics:
         self.__health: int = 400
         self.__damage_to_enemy: int = 1  # TODO: might not use this, depends on how fast we want 'battles' to happen
         self.__armor: int = 0  # TODO: might not use this, use with simple factorial equation to mitigate damage (dmg-x/100)
+        self.__current_x = 0
+        self.__current_y = 0
         self.__direction_facing: str = "north"
 
     def health(self) -> int:
@@ -33,3 +35,7 @@ class PlayerStatistics:
 
     def direction_facing(self) -> str:
         return self.__direction_facing
+
+    def set_position(self, x,y): #could be tuple
+        self.current_x = x
+        self.current_y = y

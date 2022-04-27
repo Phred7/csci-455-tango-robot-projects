@@ -9,7 +9,7 @@ from node_activities.start_activity import StartActivity
 from node_activities.tricky_choice_type_activity import TrickyChoiceTypeActivity
 from speech import Speech
 import random as rand
-from typing import Tuple, List
+from typing import Tuple, List, Any
 from node import Node
 
 from player_statistics import PlayerStatistics
@@ -28,7 +28,7 @@ class IdRatherRipMyNailOFF:
         self.total_moves = 0
 
         # x = placeholder for node, 1 = connecting path between nodes, 0 = no path
-        self.map = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
+        self.map: List[List[Any]] = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
                     [0, 0, 1, 0, 1, 0, 0, 0, 1],
                     ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
                     [1, 0, 1, 0, 0, 0, 1, 0, 1],

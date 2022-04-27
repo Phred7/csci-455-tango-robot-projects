@@ -9,7 +9,7 @@ from node_activities.start_activity import StartActivity
 from node_activities.tricky_choice_type_activity import TrickyChoiceTypeActivity
 from speech import Speech
 import random as rand
-from typing import Tuple, List
+from typing import Tuple, List, Any
 from node import Node
 
 from player_statistics import PlayerStatistics
@@ -38,6 +38,16 @@ class IdRatherRipMyNailOFF:
         self.next_coordinates = (0, 0)
         self.end_coordinates = self.calc_end_coordinates()
         self.total_moves = 0
+        self.map: List[List[Any]] = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
+                                     [0, 0, 1, 0, 1, 0, 0, 0, 1],
+                                     ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
+                                     [1, 0, 1, 0, 0, 0, 1, 0, 1],
+                                     ['x', 0, 'x', 1, 'x', 1, 'x', 0, 'x'],
+                                     [1, 0, 0, 0, 0, 0, 1, 0, 1],
+                                     ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
+                                     [0, 0, 1, 0, 1, 0, 1, 0, 0],
+                                     ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
+        self.node_array = self.generate_nodes()
 
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completely arbitrary but we need it
@@ -51,21 +61,21 @@ class IdRatherRipMyNailOFF:
         given the map of the maze find all possible starting points along the edges, and return a random one
         :return: starting coordinate (x,y)
         """
-        possible_start_coords = []
+        possible_start_coordinates = []
         # find all the possible start coordinates along the top and bottom edge of map
         for i in range(0, len(self.map[0])):
             if self.map[i][0] == 'x':
-                possible_start_coords.append((i, 0))
+                possible_start_coordinates.append((i, 0))
             if self.map[i][len(self.map) - 1] == 'x':
-                possible_start_coords.append((i, (len(self.map) - 1)))
+                possible_start_coordinates.append((i, (len(self.map) - 1)))
         # find all the possible start coordinates along the left and right edge of map
         for i in range(0, len(self.map)):
             if self.map[0][i] == 'x':
-                possible_start_coords.append((0, i))
+                possible_start_coordinates.append((0, i))
             if self.map[len(self.map[0]) - 1][i] == 'x':
-                possible_start_coords.append((len(self.map[0]) - 1, i))
+                possible_start_coordinates.append((len(self.map[0]) - 1, i))
         # return a random possible start coordinate
-        return rand.choice(possible_start_coords)
+        return rand.choice(possible_start_coordinates)
 
     def calc_end_coordinates(self) -> Tuple[int, int]:
         """

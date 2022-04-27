@@ -7,12 +7,14 @@ class Node:
     Strategy Pattern Context. Allows for the abstraction of the node_activity.
     """
 
-    def __init__(self, node_name: str, node_id: int, node_activity: NodeActivity) -> None:
+    def __init__(self, node_name: str, node_activity: NodeActivity) -> None:
         self.node_activity_object: NodeActivity = node_activity
         self.node_name: str = node_name
-        self.node_id: int = node_id
         self.visited_bool: bool = False
         self.placed_in_map: bool = False
+
+    def __str__(self) -> str:
+        return self.node_name
 
     @property
     def node_activity(self) -> NodeActivity:

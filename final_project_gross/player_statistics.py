@@ -10,6 +10,7 @@ class PlayerStatistics:
         self.__armor: int = 0  # TODO: might not use this, use with simple factorial equation to mitigate damage (dmg-x/100)
         self.__current_x = 0
         self.__current_y = 0
+        self.__direction_facing: str = "north"
 
     def health(self) -> int:
         return self.__health
@@ -31,6 +32,9 @@ class PlayerStatistics:
 
     def modify_armour_class(self, new_armour_class: int) -> None:
         self.__armor = new_armour_class
+
+    def direction_facing(self) -> str:
+        return self.__direction_facing
 
     def set_position(self, x,y): #could be tuple
         self.current_x = x

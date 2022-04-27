@@ -1,3 +1,5 @@
+import os
+
 from kivy.uix.image import Image
 from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
@@ -15,7 +17,8 @@ class BackgroundApp(App):
     def update_img(self):
         try:
             with open("images/picture.txt", "r") as txt_file:
-                img.source = 'images/' + str(txt_file.readline())
+                img.source = str(txt_file.readline())
+                print(os.getcwd())
         except IOError:
             img.source = 'images/gray.jpg'
 
@@ -25,7 +28,6 @@ class BackgroundApp(App):
         Clock.schedule_interval(self.update_img, 1)
 
         img = Image(source='images/gray.jpg', allow_stretch=True, keep_ratio=False)
-
 
         rect = BoxLayout(orientation='horizontal', padding=50)
         rect.add_widget(img)

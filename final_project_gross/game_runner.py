@@ -52,8 +52,8 @@ class IdRatherRipMyNailOFF:
         for i in range(0, len(self.map)):
             if self.map[0][i] == 'x':
                 possible_start_coords.append((0, i))
-            if self.map[len(self.map[0] - 1)][i] == 'x':
-                possible_start_coords.append((len(self.map[0] - 1), i))
+            if self.map[len(self.map[0]) - 1][i] == 'x':
+                possible_start_coords.append((len(self.map[0]) - 1, i))
         # return a random possible start coordinate
         return rand.choice(possible_start_coords)
 

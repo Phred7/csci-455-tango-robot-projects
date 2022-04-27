@@ -37,7 +37,7 @@ class IdRatherRipMyNailOFF:
                                      ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
                                      [0, 0, 1, 0, 1, 0, 1, 0, 0],
                                      ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
-        self.node_array = self.generate_nodes()  # TODO fill with needed nodes - 2 coffee shops, 6 easy enemies etc...
+        self.node_array = self.generate_nodes()
 
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completely arbitrary but we need it

@@ -1,6 +1,9 @@
+from typing import Tuple
+
+
 class PlayerStatistics:
     """
-    Stores and Encapsulates the Statistics for a player.
+    Encapsulates the Statistics for a player.
     """
 
     def __init__(self, player_name: str) -> None:
@@ -8,8 +11,8 @@ class PlayerStatistics:
         self.__health: int = 400
         self.__damage_to_enemy: int = 1  # TODO: might not use this, depends on how fast we want 'battles' to happen
         self.__armor: int = 0  # TODO: might not use this, use with simple factorial equation to mitigate damage (dmg-x/100)
-        self.__current_x = 0
-        self.__current_y = 0
+        self.__current_x: int = 0
+        self.__current_y: int = 0
         self.__direction_facing: str = "north"
 
     def health(self) -> int:
@@ -36,6 +39,15 @@ class PlayerStatistics:
     def direction_facing(self) -> str:
         return self.__direction_facing
 
-    def set_position(self, x,y): #could be tuple
-        self.current_x = x
-        self.current_y = y
+    def change_direction_facing(self, direction: str) -> None:
+        if direction == "north" or direction == "south" or direction == "east" or direction == "west":
+            self.__direction_facing = direction
+            return
+        raise ValueError
+
+    def current_position(self) -> Tuple[int, int]:
+        return self.__current_x, self.__current_y
+
+    def update_current_position(self, x: int, y: int) -> None:
+        self.__current_x = x
+        self.__current_y = y

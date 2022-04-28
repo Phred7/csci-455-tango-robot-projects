@@ -13,7 +13,7 @@ class TrickyChoiceTypeActivity(NodeActivity):
             f.write('images/tricky.jpeg')
 
         resp = input('this is the riddle question')  # TODO: replace input with Speech.get_speech()
-        if resp is not 'correct':
+        if resp != 'correct':
             self.player_statistics.set_health(0)
             print('you died wrong answer')
         else:

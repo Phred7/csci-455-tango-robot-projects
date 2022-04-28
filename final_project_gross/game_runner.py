@@ -198,3 +198,5 @@ class IdRatherRipMyNailOFF:
 if __name__ == '__main__':
     test = IdRatherRipMyNailOFF()
     test.populate_map()
+    print(test.map)
+    print(test.map[0][0])

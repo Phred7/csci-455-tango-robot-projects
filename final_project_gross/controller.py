@@ -53,6 +53,10 @@ class Controller:
 
     @staticmethod
     def servo_controller_via_serial():
+        """
+        Looks for an attached servo driver based on the OS of the runner.
+        :return: None or the servo driver as a serial device.
+        """
         if platform.system() == 'Linux':
             try:
                 device = serial.Serial('/dev/ttyACM0')
@@ -70,7 +74,7 @@ class Controller:
             except SerialException:
                 return None
         elif platform.system() == 'Darwin':
-            print("Sorry Connie... mac os is not supported yet.")
+            print("Sorry Connie... mac os is not supported yet. For servos but it is for printing!")
             return None
         else:
             return None
@@ -227,6 +231,12 @@ class Controller:
                 self.motor_velocity_counter = self.servo_neutral
             self.drive_multiple_servos(["motors", "turn_motors"],
                                        [self.servo_neutral, self.motor_turn_velocity_counter])
+            sleep(0.05)
+
+    def reset_joints(self) -> None:
+        for servo_motor in controller.servo_robot_anatomy_map.keys():
+            controller.drive_servo(servo_motor, controller.servo_neutral)
+            print(f"{servo_motor} set to neutral position")
             sleep(0.05)
 
 

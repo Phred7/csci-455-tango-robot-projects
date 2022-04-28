@@ -1,3 +1,4 @@
+from controller_interface import ControllerInterface
 from node_activities.charging_station_activity import ChargingStationActivity
 from node_activities.coffee_shop_activity import CoffeeShopActivity
 from node_activities.easy_battle_activity import EasyBattleActivity
@@ -20,6 +21,7 @@ class IdRatherRipMyNailOFF:
     def __init__(self) -> None:
         self.this_is_the_players_stats_they_gonna_die_lol: PlayerStatistics = PlayerStatistics(
             player_name="Steven the Slow to Die")
+        self.robot_controller: ControllerInterface = ControllerInterface()
 
         # x = placeholder for node, 1 = connecting path between nodes, 0 = no path
         self.map = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
@@ -189,14 +191,14 @@ class IdRatherRipMyNailOFF:
                 Node("Fun 0", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
                 Node("Fun 1", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
                 Node("Fun 2", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Puzzle 0", TrickyChoiceTypeActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                ]
+                Node("Puzzle 0", TrickyChoiceTypeActivity(self.this_is_the_players_stats_they_gonna_die_lol))]
 
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')
 
+
+# TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.
 if __name__ == '__main__':
     test = IdRatherRipMyNailOFF()
     test.populate_map()
     print(test.map)
-    print(test.map[0][0])

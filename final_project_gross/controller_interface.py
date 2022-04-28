@@ -16,6 +16,9 @@ class ControllerInterface:
         self.__forward_backwards_number_of_repeated_calls: int = 16
         self.__turning_number_of_repeated_calls: int = 20
 
+    def __start_servo_controller(self) -> None:
+        self.__call_action_and_stop(self.__robot_controller.forward, "restart servo controller", number_of_iterations=4, number_of_seconds=0.5)
+
     def __wait_for_time(self, seconds: float):
         if seconds > self.__max_time:
             seconds = self.__max_time

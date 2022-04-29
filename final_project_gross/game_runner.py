@@ -9,13 +9,11 @@ from node_activities.medium_battle_activity import MediumBattleActivity
 from node_activities.start_activity import StartActivity
 from node_activities.tricky_choice_type_activity import TrickyChoiceTypeActivity
 from speech import Speech
-import random as rand
-from typing import Tuple, List, Any
-from node import Node
-
 from player_statistics import PlayerStatistics
 from controller_interface import ControllerInterface
-
+from typing import Tuple, List, Any
+from node import Node
+import random as rand
 
 class IdRatherRipMyNailOFF:
 
@@ -142,9 +140,6 @@ class IdRatherRipMyNailOFF:
         x, y = self.current_coordinates
         new_x, new_y = new_coordinates
 
-        if new_coordinates == self.end_coordinates:
-            print('you made it to the finish, end of the line pal')
-            # TODO update game logic accordingly
         if self.total_moves < 30:
             if new_y < y:
                 self.lesser_y[self.direction_facing]
@@ -165,7 +160,21 @@ class IdRatherRipMyNailOFF:
             self.total_moves += 1
         else:
             print('You moved too many times, ur done')
-            # TODO affect robot stats
+            # TODO affect robot stats, do something, kill robot
+
+        # Connie
+        # todo set up driver - call node actions everytime we are at a node
+        # todo if users run from fight send to a random node, dont activate node, ask user where to move next
+        # Justin
+        # todo allow users to run or stay during fight
+        #  todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
+        # todo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
+        # Walker
+        # todo set up arm functionality in controller interface
+        # Whoever
+        # todo address any other misc todos around the code
+        # todo robots move during actions (arms turning etc)
+
 
     def generate_nodes(self) -> List[Node]:
         return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol)),

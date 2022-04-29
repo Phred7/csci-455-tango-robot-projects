@@ -166,9 +166,9 @@ class IdRatherRipMyNailOFF:
         # todo set up driver - call node actions everytime we are at a node
         # todo if users run from fight send to a random node, dont activate node, ask user where to move next
         # Justin
-        # todo allow users to run or stay during fight
-        #  todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
-        # todo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
+        # t\odo allow users to run or stay during fight
+        # todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
+        # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
         # Walker
         # todo set up arm functionality in controller interface
         # Whoever

@@ -1,5 +1,6 @@
 from node_activity import NodeActivity
 from player_statistics import PlayerStatistics
+from speech import Speech
 
 
 class StartActivity(NodeActivity):
@@ -11,4 +12,5 @@ class StartActivity(NodeActivity):
         # updates kivy graphics
         with open('images/picture.txt', "w") as f:
             f.write('images/start.png')
+        Speech.say("Robot starting")
         pass

@@ -1,6 +1,6 @@
 from node_activity import NodeActivity
 from player_statistics import PlayerStatistics
-
+from speech import Speech
 
 class TrickyChoiceTypeActivity(NodeActivity):
 
@@ -12,10 +12,15 @@ class TrickyChoiceTypeActivity(NodeActivity):
         with open('images/picture.txt', "w") as f:
             f.write('images/tricky.jpeg')
 
-        resp = input('this is the riddle question')  # TODO: replace input with Speech.get_speech()
-        if resp != 'correct':
+        # TODO: replace input with Speech.get_speech()
+        output = "If you were a graduating senior, which four hundred level elective should you avoid?"
+        Speech().say(output)
+        resp = ''
+        resp = Speech().get_speech()
+        if resp != 'four fifty five' or resp != 'four hundred and fifty five' or resp != 'robotics':
             self.player_statistics.set_health(0)
-            print('you died wrong answer')
+            Speech.say('you died wrong answer')
+            #TODO: make dead state and game exit
         else:
-            print('you are correct good job')
+            Speech.say('you are correct good job')
             # TODO: maybe include some sort of score if we're feeling extra spicy

@@ -14,6 +14,7 @@ class PlayerStatistics:
         self.__current_x: int = 0
         self.__current_y: int = 0
         self.__direction_facing: str = "north"
+        self.__fleeing: bool = False
 
     def health(self) -> int:
         return self.__health
@@ -35,6 +36,12 @@ class PlayerStatistics:
 
     def modify_armour_class(self, new_armour_class: int) -> None:
         self.__armor = new_armour_class
+
+    def fleeing(self) -> bool:
+        return self.__fleeing
+
+    def update_fleeing(self, isfleeing: bool) -> None:
+        self.__fleeing = isfleeing
 
     def direction_facing(self) -> str:
         return self.__direction_facing

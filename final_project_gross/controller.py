@@ -41,6 +41,8 @@ class Controller:
         self.head_nod_pos: int = 2
         self.head_pan_pos: int = 2
         self.twist_position: int = self.twist_neutral
+        self.left_arm_position: int = 0
+        self.right_arm_position: int = 0
         self.motor_velocity_counter: int = self.servo_neutral
         self.motor_turn_velocity_counter: int = self.servo_neutral
         self.motor_step_size: int = 64
@@ -238,6 +240,24 @@ class Controller:
             controller.drive_servo(servo_motor, controller.servo_neutral)
             print(f"{servo_motor} set to neutral position")
             sleep(0.05)
+
+    def left_arm(self, move_up_bool: bool) -> None:
+        if self.left_arm_position == 0 and move_up_bool:
+            self.left_arm_position = 1
+            self.drive_servo("head_pan", self.five_steps_of_POWER[0])
+        if self.left_arm_position == 1 and not move_up_bool:
+            self.left_arm_position = 0
+            self.drive_servo("", self.five_steps_of_POWER[4])
+
+    def right_arm(self, move_up_bool: bool) -> None:
+        if self.right_arm_position == 0 and move_up_bool:
+            self.left_arm_position = 1
+            self.drive_servo("head_pan", self.five_steps_of_POWER[0])
+        if self.left_arm_position == 1 and not move_up_bool:
+            self.left_arm_position = 0
+            self.drive_servo("", self.five_steps_of_POWER[4])
+
+
 
 
 if __name__ == '__main__':

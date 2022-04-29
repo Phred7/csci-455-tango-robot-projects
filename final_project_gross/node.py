@@ -14,7 +14,10 @@ class Node:
         self.placed_in_map: bool = False
 
     def __str__(self) -> str:
-        return self.node_name
+        return f"Node({self.node_name})"
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
     @property
     def node_activity(self) -> NodeActivity:

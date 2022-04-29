@@ -2,6 +2,7 @@ import random
 from enum import Enum
 
 from player_statistics import PlayerStatistics
+from speech import Speech
 
 
 class BattleDifficulty(Enum):
@@ -21,7 +22,7 @@ class Battle:
     def __init__(self, difficulty: BattleDifficulty, player_stats: PlayerStatistics) -> None:
         self.battle_difficulty: BattleDifficulty = difficulty
         self.__player_stats: PlayerStatistics = player_stats
-        self.enemyDamage: int = 1
+        self.enemyDamage: random.randint(1, 100) #random damage per enemy
         self.maximum_number_of_enemies: int
         self.battle_flag: bool = False
         if self.battle_difficulty is BattleDifficulty.MEDIUM:
@@ -44,8 +45,10 @@ class Battle:
                     self.__player_stats.health -= self.enemyDamage - (
                         self.__player_stats.armour_class())  # TODO: something like this for armor, might not be used
             if self.__player_stats.health() < 1:
+                Speech.say("I am DEAD")
                 print('you stupid loser idiot haha')  # TODO: should never happen unless you really suck at the game
             if self.number_of_enemies < 0 or not self.battle_flag:
                 self.number_of_enemies = 0
                 self.battle_flag = False
+                Speech.say("battle win")
                 print('battle win')  # TODO: placeholder, do callback to something here

@@ -4,6 +4,7 @@ from typing import Tuple
 import player_statistics
 from node_activity import NodeActivity
 from player_statistics import PlayerStatistics
+from speech import Speech
 
 
 class CoffeeShopActivity(NodeActivity):
@@ -27,14 +28,14 @@ class CoffeeShopActivity(NodeActivity):
 
             if abs(calc_x) > abs(calc_y) :
                 if calc_x > 0:
-                    print("exit is to the west")
+                    Speech.say("exit is to the west")
                 else:
-                    print("exit is to the east")
+                    Speech.say("exit is to the east")
             else:
                 if calc_y > 0:
-                    print("exit is to the north")
+                    Speech.say("exit is to the north")
                 else:
-                    print("exit is to the south")
+                    Speech.say("exit is to the south")
 
 
 

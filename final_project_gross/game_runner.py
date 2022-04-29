@@ -117,7 +117,7 @@ class IdRatherRipMyNailOFF:
         possible_moves = {}
         x = self.current_coordinates[0]
         y = self.current_coordinates[1]
-        row = [-1, 0, 0, 1]
+        row = [-1 , 0, 0, 1]
         col = [0, -1, 1, 0]
         direction = ['north', 'west', 'east', 'south']
         for k in range(len(row)):
@@ -198,3 +198,4 @@ class IdRatherRipMyNailOFF:
 if __name__ == '__main__':
     test = IdRatherRipMyNailOFF()
     test.populate_map()
+    print(test.map)

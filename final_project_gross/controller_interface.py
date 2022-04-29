@@ -17,6 +17,7 @@ class ControllerInterface:
         self.__turning_number_of_repeated_calls: int = 20
 
     def __start_servo_controller(self) -> None:
+        self.__robot_controller.reset_joints()
         self.__call_action_and_stop(self.__robot_controller.forward, "restart servo controller", number_of_iterations=4, number_of_seconds=0.5)
 
     def __wait_for_time(self, seconds: float):
@@ -51,7 +52,30 @@ class ControllerInterface:
         self.__call_action_and_stop(self.__robot_controller.right_drive_servos, "turn right",
                                     self.__forward_backwards_number_of_repeated_calls, number_of_seconds)
 
+    def left_arm_up(self) -> None:
+        if self.__platform == "Windows" or self.__platform == "Darwin":
+            print(f"left arm up")
+        self.__robot_controller.left_arm(True)
+        sleep(0.05)
+
+    def left_arm_down(self) -> None:
+        if self.__platform == "Windows" or self.__platform == "Darwin":
+            print(f"left arm down")
+        self.__robot_controller.left_arm(False)
+        sleep(0.05)
+
+    def right_arm_up(self) -> None:
+        if self.__platform == "Windows" or self.__platform == "Darwin":
+            print(f"right arm up")
+        self.__robot_controller.right_arm(True)
+        sleep(0.05)
+
+    def right_arm_down(self) -> None:
+        if self.__platform == "Windows" or self.__platform == "Darwin":
+            print(f"right arm down")
+        self.__robot_controller.right_arm(False)
+        sleep(0.05)
+
 
 if __name__ == "__main__":
     rc: ControllerInterface = ControllerInterface()
-    rc.fw_test()

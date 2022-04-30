@@ -39,7 +39,7 @@ class Speech:
                 except speech_recognition.UnknownValueError:
                     print("Unknown input.")
                     strings: List[str] = ["nope", "try again", "lol what", "what did you say?", "nani",
-                                          "unrecognizable input", "pardon", "excuse eh mwa", "sorry, I missed what you said just then"]
+                                          "unrecognizable input", "pardon", "excuse me", "sorry, I missed what you said just then"]
                     Speech.say(random.choice(strings))
                 except speech_recognition.WaitTimeoutError:
                     print("Listen timeout exceeded.")

@@ -179,13 +179,10 @@ class IdRatherRipMyNailOFF:
 
     def act_out_node(self, coordinates: Tuple[int, int]):
         if not isinstance(self.map[coordinates[0]][coordinates[1]], int):
-        if self.map[coordinates[0]][coordinates[1]] == '1':
-            pass
-        if self.map[coordinates[0]][coordinates[1]] == '0':
-            print('we are off the map, this is bad')
-        elif isinstance(self.map[coordinates[0]][coordinates[1]], Node):
-            self.map[coordinates[0]][coordinates[1]].execute_node_activity()
-
+            if isinstance(self.map[coordinates[0]][coordinates[1]], Node):
+                self.map[coordinates[0]][coordinates[1]].execute_node_activity()
+            else:
+                print("Not a Node")
 
     def flee(self):
         xCoord = rand.randrange(len(self.map[0]))

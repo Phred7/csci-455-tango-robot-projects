@@ -283,7 +283,7 @@ class IdRatherRipMyNailOFF:
 
         for x_direction in self.map:
             for y in x_direction:
-
+                pass
 
         return return_string
 

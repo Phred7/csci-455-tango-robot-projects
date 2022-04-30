@@ -247,7 +247,7 @@ class Controller:
             self.drive_servo("l_shoulder", self.five_steps_of_POWER[0])
         if not move_up_bool:
             self.left_arm_position = 0
-            self.drive_servo("l_shoulder", self.five_steps_of_POWER[4])
+            self.drive_servo("l_shoulder", self.five_steps_of_POWER[2])
 
     def right_arm(self, move_up_bool: bool) -> None:
         if move_up_bool:
@@ -255,7 +255,7 @@ class Controller:
             self.drive_servo("r_shoulder", self.five_steps_of_POWER[0])
         if not move_up_bool:
             self.left_arm_position = 0
-            self.drive_servo("r_shoulder", self.five_steps_of_POWER[4])
+            self.drive_servo("r_shoulder", self.five_steps_of_POWER[2])
 
 
 if __name__ == '__main__':

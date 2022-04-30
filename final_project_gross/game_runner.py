@@ -186,6 +186,7 @@ class IdRatherRipMyNailOFF:
         random_node = rand.choice(self.node_coordinates)
         while random_node == self.current_coordinates or random_node == self.end_coordinates:
             random_node = rand.choice(self.node_coordinates)
+        self.robot_controller_interface.turn_right(5)
         Speech.say("You have been moved to a random node.")
         self.current_coordinates = random_node
 
@@ -193,15 +194,15 @@ class IdRatherRipMyNailOFF:
         # t\odo set up driver - call node actions everytime we are at a node
         # t\odo if users run from fight send to a random node, dont activate node, ask user where to move next
         # Justin
-        # t\odo allow users to run or stay during fight
+        # todo make robot move while it is fighting battles (arms turning etc) - all other actions are done
         # todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
         # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
+        # t\odo allow users to run or stay during fight
         # Walker
         # todo threading for gui
         # t\odo set up arm functionality in controller interface
         # Whoever
         # todo address any other misc todos around the code
-        # todo robots move during actions (arms turning etc)
 
     def generate_nodes(self) -> List[Node]:
         return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol,

@@ -181,7 +181,7 @@ class IdRatherRipMyNailOFF:
     def act_out_node(self, coordinates: Tuple[int, int]):
         if self.map[coordinates[0]][coordinates[1]] == '1':
             pass
-        if self.map[coordinates[0]][coordinates[1]] == '0':
+        elif self.map[coordinates[0]][coordinates[1]] == '0':
             print('we are off the map, this is bad')
         else:
             self.map[coordinates[0]][coordinates[1]].execute_node_activity()

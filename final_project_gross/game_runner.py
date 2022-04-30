@@ -87,8 +87,11 @@ class IdRatherRipMyNailOFF:
                 possible_start_coordinates.append((0, i))
             if self.map[len(self.map[0]) - 1][i] == 'x':
                 possible_start_coordinates.append((len(self.map[0]) - 1, i))
+        sc = rand.choice(possible_start_coordinates)
+        self.map[sc[0]][sc[1]] = Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                            self.robot_controller_interface))
         # return a random possible start coordinate
-        return rand.choice(possible_start_coordinates)
+        return sc
 
     def calc_end_coordinates(self) -> Tuple[int, int]:
         """
@@ -105,6 +108,8 @@ class IdRatherRipMyNailOFF:
                 possible_y.append(i)
 
         coords = (x, rand.choice(possible_y))
+        self.map[coords[0]][coords[1]] = Node("End", EndActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                        self.robot_controller_interface))
         return coords
 
     def populate_map(self):
@@ -154,6 +159,8 @@ class IdRatherRipMyNailOFF:
     def move(self, new_coords: Tuple[int, int]):
         x, y = self.current_coordinates
         new_x, new_y = new_coords
+        with open('images/picture.txt', "w") as f:
+            f.write('images/traveling.png')
 
         if self.total_moves < 30:
             if new_y < y:
@@ -218,11 +225,7 @@ class IdRatherRipMyNailOFF:
         # todo address any other misc todos around the code
 
     def generate_nodes(self) -> List[Node]:
-        return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol,
-                                            self.robot_controller_interface)),
-                Node("End", EndActivity(self.this_is_the_players_stats_they_gonna_die_lol,
-                                        self.robot_controller_interface)),
-                Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+        return [Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
                                                         self.robot_controller_interface)),
                 Node("Easy Fight 1", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
                                                         self.robot_controller_interface)),
@@ -282,6 +285,7 @@ class IdRatherRipMyNailOFF:
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.
 if __name__ == '__main__':
     driver = IdRatherRipMyNailOFF()
+    driver.act_out_node(driver.current_coordinates)
     while True:
         if not driver.this_is_the_players_stats_they_gonna_die_lol.get_fleeing():
             new_coordinates = driver.user_input()

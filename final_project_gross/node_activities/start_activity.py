@@ -13,4 +13,5 @@ class StartActivity(NodeActivity):
         with open('images/picture.txt', "w") as f:
             f.write('images/start.png')
         Speech.say("Robot starting")
+
         pass

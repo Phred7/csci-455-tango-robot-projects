@@ -138,6 +138,7 @@ class IdRatherRipMyNailOFF:
                 pass
 
         output = 'Please select a direction ' + str(possible_moves.keys())
+        print(output)
         Speech().say(output)
         user_choice = ''
         imcryingrealtears = ['north', 'south', 'west', 'east']

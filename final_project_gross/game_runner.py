@@ -194,7 +194,9 @@ class IdRatherRipMyNailOFF:
             if self.current_coordinates not in self.visited_coordinates:
                 self.visited_coordinates.append(self.current_coordinates)
         else:
-            print('You moved too many times, ur done')
+            Speech().say('You moved too many times, ur dead')
+            with open('images/picture.txt', "w") as f:
+                f.write('images/dead.png')
             # TODO affect robot stats, do something, kill robot or hunter?
 
         print(self.map_as_a_string())
@@ -217,20 +219,6 @@ class IdRatherRipMyNailOFF:
         self.robot_controller_interface.turn_right(5)
         Speech.say("You have been moved to a random node.")
         self.current_coordinates = (xCoord, yCoord)
-
-        # Connie
-        # t\odo set up driver - call node actions everytime we are at a node
-        # t\odo if users run from fight send to a random node, dont activate node, ask user where to move next
-        # Justin
-        # todo make robot move while it is fighting battles (arms turning etc) - all other actions are done
-        # todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
-        # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
-        # t\odo allow users to run or stay during fight
-        # Walker
-        # t\odo threading for gui
-        # t\odo set up arm functionality in controller interface
-        # Whoever
-        # todo address any other misc todos around the code
 
     def generate_nodes(self) -> List[Node]:
         return [Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
@@ -285,6 +273,20 @@ class IdRatherRipMyNailOFF:
 
     def gui(self) -> None:
         BackgroundApp().run()
+
+    # Justin
+    # todo make robot move while it is fighting battles (arms turning etc) - all other actions are done
+    # todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
+    # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
+    # t\odo allow users to run or stay during fight
+
+    # Whoever
+    # todo - address any other misc todos around the code
+    # todo - check flee works
+    # todo - make end game logic - if we die and when we finish what happens
+    # todo - finish battle game logic
+    # todo - check that robot moves during node action execution
+
 
     def map_as_a_string(self) -> str:
         return_string: str = ""

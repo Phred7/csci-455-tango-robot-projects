@@ -14,10 +14,11 @@ class CoffeeShopActivity(NodeActivity):
         self.end_y = None
 
     def node_activity(self) -> None:
-        # updates kivy graphics
-        current_x_coordinate, current_y_coordinate = self.player_statistics.current_position()
         with open('images/picture.txt', "w") as f:
             f.write('images/coffee-shop.jpeg')
+
+        current_x_coordinate, current_y_coordinate = self.player_statistics.current_position()
+
         if self.end_x is None or self.end_y is None:
             print("coffee shop closed due to covid :(")
         else:

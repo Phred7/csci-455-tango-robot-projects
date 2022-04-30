@@ -64,7 +64,7 @@ class IdRatherRipMyNailOFF:
                                                       'west': (self.robot_controller_interface.turn_left, 2)}
 
         with open('images/picture.txt', "w") as f:
-            f.write("")
+            f.write("images/gray.jpg")
 
         self.gui_thread = thread = threading.Thread(name="gui thread", target=self.gui, args=())
         self.gui_thread.start()

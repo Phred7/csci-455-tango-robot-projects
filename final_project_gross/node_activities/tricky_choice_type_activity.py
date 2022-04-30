@@ -14,7 +14,7 @@ class TrickyChoiceTypeActivity(NodeActivity):
         with open('images/picture.txt', "w") as f:
             f.write('images/tricky.jpeg')
 
-        # TODO: replace input with Speech.get_speech()
+        # T\ODO: replace input with Speech.get_speech()
         output = "If you were a graduating senior, which four hundred level elective should you avoid?"
         Speech().say(output)
         resp = ''
@@ -24,5 +24,7 @@ class TrickyChoiceTypeActivity(NodeActivity):
             Speech.say('you died wrong answer')
             # TODO: make dead state and game exit
         else:
+            self.controller_interface.head_up()
+            self.controller_interface.head_down()
             Speech.say('you are correct good job')
-            # TODO: maybe include some sort of score if we're feeling extra spicy
+            # T\ODO: maybe include some sort of score if we're feeling extra spicy - we are not

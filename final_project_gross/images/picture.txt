@@ -1,1 +1,1 @@
-images/gray.jpg
+images/start.png

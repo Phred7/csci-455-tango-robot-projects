@@ -15,8 +15,9 @@ class Speech:
     def say(string: str) -> None:
         text_to_speech_engine = pyttsx3.init()
         text_to_speech_engine.setProperty('rate', 150)
-        voices = text_to_speech_engine.getProperty('voices')
-        text_to_speech_engine.setProperty('voice', voices[2].id)
+        if platform.system() != "Windows":
+            voices = text_to_speech_engine.getProperty('voices')
+            text_to_speech_engine.setProperty('voice', voices[2].id)
         text_to_speech_engine.say(string)
         text_to_speech_engine.runAndWait()
 

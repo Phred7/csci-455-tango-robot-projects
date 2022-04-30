@@ -1,3 +1,6 @@
+import threading
+
+from kivy_screen import BackgroundApp
 from node_activities.charging_station_activity import ChargingStationActivity
 from node_activities.coffee_shop_activity import CoffeeShopActivity
 from node_activities.easy_battle_activity import EasyBattleActivity
@@ -41,9 +44,7 @@ class IdRatherRipMyNailOFF:
         self.node_coordinates = []
         self.end_coordinates = self.calc_end_coordinates()
         self.total_moves = 0
-
         self.node_array = self.generate_nodes()
-
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completely arbitrary but we need it
         # 1 second is for 90 degrees, 2 is for 180, can change later if needed
@@ -60,6 +61,9 @@ class IdRatherRipMyNailOFF:
         self.greater_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_right, 1),
                                                       'south': (self.robot_controller_interface.turn_left, 1),
                                                       'west': (self.robot_controller_interface.turn_left, 2)}
+
+        self.gui_thread = thread = threading.Thread(name="gui thread", target=self.gui, args=())
+        self.gui_thread.start()
 
     def initial_coordinates(self) -> Tuple[int, int]:
         """
@@ -258,6 +262,9 @@ class IdRatherRipMyNailOFF:
 
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')
+
+    def gui(self) -> None:
+        BackgroundApp().run()
 
 
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.

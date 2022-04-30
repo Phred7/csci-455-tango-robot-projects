@@ -1,6 +1,7 @@
 import random
 from enum import Enum
 
+import player_statistics
 from player_statistics import PlayerStatistics
 from speech import Speech
 
@@ -52,3 +53,8 @@ class Battle:
                 self.battle_flag = False
                 Speech.say("battle win")
                 print('battle win')  # TODO: placeholder, do callback to something here
+
+    def flee(self):
+        Speech.say("I AM FLEEING")
+        self.battle_flag = False
+        self.__player_stats.update_fleeing(True)

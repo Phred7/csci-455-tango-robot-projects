@@ -21,6 +21,8 @@ class IdRatherRipMyNailOFF:
         self.this_is_the_players_stats_they_gonna_die_lol: PlayerStatistics = PlayerStatistics(
             player_name="Steven the Slow to Die")
 
+        self.robot_controller_interface: ControllerInterface = ControllerInterface()
+
         # x = placeholder for node, 1 = connecting path between nodes, 0 = no path
         self.map = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
                     [0, 0, 1, 0, 1, 0, 0, 0, 1],
@@ -53,8 +55,6 @@ class IdRatherRipMyNailOFF:
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completely arbitrary but we need it
         # 1 second is for 90 degrees, 2 is for 180, can change later if needed
-
-        self.robot_controller_interface: ControllerInterface = ControllerInterface()
 
         self.lesser_y: Dict[str, (Callable, int)] = {'east': (self.robot_controller_interface.turn_left, 1),
                                                      'south': (self.robot_controller_interface.turn_left, 2),
@@ -180,7 +180,7 @@ class IdRatherRipMyNailOFF:
             self.current_coordinates = new_coordinates
         else:
             print('You moved too many times, ur done')
-            # TODO affect robot stats, do something, kill robot
+            # TODO affect robot stats, do something, kill robot or hunter?
 
     def act_out_node(self, coordinates: Tuple[int, int]):
         if self.map[coordinates[0]][coordinates[1]] == '1':
@@ -212,7 +212,8 @@ class IdRatherRipMyNailOFF:
         # todo robots move during actions (arms turning etc)
 
     def generate_nodes(self) -> List[Node]:
-        return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
+        return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                            self.robot_controller_interface)),
                 Node("End", EndActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
                 Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
                 Node("Easy Fight 1", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),

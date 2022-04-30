@@ -138,10 +138,12 @@ class IdRatherRipMyNailOFF:
         output = 'Please select a direction ' + str(possible_moves.keys())
         Speech().say(output)
         user_choice = ''
-        while user_choice not in possible_moves:
-            user_choice = Speech().get_speech()
-
-        return possible_moves[user_choice]
+        imcryingrealtears = ['north', 'south', 'west', 'east']
+        while True:
+            user_choice = Speech().get_speech().lower()
+            for x in imcryingrealtears:
+                if x in user_choice:
+                    return possible_moves[x]
 
     def move(self, new_coords: Tuple[int, int]):
         x, y = self.current_coordinates

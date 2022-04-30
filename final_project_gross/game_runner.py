@@ -36,7 +36,8 @@ class IdRatherRipMyNailOFF:
 
         # keeps track of location, and total moves levt
         self.current_coordinates = self.initial_coordinates()
-        self.next_coordinates = (0, 0)
+        # self.next_coordinates = (0, 0)
+        self.node_coordinates = []
         self.end_coordinates = self.calc_end_coordinates()
         self.total_moves = 0
         self.map: List[List[Any]] = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
@@ -60,7 +61,7 @@ class IdRatherRipMyNailOFF:
                                                      'south': (self.robot_controller_interface.turn_left, 2),
                                                      'west': (self.robot_controller_interface.turn_right, 1)}
         self.greater_y: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 2),
-                                                      'east': (self.robot_controller_interface.turn_right, 1), 
+                                                      'east': (self.robot_controller_interface.turn_right, 1),
                                                       'west': (self.robot_controller_interface.turn_left, 1)}
         self.lesser_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 1),
                                                      'east': (self.robot_controller_interface.turn_left, 2),
@@ -115,6 +116,7 @@ class IdRatherRipMyNailOFF:
         for i in range(len(self.map)):
             for j in range(len(self.map[i])):
                 if self.map[i][j] == 'x':
+                    self.node_coordinates.append((i, j))
                     node = rand.choice(self.node_array)
                     while node.placed_in_map:
                         node = rand.choice(self.node_array)
@@ -148,49 +150,64 @@ class IdRatherRipMyNailOFF:
 
         return possible_moves[user_choice]
 
-    def move(self, new_coordinates: Tuple[int, int]):
+    def move(self, new_coords: Tuple[int, int]):
         x, y = self.current_coordinates
-        new_x, new_y = new_coordinates
+        new_x, new_y = new_coords
 
         if self.total_moves < 30:
             if new_y < y:
                 if self.direction_facing in self.lesser_y:
                     function, time = self.lesser_y[self.direction_facing]
                     function(time)
-                    self.robot_controller_interface.forward(2)
                     self.direction_facing = 'north'
             if new_y > y:
                 if self.direction_facing in self.greater_y:
                     function, time = self.greater_y[self.direction_facing]
                     function(time)
-                self.robot_controller_interface.forward(2)
                 self.direction_facing = 'south'
             if new_x < x:
                 if self.direction_facing in self.lesser_x:
                     function, time = self.lesser_x[self.direction_facing]
                     function(time)
-                self.robot_controller_interface.forward(2)
                 self.direction_facing = 'west'
             if new_x > x:
                 if self.direction_facing in self.greater_x:
                     function, time = self.greater_x[self.direction_facing]
                     function(time)
-                self.robot_controller_interface.forward(2)
                 self.direction_facing = 'east'
             self.total_moves += 1
+            self.robot_controller_interface.forward(2)
+            self.act_out_node(new_coords)
+            self.current_coordinates = new_coordinates
         else:
             print('You moved too many times, ur done')
             # TODO affect robot stats, do something, kill robot
 
+    def act_out_node(self, coordinates: Tuple[int, int]):
+        if self.map[coordinates[0]][coordinates[1]] == '1':
+            pass
+        if self.map[coordinates[0]][coordinates[1]] == '0':
+            print('we are off the map, this is bad')
+        else:
+            self.map[coordinates[0]][coordinates[1]].execute_node_activity()
+
+    def flee(self):
+        random_node = rand.choice(self.node_coordinates)
+        while random_node == self.current_coordinates or random_node == self.end_coordinates:
+            random_node = rand.choice(self.node_coordinates)
+        Speech.say("You have been moved to a random node.")
+        self.current_coordinates = random_node
+
         # Connie
-        # todo set up driver - call node actions everytime we are at a node
-        # todo if users run from fight send to a random node, dont activate node, ask user where to move next
+        # t\odo set up driver - call node actions everytime we are at a node
+        # t\odo if users run from fight send to a random node, dont activate node, ask user where to move next
         # Justin
         # t\odo allow users to run or stay during fight
         # todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
         # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
         # Walker
-        # todo set up arm functionality in controller interface
+        # todo threading for gui
+        # t\odo set up arm functionality in controller interface
         # Whoever
         # todo address any other misc todos around the code
         # todo robots move during actions (arms turning etc)
@@ -228,6 +245,11 @@ class IdRatherRipMyNailOFF:
 
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.
 if __name__ == '__main__':
-    test = IdRatherRipMyNailOFF()
-    test.populate_map()
-    print(test.map)
+    driver = IdRatherRipMyNailOFF()
+    while True:
+        if not driver.this_is_the_players_stats_they_gonna_die_lol.fleeing:
+            new_coordinates = driver.user_input()
+            driver.move(new_coordinates)
+        else:
+            driver.flee()
+            driver.this_is_the_players_stats_they_gonna_die_lol.fleeing = False

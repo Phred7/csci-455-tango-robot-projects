@@ -17,3 +17,5 @@ class StartActivity(NodeActivity):
         Speech.say("Robot starting")
         Speech.say('Navigate the maze, defeat enemies and make it to the end to win!')
         self.controller_interface.right_arm_down()
+        self.controller_interface.left_arm_up()
+        self.controller_interface.left_arm_down()

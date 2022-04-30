@@ -159,6 +159,8 @@ class IdRatherRipMyNailOFF:
     def move(self, new_coords: Tuple[int, int]):
         x, y = self.current_coordinates
         new_x, new_y = new_coords
+        with open('images/picture.txt', "w") as f:
+            f.write('images/traveling.png')
 
         if self.total_moves < 30:
             if new_y < y:

@@ -14,8 +14,8 @@ class Speech:
     def say(string: str) -> None:
         text_to_speech_engine = pyttsx3.init()
         text_to_speech_engine.setProperty('rate', 150)
-        voices = text_to_speech_engine.getProperty('voices')
-        text_to_speech_engine.setProperty('voice', voices[2].id)
+        # voices = text_to_speech_engine.getProperty('voices')
+        # text_to_speech_engine.setProperty('voice', voices[2].id)
         text_to_speech_engine.say(string)
         text_to_speech_engine.runAndWait()
 
@@ -26,7 +26,7 @@ class Speech:
             with speech_recognition.Microphone() as source:
                 speech_recognizer = speech_recognition.Recognizer()
                 speech_recognizer.adjust_for_ambient_noise(source)
-                speech_recognizer.dynamic_energy_threshold = 1000
+                speech_recognizer.dynamic_energy_threshold = 3000
                 # r.operation_timeout = 8
                 # r.phrase_threshold = 0.15
                 try:

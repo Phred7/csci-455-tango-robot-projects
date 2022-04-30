@@ -148,7 +148,7 @@ class IdRatherRipMyNailOFF:
         while True:
             user_choice = Speech().get_speech().lower()
             for x in imcryingrealtears:
-                if x in user_choice:
+                if x in user_choice and x in possible_moves:
                     return possible_moves[x]
 
     def move(self, new_coords: Tuple[int, int]):

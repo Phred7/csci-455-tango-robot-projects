@@ -1,4 +1,3 @@
-from controller_interface import ControllerInterface
 from node_activities.charging_station_activity import ChargingStationActivity
 from node_activities.coffee_shop_activity import CoffeeShopActivity
 from node_activities.easy_battle_activity import EasyBattleActivity

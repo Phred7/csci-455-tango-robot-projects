@@ -37,13 +37,15 @@ class IdRatherRipMyNailOFF:
                                      [0, 0, 1, 0, 1, 0, 1, 0, 0],
                                      ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
         self.node_array = self.generate_nodes()
-
         # keeps track of location, and total moves level
         self.current_coordinates = self.initial_coordinates()
         # self.next_coordinates = (0, 0)
         self.end_coordinates = self.calc_end_coordinates()
+
+        # must happen after end and current
+        self.populate_map()
+
         self.total_moves = 0
-        self.node_array = self.generate_nodes()
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completely arbitrary but we need it
         # 1 second is for 90 degrees, 2 is for 180, can change later if needed
@@ -180,7 +182,10 @@ class IdRatherRipMyNailOFF:
 
     def act_out_node(self, coordinates: Tuple[int, int]):
         if not isinstance(self.map[coordinates[0]][coordinates[1]], int):
-            self.map[coordinates[0]][coordinates[1]].execute_node_activity()
+            if isinstance(self.map[coordinates[0]][coordinates[1]], Node):
+                self.map[coordinates[0]][coordinates[1]].execute_node_activity()
+            else:
+                print("Not a Node")
 
     def flee(self):
         xCoord = rand.randrange(len(self.map[0]))

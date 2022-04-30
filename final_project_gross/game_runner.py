@@ -280,4 +280,4 @@ if __name__ == '__main__':
             driver.move(new_coordinates)
         else:
             driver.flee()
-            driver.this_is_the_players_stats_they_gonna_die_lol.fleeing = False
+            driver.this_is_the_players_stats_they_gonna_die_lol.update_fleeing(False)

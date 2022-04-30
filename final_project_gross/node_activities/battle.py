@@ -22,7 +22,7 @@ class Battle:
     def __init__(self, difficulty: BattleDifficulty, player_stats: PlayerStatistics) -> None:
         self.battle_difficulty: BattleDifficulty = difficulty
         self.__player_stats: PlayerStatistics = player_stats
-        self.enemyDamage: random.randint(1, 100) #random damage per enemy
+        self.enemyDamage: random.randint(1, 100)  # random damage per enemy
         self.maximum_number_of_enemies: int
         self.battle_flag: bool = False
         if self.battle_difficulty is BattleDifficulty.MEDIUM:

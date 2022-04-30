@@ -23,7 +23,7 @@ class ControllerInterface:
     def __wait_for_time(self, seconds: float):
         if seconds > self.__max_time:
             seconds = self.__max_time
-        time.sleep(seconds)
+        sleep(seconds)
 
     def stop(self) -> None:
         self.__robot_controller.STOPDROPANDROLL()

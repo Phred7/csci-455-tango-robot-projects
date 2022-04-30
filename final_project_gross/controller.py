@@ -258,8 +258,6 @@ class Controller:
             self.drive_servo("", self.five_steps_of_POWER[4])
 
 
-
-
 if __name__ == '__main__':
     controller: Controller = Controller()
     for servo in controller.servo_robot_anatomy_map.keys():

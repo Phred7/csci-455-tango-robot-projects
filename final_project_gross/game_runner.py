@@ -11,9 +11,10 @@ from node_activities.tricky_choice_type_activity import TrickyChoiceTypeActivity
 from speech import Speech
 from player_statistics import PlayerStatistics
 from controller_interface import ControllerInterface
-from typing import Tuple, List, Any
+from typing import Tuple, List, Any, Callable, Dict
 from node import Node
 import random as rand
+
 
 class IdRatherRipMyNailOFF:
 
@@ -52,10 +53,21 @@ class IdRatherRipMyNailOFF:
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completely arbitrary but we need it
         # 1 second is for 90 degrees, 2 is for 180, can change later if needed
-        self.lesser_y = {'north': None, 'east': ControllerInterface().turn_left(1), 'south': ControllerInterface().turn_left(2), 'west': ControllerInterface().turn_right(1)}
-        self.greater_y = {'north': ControllerInterface().turn_left(2), 'east': ControllerInterface().turn_right(1), 'south': None, 'west': ControllerInterface().turn_left(1)}
-        self.lesser_x = {'north': ControllerInterface().turn_left(1), 'east': ControllerInterface().turn_left(2), 'south': ControllerInterface().turn_right(1), 'west': None}
-        self.greater_x = {'north': ControllerInterface().turn_right(1), 'east': None, 'south': ControllerInterface().turn_left(1), 'west': ControllerInterface().turn_left(2)}
+
+        self.robot_controller_interface: ControllerInterface = ControllerInterface()
+
+        self.lesser_y: Dict[str, (Callable, int)] = {'east': (self.robot_controller_interface.turn_left, 1),
+                                                     'south': (self.robot_controller_interface.turn_left, 2),
+                                                     'west': (self.robot_controller_interface.turn_right, 1)}
+        self.greater_y: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 2),
+                                                      'east': (self.robot_controller_interface.turn_right, 1), 
+                                                      'west': (self.robot_controller_interface.turn_left, 1)}
+        self.lesser_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 1),
+                                                     'east': (self.robot_controller_interface.turn_left, 2),
+                                                     'south': (self.robot_controller_interface.turn_right, 1)}
+        self.greater_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_right, 1),
+                                                      'south': (self.robot_controller_interface.turn_left, 1),
+                                                      'west': (self.robot_controller_interface.turn_left, 2)}
 
     def initial_coordinates(self) -> Tuple[int, int]:
         """
@@ -142,20 +154,28 @@ class IdRatherRipMyNailOFF:
 
         if self.total_moves < 30:
             if new_y < y:
-                self.lesser_y[self.direction_facing]
-                ControllerInterface().forward(2)
-                self.direction_facing = 'north'
+                if self.direction_facing in self.lesser_y:
+                    function, time = self.lesser_y[self.direction_facing]
+                    function(time)
+                    self.robot_controller_interface.forward(2)
+                    self.direction_facing = 'north'
             if new_y > y:
-                self.greater_y[self.direction_facing]
-                ControllerInterface().forward(2)
+                if self.direction_facing in self.greater_y:
+                    function, time = self.greater_y[self.direction_facing]
+                    function(time)
+                self.robot_controller_interface.forward(2)
                 self.direction_facing = 'south'
             if new_x < x:
-                self.lesser_x[self.direction_facing]
-                ControllerInterface().forward(2)
+                if self.direction_facing in self.lesser_x:
+                    function, time = self.lesser_x[self.direction_facing]
+                    function(time)
+                self.robot_controller_interface.forward(2)
                 self.direction_facing = 'west'
             if new_x > x:
-                self.greater_x[self.direction_facing]
-                ControllerInterface().forward(2)
+                if self.direction_facing in self.greater_x:
+                    function, time = self.greater_x[self.direction_facing]
+                    function(time)
+                self.robot_controller_interface.forward(2)
                 self.direction_facing = 'east'
             self.total_moves += 1
         else:
@@ -174,7 +194,6 @@ class IdRatherRipMyNailOFF:
         # Whoever
         # todo address any other misc todos around the code
         # todo robots move during actions (arms turning etc)
-
 
     def generate_nodes(self) -> List[Node]:
         return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
@@ -205,6 +224,7 @@ class IdRatherRipMyNailOFF:
 
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')
+
 
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.
 if __name__ == '__main__':

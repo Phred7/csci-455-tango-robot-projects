@@ -40,8 +40,8 @@ class PlayerStatistics:
     def fleeing(self) -> bool:
         return self.__fleeing
 
-    def update_fleeing(self, isfleeing: bool) -> None:
-        self.__fleeing = isfleeing
+    def update_fleeing(self, is_fleeing: bool) -> None:
+        self.__fleeing = is_fleeing
 
     def direction_facing(self) -> str:
         return self.__direction_facing

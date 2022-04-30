@@ -212,7 +212,7 @@ class IdRatherRipMyNailOFF:
         # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
         # t\odo allow users to run or stay during fight
         # Walker
-        # todo threading for gui
+        # t\odo threading for gui
         # t\odo set up arm functionality in controller interface
         # Whoever
         # todo address any other misc todos around the code
@@ -275,8 +275,8 @@ class IdRatherRipMyNailOFF:
     def gui(self) -> None:
         BackgroundApp().run()
 
-    def print_map(self) -> None:
-
+    def map_as_a_string(self) -> str:
+        
 
 
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.

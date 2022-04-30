@@ -279,6 +279,7 @@ class IdRatherRipMyNailOFF:
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.
 if __name__ == '__main__':
     driver = IdRatherRipMyNailOFF()
+    driver.act_out_node(driver.current_coordinates)
     while True:
         if not driver.this_is_the_players_stats_they_gonna_die_lol.get_fleeing():
             new_coordinates = driver.user_input()

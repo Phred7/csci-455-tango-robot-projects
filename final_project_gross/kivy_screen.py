@@ -18,7 +18,7 @@ class BackgroundApp(App):
         try:
             with open("images/picture.txt", "r") as txt_file:
                 img.source = str(txt_file.readline())
-                print(os.getcwd())
+                # print(os.getcwd())
         except IOError:
             img.source = 'images/gray.jpg'
 

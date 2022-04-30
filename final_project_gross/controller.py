@@ -242,18 +242,18 @@ class Controller:
             sleep(0.05)
 
     def left_arm(self, move_up_bool: bool) -> None:
-        if self.left_arm_position == 0 and move_up_bool:
+        if move_up_bool:
             self.left_arm_position = 1
             self.drive_servo("l_shoulder", self.five_steps_of_POWER[0])
-        if self.left_arm_position == 1 and not move_up_bool:
+        if not move_up_bool:
             self.left_arm_position = 0
             self.drive_servo("l_shoulder", self.five_steps_of_POWER[4])
 
     def right_arm(self, move_up_bool: bool) -> None:
-        if self.right_arm_position == 0 and move_up_bool:
+        if move_up_bool:
             self.left_arm_position = 1
             self.drive_servo("r_shoulder", self.five_steps_of_POWER[0])
-        if self.left_arm_position == 1 and not move_up_bool:
+        if not move_up_bool:
             self.left_arm_position = 0
             self.drive_servo("r_shoulder", self.five_steps_of_POWER[4])
 

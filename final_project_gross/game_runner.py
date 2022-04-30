@@ -38,7 +38,6 @@ class IdRatherRipMyNailOFF:
         # keeps track of location, and total moves level
         self.current_coordinates = self.initial_coordinates()
         # self.next_coordinates = (0, 0)
-        self.node_coordinates = []
         self.end_coordinates = self.calc_end_coordinates()
         self.total_moves = 0
 
@@ -107,7 +106,6 @@ class IdRatherRipMyNailOFF:
         for i in range(len(self.map)):
             for j in range(len(self.map[i])):
                 if self.map[i][j] == 'x':
-                    self.node_coordinates.append((i, j))
                     node = rand.choice(self.node_array)
                     while node.placed_in_map:
                         node = rand.choice(self.node_array)
@@ -183,12 +181,16 @@ class IdRatherRipMyNailOFF:
             self.map[coordinates[0]][coordinates[1]].execute_node_activity()
 
     def flee(self):
-        random_node = rand.choice(self.node_coordinates)
-        while random_node == self.current_coordinates or random_node == self.end_coordinates:
-            random_node = rand.choice(self.node_coordinates)
+        xCoord = rand.randrange(len(self.map[0]))
+        yCoord = rand.randrange(len(self.map))
+        random_node = self.map[xCoord][yCoord]
+        while random_node == self.current_coordinates or random_node == self.end_coordinates or random_node == '0' or random_node == '1':
+            yCoord = rand.randrange(len(self.map[0]))
+            xCoord = rand.randrange(len(self.map))
+            random_node = self.map[xCoord][yCoord]
         self.robot_controller_interface.turn_right(5)
         Speech.say("You have been moved to a random node.")
-        self.current_coordinates = random_node
+        self.current_coordinates = (xCoord, yCoord)
 
         # Connie
         # t\odo set up driver - call node actions everytime we are at a node

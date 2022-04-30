@@ -46,6 +46,8 @@ class Battle:
                     self.__player_stats.health -= self.__enemy_damage - (
                         self.__player_stats.armour_class())  # TODO: something like this for armor, might not be used
             if self.__player_stats.health() < 1:
+                with open('images/picture.txt', "w") as f:
+                    f.write('images/dead.png')
                 Speech.say("I am DEAD")
                 print('you stupid loser idiot haha')  # TODO: should never happen unless you really suck at the game
             if self.number_of_enemies < 0 or not self.battle_flag:

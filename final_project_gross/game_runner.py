@@ -275,6 +275,9 @@ class IdRatherRipMyNailOFF:
     def gui(self) -> None:
         BackgroundApp().run()
 
+    def print_map(self) -> None:
+
+
 
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.
 if __name__ == '__main__':

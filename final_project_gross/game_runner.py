@@ -15,6 +15,7 @@ from typing import Tuple, List, Any
 from node import Node
 import random as rand
 
+
 class IdRatherRipMyNailOFF:
 
     def __init__(self) -> None:
@@ -52,10 +53,14 @@ class IdRatherRipMyNailOFF:
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completely arbitrary but we need it
         # 1 second is for 90 degrees, 2 is for 180, can change later if needed
-        self.lesser_y = {'north': None, 'east': ControllerInterface().turn_left(1), 'south': ControllerInterface().turn_left(2), 'west': ControllerInterface().turn_right(1)}
-        self.greater_y = {'north': ControllerInterface().turn_left(2), 'east': ControllerInterface().turn_right(1), 'south': None, 'west': ControllerInterface().turn_left(1)}
-        self.lesser_x = {'north': ControllerInterface().turn_left(1), 'east': ControllerInterface().turn_left(2), 'south': ControllerInterface().turn_right(1), 'west': None}
-        self.greater_x = {'north': ControllerInterface().turn_right(1), 'east': None, 'south': ControllerInterface().turn_left(1), 'west': ControllerInterface().turn_left(2)}
+        self.lesser_y = {'north': None, 'east': ControllerInterface().turn_left(1),
+                         'south': ControllerInterface().turn_left(2), 'west': ControllerInterface().turn_right(1)}
+        self.greater_y = {'north': ControllerInterface().turn_left(2), 'east': ControllerInterface().turn_right(1),
+                          'south': None, 'west': ControllerInterface().turn_left(1)}
+        self.lesser_x = {'north': ControllerInterface().turn_left(1), 'east': ControllerInterface().turn_left(2),
+                         'south': ControllerInterface().turn_right(1), 'west': None}
+        self.greater_x = {'north': ControllerInterface().turn_right(1), 'east': None,
+                          'south': ControllerInterface().turn_left(1), 'west': ControllerInterface().turn_left(2)}
 
     def initial_coordinates(self) -> Tuple[int, int]:
         """
@@ -136,45 +141,50 @@ class IdRatherRipMyNailOFF:
 
         return possible_moves[user_choice]
 
-    def move(self, new_coordinates: Tuple[int, int]):
+    def move(self, new_coords: Tuple[int, int]):
         x, y = self.current_coordinates
-        new_x, new_y = new_coordinates
+        new_x, new_y = new_coords
 
         if self.total_moves < 30:
             if new_y < y:
                 self.lesser_y[self.direction_facing]
-                ControllerInterface().forward(2)
                 self.direction_facing = 'north'
             if new_y > y:
                 self.greater_y[self.direction_facing]
-                ControllerInterface().forward(2)
                 self.direction_facing = 'south'
             if new_x < x:
                 self.lesser_x[self.direction_facing]
-                ControllerInterface().forward(2)
                 self.direction_facing = 'west'
             if new_x > x:
                 self.greater_x[self.direction_facing]
-                ControllerInterface().forward(2)
                 self.direction_facing = 'east'
+            ControllerInterface().forward(2)
             self.total_moves += 1
+            self.act_out_node(new_coords)
         else:
             print('You moved too many times, ur done')
             # TODO affect robot stats, do something, kill robot
 
+    def act_out_node(self, coordinates: Tuple[int, int]):
+        if self.map[coordinates[0]][coordinates[1]] == '1':
+            pass
+        if self.map[coordinates[0]][coordinates[1]] == '0':
+            print('we are off the map, this is bad')
+        else:
+            self.map[coordinates[0]][coordinates[1]].execute_node_activity()
+
         # Connie
-        # todo set up driver - call node actions everytime we are at a node
+        # t\odo set up driver - call node actions everytime we are at a node
         # todo if users run from fight send to a random node, dont activate node, ask user where to move next
         # Justin
         # t\odo allow users to run or stay during fight
         # todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
         # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
         # Walker
-        # todo set up arm functionality in controller interface
+        # t\odo set up arm functionality in controller interface
         # Whoever
         # todo address any other misc todos around the code
         # todo robots move during actions (arms turning etc)
-
 
     def generate_nodes(self) -> List[Node]:
         return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
@@ -206,8 +216,10 @@ class IdRatherRipMyNailOFF:
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')
 
+
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.
 if __name__ == '__main__':
-    test = IdRatherRipMyNailOFF()
-    test.populate_map()
-    print(test.map)
+    driver = IdRatherRipMyNailOFF()
+    while True:
+        new_coordinates = driver.user_input()
+        driver.move(new_coordinates)

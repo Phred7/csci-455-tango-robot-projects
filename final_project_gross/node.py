@@ -43,6 +43,7 @@ class Node:
         Method that calls the algorithm or process defined by the concrete strategy.
         :return: None.
         """
+        self.visited_bool = True
         self.node_activity_object.node_activity()
 
     def visited(self) -> bool:

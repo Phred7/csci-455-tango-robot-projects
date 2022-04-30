@@ -36,7 +36,8 @@ class IdRatherRipMyNailOFF:
 
         # keeps track of location, and total moves levt
         self.current_coordinates = self.initial_coordinates()
-        self.next_coordinates = (0, 0)
+        # self.next_coordinates = (0, 0)
+        self.node_coordinates = []
         self.end_coordinates = self.calc_end_coordinates()
         self.total_moves = 0
         self.map: List[List[Any]] = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
@@ -108,6 +109,7 @@ class IdRatherRipMyNailOFF:
         for i in range(len(self.map)):
             for j in range(len(self.map[i])):
                 if self.map[i][j] == 'x':
+                    self.node_coordinates.append((i, j))
                     node = rand.choice(self.node_array)
                     while node.placed_in_map:
                         node = rand.choice(self.node_array)
@@ -161,6 +163,7 @@ class IdRatherRipMyNailOFF:
             ControllerInterface().forward(2)
             self.total_moves += 1
             self.act_out_node(new_coords)
+            self.current_coordinates = new_coordinates
         else:
             print('You moved too many times, ur done')
             # TODO affect robot stats, do something, kill robot
@@ -173,14 +176,22 @@ class IdRatherRipMyNailOFF:
         else:
             self.map[coordinates[0]][coordinates[1]].execute_node_activity()
 
+    def flee(self):
+        random_node = rand.choice(self.node_coordinates)
+        while random_node == self.current_coordinates or random_node == self.end_coordinates:
+            random_node = rand.choice(self.node_coordinates)
+        Speech.say("You have been moved to a random node.")
+        self.current_coordinates = random_node
+
         # Connie
         # t\odo set up driver - call node actions everytime we are at a node
-        # todo if users run from fight send to a random node, dont activate node, ask user where to move next
+        # t\odo if users run from fight send to a random node, dont activate node, ask user where to move next
         # Justin
         # t\odo allow users to run or stay during fight
         # todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
         # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
         # Walker
+        # todo threading for gui
         # t\odo set up arm functionality in controller interface
         # Whoever
         # todo address any other misc todos around the code
@@ -221,5 +232,9 @@ class IdRatherRipMyNailOFF:
 if __name__ == '__main__':
     driver = IdRatherRipMyNailOFF()
     while True:
-        new_coordinates = driver.user_input()
-        driver.move(new_coordinates)
+        if not driver.this_is_the_players_stats_they_gonna_die_lol.fleeing:
+            new_coordinates = driver.user_input()
+            driver.move(new_coordinates)
+        else:
+            driver.flee()
+            driver.this_is_the_players_stats_they_gonna_die_lol.fleeing = False

@@ -1,7 +1,5 @@
-import os
 from typing import Tuple
 
-import player_statistics
 from controller_interface import ControllerInterface
 from node_activity import NodeActivity
 from player_statistics import PlayerStatistics
@@ -17,15 +15,14 @@ class CoffeeShopActivity(NodeActivity):
 
     def node_activity(self) -> None:
         # updates kivy graphics
-        curX = self.player_statistics.current_x
-        curY = self.player_statistics.current_y
+        current_x_coordinate, current_y_coordinate = self.player_statistics.current_position()
         with open('images/picture.txt', "w") as f:
             f.write('images/coffee-shop.jpeg')
-        if self.end_x == None or self.end_y == None:
+        if self.end_x is None or self.end_y is None:
             print("coffee shop closed due to covid :(")
         else:
-            calc_x = curX - self.end_x
-            calc_y = curY - self.end_y
+            calc_x = current_x_coordinate - self.end_x
+            calc_y = current_y_coordinate - self.end_y
 
             if abs(calc_x) > abs(calc_y) :
                 if calc_x > 0:
@@ -41,8 +38,6 @@ class CoffeeShopActivity(NodeActivity):
                 else:
                     Speech.say("exit is to the south")
                     self.controller_interface.turn_left(2)
-
-
 
         # depending on how node layout is we could either just have some value range determine a direction
         # or we can just figure something else out. This does nothing for now though

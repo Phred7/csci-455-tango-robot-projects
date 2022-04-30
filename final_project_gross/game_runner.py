@@ -35,7 +35,7 @@ class IdRatherRipMyNailOFF:
                                      ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
         self.node_array = self.generate_nodes()
 
-        # keeps track of location, and total moves levt
+        # keeps track of location, and total moves level
         self.current_coordinates = self.initial_coordinates()
         # self.next_coordinates = (0, 0)
         self.node_coordinates = []

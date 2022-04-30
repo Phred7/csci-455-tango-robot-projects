@@ -279,7 +279,13 @@ class IdRatherRipMyNailOFF:
         BackgroundApp().run()
 
     def map_as_a_string(self) -> str:
-        
+        return_string: str = ""
+
+        for x_direction in self.map:
+            for y in x_direction:
+
+
+        return return_string
 
 
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.

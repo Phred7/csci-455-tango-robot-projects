@@ -2,6 +2,7 @@ import os
 from typing import Tuple
 
 import player_statistics
+from controller_interface import ControllerInterface
 from node_activity import NodeActivity
 from player_statistics import PlayerStatistics
 from speech import Speech
@@ -9,7 +10,7 @@ from speech import Speech
 
 class CoffeeShopActivity(NodeActivity):
 
-    def __init__(self, player_statistics: PlayerStatistics) -> None:
+    def __init__(self, player_statistics: PlayerStatistics, controller_interface: ControllerInterface) -> None:
         super().__init__(player_statistics)
         self.end_x = None
         self.end_y = None

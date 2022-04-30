@@ -76,6 +76,30 @@ class ControllerInterface:
         self.__robot_controller.right_arm(False)
         sleep(0.05)
 
+    def head_left(self) -> None:
+        if self.__platform == "Windows" or self.__platform == "Darwin":
+            print(f"head left")
+        self.__robot_controller.head_shake(False)
+        sleep(0.05)
+
+    def head_right(self) -> None:
+        if self.__platform == "Windows" or self.__platform == "Darwin":
+            print(f"head right")
+        self.__robot_controller.head_shake(True)
+        sleep(0.05)
+
+    def head_up(self) -> None:
+        if self.__platform == "Windows" or self.__platform == "Darwin":
+            print(f"head up")
+        self.__robot_controller.head_nod(True)
+        sleep(0.05)
+
+    def head_down(self) -> None:
+        if self.__platform == "Windows" or self.__platform == "Darwin":
+            print(f"head down")
+        self.__robot_controller.head_shake(False)
+        sleep(0.05)
+
 
 if __name__ == "__main__":
     rc: ControllerInterface = ControllerInterface()

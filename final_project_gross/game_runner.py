@@ -24,23 +24,6 @@ class IdRatherRipMyNailOFF:
         self.robot_controller_interface: ControllerInterface = ControllerInterface()
 
         # x = placeholder for node, 1 = connecting path between nodes, 0 = no path
-        self.map = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
-                    [0, 0, 1, 0, 1, 0, 0, 0, 1],
-                    ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
-                    [1, 0, 1, 0, 0, 0, 1, 0, 1],
-                    ['x', 0, 'x', 1, 'x', 1, 'x', 0, 'x'],
-                    [1, 0, 0, 0, 0, 0, 1, 0, 1],
-                    ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
-                    [0, 0, 1, 0, 1, 0, 1, 0, 0],
-                    ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
-        self.node_array = self.generate_nodes()
-
-        # keeps track of location, and total moves levt
-        self.current_coordinates = self.initial_coordinates()
-        # self.next_coordinates = (0, 0)
-        self.node_coordinates = []
-        self.end_coordinates = self.calc_end_coordinates()
-        self.total_moves = 0
         self.map: List[List[Any]] = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
                                      [0, 0, 1, 0, 1, 0, 0, 0, 1],
                                      ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
@@ -50,6 +33,15 @@ class IdRatherRipMyNailOFF:
                                      ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
                                      [0, 0, 1, 0, 1, 0, 1, 0, 0],
                                      ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
+        self.node_array = self.generate_nodes()
+
+        # keeps track of location, and total moves levt
+        self.current_coordinates = self.initial_coordinates()
+        # self.next_coordinates = (0, 0)
+        self.node_coordinates = []
+        self.end_coordinates = self.calc_end_coordinates()
+        self.total_moves = 0
+
         self.node_array = self.generate_nodes()
 
         # Used to move robot in correct directions
@@ -214,30 +206,54 @@ class IdRatherRipMyNailOFF:
     def generate_nodes(self) -> List[Node]:
         return [Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol,
                                             self.robot_controller_interface)),
-                Node("End", EndActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Easy Fight 1", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Easy Fight 2", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Easy Fight 3", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Easy Fight 4", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Easy Fight 5", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Medium Fight 0", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Medium Fight 1", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Medium Fight 2", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Medium Fight 3", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Medium Fight 4", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Hard Fight 0", HardBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Hard Fight 1", HardBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Hard Fight 2", HardBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Charging Station 0", ChargingStationActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Charging Station 1", ChargingStationActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Charging Station 2", ChargingStationActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Coffee Shop 0", CoffeeShopActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Coffee Shop 1", CoffeeShopActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Fun 0", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Fun 1", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Fun 2", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol)),
-                Node("Puzzle 0", TrickyChoiceTypeActivity(self.this_is_the_players_stats_they_gonna_die_lol))]
+                Node("End", EndActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                        self.robot_controller_interface)),
+                Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                        self.robot_controller_interface)),
+                Node("Easy Fight 1", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                        self.robot_controller_interface)),
+                Node("Easy Fight 2", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                        self.robot_controller_interface)),
+                Node("Easy Fight 3", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                        self.robot_controller_interface)),
+                Node("Easy Fight 4", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                        self.robot_controller_interface)),
+                Node("Easy Fight 5", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                        self.robot_controller_interface)),
+                Node("Medium Fight 0", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                            self.robot_controller_interface)),
+                Node("Medium Fight 1", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                            self.robot_controller_interface)),
+                Node("Medium Fight 2", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                            self.robot_controller_interface)),
+                Node("Medium Fight 3", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                            self.robot_controller_interface)),
+                Node("Medium Fight 4", MediumBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                            self.robot_controller_interface)),
+                Node("Hard Fight 0", HardBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                        self.robot_controller_interface)),
+                Node("Hard Fight 1", HardBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                        self.robot_controller_interface)),
+                Node("Hard Fight 2", HardBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                        self.robot_controller_interface)),
+                Node("Charging Station 0", ChargingStationActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                                   self.robot_controller_interface)),
+                Node("Charging Station 1", ChargingStationActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                                   self.robot_controller_interface)),
+                Node("Charging Station 2", ChargingStationActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                                   self.robot_controller_interface)),
+                Node("Coffee Shop 0", CoffeeShopActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                         self.robot_controller_interface)),
+                Node("Coffee Shop 1", CoffeeShopActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                         self.robot_controller_interface)),
+                Node("Fun 0", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                          self.robot_controller_interface)),
+                Node("Fun 1", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                          self.robot_controller_interface)),
+                Node("Fun 2", FunActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                          self.robot_controller_interface)),
+                Node("Puzzle 0", TrickyChoiceTypeActivity(self.this_is_the_players_stats_they_gonna_die_lol,
+                                                          self.robot_controller_interface))]
 
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')

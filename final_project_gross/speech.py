@@ -1,3 +1,4 @@
+import platform
 from typing import List
 
 import random
@@ -14,8 +15,8 @@ class Speech:
     def say(string: str) -> None:
         text_to_speech_engine = pyttsx3.init()
         text_to_speech_engine.setProperty('rate', 150)
-        # voices = text_to_speech_engine.getProperty('voices')
-        # text_to_speech_engine.setProperty('voice', voices[2].id)
+        voices = text_to_speech_engine.getProperty('voices')
+        text_to_speech_engine.setProperty('voice', voices[2].id)
         text_to_speech_engine.say(string)
         text_to_speech_engine.runAndWait()
 
@@ -30,6 +31,9 @@ class Speech:
                 # r.operation_timeout = 8
                 # r.phrase_threshold = 0.15
                 try:
+                    if platform.system() == "Windows":
+                        print("fictitiously got audio for windows")
+                        return "fictitious"
                     print("listening")
                     audio = speech_recognizer.listen(source, timeout=8)
                     print("got audio")

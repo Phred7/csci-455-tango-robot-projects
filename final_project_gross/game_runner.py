@@ -1,4 +1,5 @@
 import threading
+from copy import deepcopy
 
 from kivy_screen import BackgroundApp
 from node_activities.charging_station_activity import ChargingStationActivity
@@ -36,6 +37,7 @@ class IdRatherRipMyNailOFF:
                                      ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
                                      [0, 0, 1, 0, 1, 0, 1, 0, 0],
                                      ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
+
         self.node_array = self.generate_nodes()
         # keeps track of location, and total moves level
         self.current_coordinates = self.initial_coordinates()
@@ -49,6 +51,8 @@ class IdRatherRipMyNailOFF:
         # Used to move robot in correct directions
         self.direction_facing = 'north'  # Completely arbitrary but we need it
         # 1 second is for 90 degrees, 2 is for 180, can change later if needed
+
+        self.visited_coordinates: List[Tuple[int, int]] = [self.current_coordinates]
 
         self.lesser_y: Dict[str, (Callable, int)] = {'east': (self.robot_controller_interface.turn_left, 1),
                                                      'south': (self.robot_controller_interface.turn_left, 2),
@@ -187,9 +191,13 @@ class IdRatherRipMyNailOFF:
             self.robot_controller_interface.forward(2)
             self.act_out_node(new_coords)
             self.current_coordinates = new_coordinates
+            if self.current_coordinates not in self.visited_coordinates:
+                self.visited_coordinates.append(self.current_coordinates)
         else:
             print('You moved too many times, ur done')
             # TODO affect robot stats, do something, kill robot or hunter?
+
+        print(self.map_as_a_string())
 
     def act_out_node(self, coordinates: Tuple[int, int]):
         if not isinstance(self.map[coordinates[0]][coordinates[1]], int):
@@ -280,10 +288,19 @@ class IdRatherRipMyNailOFF:
 
     def map_as_a_string(self) -> str:
         return_string: str = ""
-
-        for x_direction in self.map:
-            for y in x_direction:
-                pass
+        for x in range(len(self.map)):
+            for y in range(len(self.map[x])):
+                if (x, y) == self.current_coordinates:
+                    return_string += "X"
+                elif (x, y) in self.visited_coordinates:
+                    item = self.map[x][y]
+                    if isinstance(item, Node):
+                        return_string += "1"
+                    if isinstance(item, int):
+                        return_string += str(item)
+                else:
+                    return_string += "0"
+            return_string += "\n"
 
         return return_string
 

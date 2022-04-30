@@ -1,4 +1,5 @@
 import platform
+from time import sleep
 
 from typing import Callable
 from controller import Controller

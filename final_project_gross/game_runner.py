@@ -24,23 +24,6 @@ class IdRatherRipMyNailOFF:
         self.robot_controller_interface: ControllerInterface = ControllerInterface()
 
         # x = placeholder for node, 1 = connecting path between nodes, 0 = no path
-        self.map = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
-                    [0, 0, 1, 0, 1, 0, 0, 0, 1],
-                    ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
-                    [1, 0, 1, 0, 0, 0, 1, 0, 1],
-                    ['x', 0, 'x', 1, 'x', 1, 'x', 0, 'x'],
-                    [1, 0, 0, 0, 0, 0, 1, 0, 1],
-                    ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
-                    [0, 0, 1, 0, 1, 0, 1, 0, 0],
-                    ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
-        self.node_array = self.generate_nodes()
-
-        # keeps track of location, and total moves levt
-        self.current_coordinates = self.initial_coordinates()
-        # self.next_coordinates = (0, 0)
-        self.node_coordinates = []
-        self.end_coordinates = self.calc_end_coordinates()
-        self.total_moves = 0
         self.map: List[List[Any]] = [['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x'],
                                      [0, 0, 1, 0, 1, 0, 0, 0, 1],
                                      ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
@@ -50,6 +33,15 @@ class IdRatherRipMyNailOFF:
                                      ['x', 1, 'x', 0, 'x', 0, 'x', 1, 'x'],
                                      [0, 0, 1, 0, 1, 0, 1, 0, 0],
                                      ['x', 1, 'x', 1, 'x', 0, 'x', 1, 'x']]
+        self.node_array = self.generate_nodes()
+
+        # keeps track of location, and total moves levt
+        self.current_coordinates = self.initial_coordinates()
+        # self.next_coordinates = (0, 0)
+        self.node_coordinates = []
+        self.end_coordinates = self.calc_end_coordinates()
+        self.total_moves = 0
+
         self.node_array = self.generate_nodes()
 
         # Used to move robot in correct directions

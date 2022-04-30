@@ -37,7 +37,7 @@ class FunActivity(NodeActivity):
         elif choice == 'lore':
             self.controller_interface.right_arm_up()
             Speech.say('lore placeholder')
-            # TODO: read a lore document. Not sure if TTS can just do file inputs
+            # TODO: read a lore document. Not sure if TTS can just do file inputs... if you convert it to a string it should
             self.controller_interface.right_arm_down()
         else:
             Speech.say('nothing happened.\nL')

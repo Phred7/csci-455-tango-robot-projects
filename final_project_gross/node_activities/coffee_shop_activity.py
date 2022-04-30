@@ -11,7 +11,7 @@ from speech import Speech
 class CoffeeShopActivity(NodeActivity):
 
     def __init__(self, player_statistics: PlayerStatistics, controller_interface: ControllerInterface) -> None:
-        super().__init__(player_statistics)
+        super().__init__(player_statistics, controller_interface)
         self.end_x = None
         self.end_y = None
 
@@ -30,13 +30,17 @@ class CoffeeShopActivity(NodeActivity):
             if abs(calc_x) > abs(calc_y) :
                 if calc_x > 0:
                     Speech.say("exit is to the west")
+                    self.controller_interface.turn_right(2)
                 else:
                     Speech.say("exit is to the east")
+                    self.controller_interface.turn_right(2)
             else:
                 if calc_y > 0:
                     Speech.say("exit is to the north")
+                    self.controller_interface.turn_left(2)
                 else:
                     Speech.say("exit is to the south")
+                    self.controller_interface.turn_left(2)
 
 
 

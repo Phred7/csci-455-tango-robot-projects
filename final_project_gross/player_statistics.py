@@ -37,7 +37,7 @@ class PlayerStatistics:
     def modify_armour_class(self, new_armour_class: int) -> None:
         self.__armor = new_armour_class
 
-    def fleeing(self) -> bool:
+    def get_fleeing(self) -> bool:
         return self.__fleeing
 
     def update_fleeing(self, is_fleeing: bool) -> None:

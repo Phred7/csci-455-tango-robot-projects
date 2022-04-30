@@ -179,11 +179,7 @@ class IdRatherRipMyNailOFF:
             # TODO affect robot stats, do something, kill robot or hunter?
 
     def act_out_node(self, coordinates: Tuple[int, int]):
-        if self.map[coordinates[0]][coordinates[1]] == '1':
-            pass
-        elif self.map[coordinates[0]][coordinates[1]] == '0':
-            print('we are off the map, this is bad')
-        else:
+        if not isinstance(self.map[coordinates[0]][coordinates[1]], int):
             self.map[coordinates[0]][coordinates[1]].execute_node_activity()
 
     def flee(self):

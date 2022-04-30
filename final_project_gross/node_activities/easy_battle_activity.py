@@ -7,7 +7,7 @@ from player_statistics import PlayerStatistics
 class EasyBattleActivity(NodeActivity, Battle):
 
     def __init__(self, player_statistics: PlayerStatistics, controller_interface: ControllerInterface) -> None:
-        NodeActivity.__init__(self, player_statistics)
+        NodeActivity.__init__(self, player_statistics, controller_interface)
         Battle.__init__(self, BattleDifficulty.EASY, self.player_statistics)
 
     def node_activity(self) -> None:

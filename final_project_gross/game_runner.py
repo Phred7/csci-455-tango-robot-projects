@@ -276,7 +276,8 @@ class IdRatherRipMyNailOFF:
 
     # Justin
     # todo make robot move while it is fighting battles (arms turning etc) - all other actions are done
-    # todo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
+        #i want to check in on how best to do this (ie. class and steps etc)
+    # t\odo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
     # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
     # t\odo allow users to run or stay during fight
 

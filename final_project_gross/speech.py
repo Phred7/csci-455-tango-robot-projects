@@ -29,8 +29,8 @@ class Speech:
                 speech_recognizer = speech_recognition.Recognizer()
                 speech_recognizer.adjust_for_ambient_noise(source)
                 speech_recognizer.dynamic_energy_threshold = 3000
-                # r.operation_timeout = 8
-                # r.phrase_threshold = 0.15
+                speech_recognizer.operation_timeout = 8
+                speech_recognizer.phrase_threshold = 0.15
                 try:
                     if platform.system() == "Windows":
                         print("fictitiously got audio for windows")

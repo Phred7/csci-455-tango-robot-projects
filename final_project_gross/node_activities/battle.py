@@ -35,6 +35,8 @@ class Battle:
         self.number_of_enemies: int = random.randint(1, self.maximum_number_of_enemies)
 
     def start_battle(self):
+        fightString = "There are " + str(self.number_of_enemies) + " enemies. You must either fight or run."
+        Speech.say(fightString)
         self.battle_flag = True
 
     def attack_calculation(self):
@@ -45,7 +47,7 @@ class Battle:
                     self.__player_stats.set_health(
                         self.__player_stats.health() - (self.__enemy_damage - (
                             self.__player_stats.armour_class())))  # TODO: something like this for armor, might not be used
-            statmessage = "There are" + str(self.number_of_enemies) + "remaining. I have" + str(self.__player_stats.health()) + "health left."
+            statmessage = "There are" + str(self.number_of_enemies) + "remaining. I have" + str(self.__player_stats.health()) + "health left. You must either fight or run."
             Speech.say(statmessage)
             if self.__player_stats.health() < 1:
                 with open('images/picture.txt', "w") as f:

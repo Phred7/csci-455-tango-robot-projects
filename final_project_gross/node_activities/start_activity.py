@@ -11,9 +11,9 @@ class StartActivity(NodeActivity):
 
     def node_activity(self) -> None:
         # updates kivy graphics
-        with open('images/picture.txt', "w") as f:
-            f.write('images/start.png')
         self.controller_interface.right_arm_up()
+        self.controller_interface.left_arm_up()
         Speech.say("Robot starting")
         Speech.say('Navigate the maze, defeat enemies and make it to the end to win!')
         self.controller_interface.right_arm_down()
+        self.controller_interface.left_arm_down()

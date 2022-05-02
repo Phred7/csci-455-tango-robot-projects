@@ -13,5 +13,11 @@ class HardBattleActivity(NodeActivity, Battle):
     def node_activity(self) -> None:
         # updates kivy graphics
         with open('images/picture.txt', "w") as f:
-            f.write('images/hard.png')
-        pass
+            f.write('images/easy.png')
+        self.start_battle()
+        while(self.battle_flag == True):
+            input = Speech.get_speech()
+            if("fight" in input or "attack" in input or "kill" in input):
+                self.attack_calculation()
+            elif("run" in input or "flee" in input):
+                self.flee()

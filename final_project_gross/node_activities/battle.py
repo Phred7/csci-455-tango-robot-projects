@@ -35,8 +35,8 @@ class Battle:
         self.number_of_enemies: int = random.randint(1, self.maximum_number_of_enemies)
 
     def start_battle(self):
-        fightString = "There are " + self.number_of_enemies + " enemies. You must either fight or run."
-        Speech.say()
+        fightString = "There are " + str(self.number_of_enemies) + " enemies. You must either fight or run."
+        Speech.say(fightString)
         self.battle_flag = True
 
     def attack_calculation(self):

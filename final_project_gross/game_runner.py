@@ -294,6 +294,7 @@ class IdRatherRipMyNailOFF:
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
                 if (x, y) == self.current_coordinates:
+                    print("current coordinates test.")
                     return_string += "X"
                 elif (x, y) in self.visited_coordinates:
                     item = self.map[x][y]

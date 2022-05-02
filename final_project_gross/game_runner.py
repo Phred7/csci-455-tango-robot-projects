@@ -1,3 +1,5 @@
+import os
+import sys
 import threading
 from copy import deepcopy
 
@@ -70,7 +72,7 @@ class IdRatherRipMyNailOFF:
         with open('images/picture.txt', "w") as f:
             f.write("images/gray.jpg")
 
-        self.gui_thread = thread = threading.Thread(name="gui thread", target=self.gui, args=())
+        self.gui_thread: threading.Thread = threading.Thread(name="gui thread", target=self.gui, args=())
         self.gui_thread.start()
 
     def initial_coordinates(self) -> Tuple[int, int]:
@@ -93,7 +95,7 @@ class IdRatherRipMyNailOFF:
                 possible_start_coordinates.append((len(self.map[0]) - 1, i))
         sc = rand.choice(possible_start_coordinates)
         self.map[sc[0]][sc[1]] = Node("Start", StartActivity(self.this_is_the_players_stats_they_gonna_die_lol,
-                                            self.robot_controller_interface))
+                                                             self.robot_controller_interface))
         # return a random possible start coordinate
         return sc
 
@@ -113,7 +115,7 @@ class IdRatherRipMyNailOFF:
 
         coords = (x, rand.choice(possible_y))
         self.map[coords[0]][coords[1]] = Node("End", EndActivity(self.this_is_the_players_stats_they_gonna_die_lol,
-                                        self.robot_controller_interface))
+                                                                 self.robot_controller_interface))
         return coords
 
     def populate_map(self):
@@ -153,10 +155,10 @@ class IdRatherRipMyNailOFF:
         print(output)
         Speech().say(output)
         user_choice = ''
-        imcryingrealtears = ['north', 'south', 'west', 'east']
+        im_crying_real_tears: List[str] = ['north', 'south', 'west', 'east']
         while True:
             user_choice = Speech().get_speech().lower()
-            for x in imcryingrealtears:
+            for x in im_crying_real_tears:
                 if x in user_choice and x in possible_moves:
                     return possible_moves[x]
 
@@ -270,15 +272,18 @@ class IdRatherRipMyNailOFF:
 
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')
+        Speech.say("You completed the maze. Im dead now.")
+        self.gui_thread.join()
+        sys.exit(0)
 
     def gui(self) -> None:
         BackgroundApp().run()
 
     # Justin
     # todo make robot move while it is fighting battles (arms turning etc) - all other actions are done
-        #i want to check in on how best to do this (ie. class and steps etc)
+    # i want to check in on how best to do this (ie. class and steps etc)
     # t\odo after each fight round tell user how robot and bad buys are doing - ie "I have 16 hit points left, the bad guys have 12"
-    # t\odo if we run away number of bad guys should be mantained - ie we defeat 3 of 5, when we return 2 are left
+    # t\odo if we run away number of bad guys should be maintained - ie we defeat 3 of 5, when we return 2 are left
     # t\odo allow users to run or stay during fight
 
     # Whoever
@@ -288,13 +293,11 @@ class IdRatherRipMyNailOFF:
     # todo - finish battle game logic
     # todo - check that robot moves during node action execution
 
-
     def map_as_a_string(self) -> str:
         return_string: str = ""
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
                 if (x, y) == self.current_coordinates:
-                    print("current coordinates test.")
                     return_string += "X"
                 elif (x, y) in self.visited_coordinates:
                     item = self.map[x][y]

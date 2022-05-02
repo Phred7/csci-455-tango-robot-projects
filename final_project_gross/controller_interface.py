@@ -56,50 +56,58 @@ class ControllerInterface:
     def left_arm_up(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"left arm up")
-        self.__robot_controller.left_arm(True)
-        sleep(0.05)
+        else:
+            self.__robot_controller.left_arm(True)
+            sleep(0.05)
 
     def left_arm_down(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"left arm down")
-        self.__robot_controller.left_arm(False)
-        sleep(0.05)
+        else:
+            self.__robot_controller.left_arm(False)
+            sleep(0.05)
 
     def right_arm_up(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"right arm up")
-        self.__robot_controller.right_arm(True)
-        sleep(0.05)
+        else:
+            self.__robot_controller.right_arm(True)
+            sleep(0.05)
 
     def right_arm_down(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"right arm down")
-        self.__robot_controller.right_arm(False)
-        sleep(0.05)
+        else:
+            self.__robot_controller.right_arm(False)
+            sleep(0.05)
 
     def head_left(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"head left")
-        self.__robot_controller.head_shake(False)
-        sleep(0.05)
+        else:
+            self.__robot_controller.head_shake(False)
+            sleep(0.05)
 
     def head_right(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"head right")
-        self.__robot_controller.head_shake(True)
-        sleep(0.05)
+        else:
+            self.__robot_controller.head_shake(True)
+            sleep(0.05)
 
     def head_up(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"head up")
-        self.__robot_controller.head_nod(True)
-        sleep(0.05)
+        else:
+            self.__robot_controller.head_nod(True)
+            sleep(0.05)
 
     def head_down(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"head down")
-        self.__robot_controller.head_shake(False)
-        sleep(0.05)
+        else:
+            self.__robot_controller.head_shake(False)
+            sleep(0.05)
 
 
 if __name__ == "__main__":

@@ -150,9 +150,14 @@ class IdRatherRipMyNailOFF:
         direction = ['north', 'west', 'east', 'south']
         for k in range(len(row)):
             try:
+                if (x + row[k]) > len(self.map[0]) or (y + col[k]) > len(self.map):
+                    print('we went to0 big off the map')
+                if (x + row[k]) < 0 or (y + col[k]) > 0:
+                    print('we went too small off the map')
                 if self.map[x + row[k]][y + col[k]] != 0:
                     possible_moves[direction[k]] = (x + row[k], y + col[k])
             except IndexError:
+                print('index error, we tried to go off the map')
                 pass
 
         output = 'Please select a direction ' + str(possible_moves.keys())
@@ -232,6 +237,7 @@ class IdRatherRipMyNailOFF:
         print(self.map_as_a_string())
         self.current_coordinates = (x_coordinate, y_coordinate)
         self.this_is_the_players_stats_they_gonna_die_lol.update_current_position(self.current_coordinates)
+        self.this_is_the_players_stats_they_gonna_die_lol.update_fleeing(False)
 
     def generate_nodes(self) -> List[Node]:
         return [Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,

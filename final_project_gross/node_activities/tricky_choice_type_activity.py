@@ -16,9 +16,9 @@ class TrickyChoiceTypeActivity(NodeActivity):
 
         # T\ODO: replace input with Speech.get_speech()
         output = "If you were a graduating senior, which four hundred level elective should you avoid?"
-        Speech().say(output)
+        Speech.say(output)
         resp = ''
-        resp = Speech().get_speech()
+        resp = Speech.get_speech()
         if 'four fifty five' in resp or 'four hundred and fifty five' in resp or 'robotics' in resp or '455' in resp:
             self.player_statistics.set_health(0)
             Speech.say('you died wrong answer')

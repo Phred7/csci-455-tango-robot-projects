@@ -46,6 +46,10 @@ class IdRatherRipMyNailOFF:
         # self.next_coordinates = (0, 0)
         self.end_coordinates = self.calc_end_coordinates()
 
+        for node in self.node_array:
+            if isinstance(node.node_activity, CoffeeShopActivity):
+                node.node_activity.set_end_coordinates(self.end_coordinates)
+
         # must happen after end and current
         self.populate_map()
 
@@ -153,18 +157,18 @@ class IdRatherRipMyNailOFF:
 
         output = 'Please select a direction ' + str(possible_moves.keys())
         print(output)
-        Speech().say(output)
+        Speech.say(output)
         user_choice = ''
         im_crying_real_tears: List[str] = ['north', 'south', 'west', 'east']
         while True:
-            user_choice = Speech().get_speech().lower()
+            user_choice = Speech.get_speech().lower()
             for x in im_crying_real_tears:
                 if x in user_choice and x in possible_moves:
                     return possible_moves[x]
 
-    def move(self, new_coords: Tuple[int, int]):
+    def move(self, new_coordinate: Tuple[int, int]):
         x, y = self.current_coordinates
-        new_x, new_y = new_coords
+        new_x, new_y = new_coordinate
         with open('images/picture.txt', "w") as f:
             f.write('images/traveling.png')
 
@@ -191,12 +195,13 @@ class IdRatherRipMyNailOFF:
                 self.direction_facing = 'east'
             self.total_moves += 1
             self.robot_controller_interface.forward(2)
-            self.act_out_node(new_coords)
-            self.current_coordinates = new_coordinates
+            self.current_coordinates = new_coordinate
+            self.this_is_the_players_stats_they_gonna_die_lol.update_current_position(self.current_coordinates)
+            self.act_out_node(new_coordinate)
             if self.current_coordinates not in self.visited_coordinates:
                 self.visited_coordinates.append(self.current_coordinates)
         else:
-            Speech().say('You moved too many times, ur dead')
+            Speech.say('You moved too many times, ur dead')
             with open('images/picture.txt', "w") as f:
                 f.write('images/dead.png')
             # TODO affect robot stats, do something, kill robot or hunter?
@@ -204,23 +209,29 @@ class IdRatherRipMyNailOFF:
         print(self.map_as_a_string())
 
     def act_out_node(self, coordinates: Tuple[int, int]):
-        if not isinstance(self.map[coordinates[0]][coordinates[1]], int):
-            if isinstance(self.map[coordinates[0]][coordinates[1]], Node):
-                self.map[coordinates[0]][coordinates[1]].execute_node_activity()
+        this_item: Any = self.map[coordinates[0]][coordinates[1]]
+        if not isinstance(this_item, int):
+            if isinstance(this_item, Node):
+                this_item.execute_node_activity()
+                if isinstance(this_item.node_activity, EndActivity):
+                    self.on_finish()
+                    return
             else:
                 print("Not a Node")
 
     def flee(self):
-        xCoord = rand.randrange(len(self.map[0]))
-        yCoord = rand.randrange(len(self.map))
-        random_node = self.map[xCoord][yCoord]
+        x_coordinate: int = rand.randrange(len(self.map[0]))
+        y_coordinate: int = rand.randrange(len(self.map))
+        random_node = self.map[x_coordinate][y_coordinate]
         while random_node == self.current_coordinates or random_node == self.end_coordinates or random_node == '0' or random_node == '1':
-            yCoord = rand.randrange(len(self.map[0]))
-            xCoord = rand.randrange(len(self.map))
-            random_node = self.map[xCoord][yCoord]
+            y_coordinate = rand.randrange(len(self.map[0]))
+            x_coordinate = rand.randrange(len(self.map))
+            random_node = self.map[x_coordinate][y_coordinate]
         self.robot_controller_interface.turn_right(5)
         Speech.say("You have been moved to a random node.")
-        self.current_coordinates = (xCoord, yCoord)
+        print(self.map_as_a_string())
+        self.current_coordinates = (x_coordinate, y_coordinate)
+        self.this_is_the_players_stats_they_gonna_die_lol.update_current_position(self.current_coordinates)
 
     def generate_nodes(self) -> List[Node]:
         return [Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,
@@ -273,11 +284,14 @@ class IdRatherRipMyNailOFF:
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')
         Speech.say("You completed the maze. Im dead now.")
-        self.gui_thread.join()
+        self.gui_thread.join(1)
         sys.exit(0)
 
     def gui(self) -> None:
         BackgroundApp().run()
+
+    # Connie
+    # TODO: when going WEST and NORTH only you can wrap around to the nodes on the other side (Like pacman). Is that intentional?
 
     # Justin
     # todo make robot move while it is fighting battles (arms turning etc) - all other actions are done
@@ -288,9 +302,9 @@ class IdRatherRipMyNailOFF:
 
     # Whoever
     # todo - address any other misc todos around the code
-    # todo - check flee works
+    # t/odo - check flee works
     # todo - make end game logic - if we die and when we finish what happens
-    # todo - finish battle game logic
+    # t/odo - finish battle game logic
     # todo - check that robot moves during node action execution
 
     def map_as_a_string(self) -> str:
@@ -308,18 +322,23 @@ class IdRatherRipMyNailOFF:
                 else:
                     return_string += "0"
             return_string += "\n"
-
         return return_string
+
+    def __str__(self) -> str:
+        return self.map_as_a_string()
 
 
 # TODO: this is just a note... the STOP function may be causing the robot's weird movements after inactivity.
 if __name__ == '__main__':
     driver = IdRatherRipMyNailOFF()
     driver.act_out_node(driver.current_coordinates)
-    while True:
-        if not driver.this_is_the_players_stats_they_gonna_die_lol.get_fleeing():
-            new_coordinates = driver.user_input()
-            driver.move(new_coordinates)
-        else:
-            driver.flee()
-            driver.this_is_the_players_stats_they_gonna_die_lol.update_fleeing(False)
+    try:
+        while True:
+            if not driver.this_is_the_players_stats_they_gonna_die_lol.get_fleeing():
+                new_coordinates = driver.user_input()
+                driver.move(new_coordinates)
+            else:
+                driver.flee()
+                driver.this_is_the_players_stats_they_gonna_die_lol.update_fleeing(False)
+    finally:
+        driver.gui_thread.join()

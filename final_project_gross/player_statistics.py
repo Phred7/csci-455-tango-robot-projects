@@ -55,6 +55,5 @@ class PlayerStatistics:
     def current_position(self) -> Tuple[int, int]:
         return self.__current_x, self.__current_y
 
-    def update_current_position(self, x: int, y: int) -> None:
-        self.__current_x = x
-        self.__current_y = y
+    def update_current_position(self, coordinates: Tuple[int, int]) -> None:
+        self.__current_x, self.__current_y = coordinates

@@ -11,8 +11,8 @@ class CoffeeShopActivity(NodeActivity):
 
     def __init__(self, player_statistics: PlayerStatistics, controller_interface: ControllerInterface) -> None:
         super().__init__(player_statistics, controller_interface)
-        # self.end_x: int = end_coordinates[0]
-        # self.end_y: int = end_coordinates[1]
+        self.end_x: int
+        self.end_y: int
 
     def node_activity(self) -> None:
         with open('images/picture.txt', "w") as f:

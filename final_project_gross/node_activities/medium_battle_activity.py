@@ -2,6 +2,7 @@ from controller_interface import ControllerInterface
 from node_activities.battle import Battle, BattleDifficulty
 from node_activity import NodeActivity
 from player_statistics import PlayerStatistics
+from speech import Speech
 
 
 class MediumBattleActivity(NodeActivity, Battle):
@@ -13,5 +14,6 @@ class MediumBattleActivity(NodeActivity, Battle):
     def node_activity(self) -> None:
         # updates kivy graphics
         with open('images/picture.txt', "w") as f:
-            f.write('images/medium.jpeg')
-        pass
+            f.write('images/easy.png')
+
+        self.battle()

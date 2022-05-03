@@ -1,7 +1,6 @@
 import random
 from enum import Enum
 
-import player_statistics
 from player_statistics import PlayerStatistics
 from speech import Speech
 
@@ -35,26 +34,41 @@ class Battle:
         self.number_of_enemies: int = random.randint(1, self.maximum_number_of_enemies)
 
     def start_battle(self):
-        # TODO: i thought about doing classes for these but it might be easier to just do methods
+        fight_string: str = f"There are {self.number_of_enemies} enemies. You must either fight or run."
+        Speech.say(fight_string)
         self.battle_flag = True
 
-    def attack_calculation(self):  # TODO: not sure if this goes here or in controller
+    def battle(self) -> None:
+        self.start_battle()
+        while self.battle_flag:
+            _input: str = Speech.get_speech()
+            if "fight" in _input or "attack" in _input or "kill" in _input:
+                self.attack_calculation()
+            elif "run" in _input or "flee" in _input:
+                self.flee()
+
+    def attack_calculation(self):
         if self.battle_flag:
             if self.number_of_enemies > 0:
                 self.number_of_enemies -= self.__player_stats.deal_damage()  # TODO: using dynamic damage lets us just fill up features later
                 for i in range(self.number_of_enemies):
-                    self.__player_stats.health -= self.__enemy_damage - (
-                        self.__player_stats.armour_class())  # TODO: something like this for armor, might not be used
+                    self.__player_stats.set_health(
+                        self.__player_stats.health() - (self.__enemy_damage - (
+                            self.__player_stats.armour_class())))  # TODO: something like this for armor, might not be used
+            # TODO: logic for 0 enemies left doesnt work quite right
+            stat_message: str = f"There are {self.number_of_enemies} enemies remaining. I have {self.__player_stats.health()} health left. Fight or run."
+            Speech.say(stat_message)
             if self.__player_stats.health() < 1:
                 with open('images/picture.txt', "w") as f:
                     f.write('images/dead.png')
-                Speech.say("I am DEAD")
-                print('you stupid loser idiot haha')  # TODO: should never happen unless you really suck at the game
-            if self.number_of_enemies < 0 or not self.battle_flag:
+                Speech.say("I am DEAD... you stupid loser idiot haha")
+                self.battle_flag = False
+                return
+            if self.number_of_enemies <= 0 or not self.battle_flag:
                 self.number_of_enemies = 0
                 self.battle_flag = False
                 Speech.say("battle win")
-                print('battle win')  # TODO: placeholder, do callback to something here
+                # TODO: placeholder, do callback to something here
 
     def flee(self):
         Speech.say("I AM FLEEING")

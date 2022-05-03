@@ -43,8 +43,11 @@ class Node:
         Method that calls the algorithm or process defined by the concrete strategy.
         :return: None.
         """
-        self.visited_bool = True
-        self.node_activity_object.node_activity()
+        with open('images/picture.txt', "w") as f:
+            f.write('images/start.png')
+        if self.visited_bool is False:
+            self.visited_bool = True
+            self.node_activity_object.node_activity()
 
     def visited(self) -> bool:
         return self.visited_bool

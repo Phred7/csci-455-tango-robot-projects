@@ -14,7 +14,7 @@ class EndActivity(NodeActivity):
         # updates kivy graphics
         with open('images/picture.txt', "w") as f:
             f.write('images/finish.jpeg')
-        Speech().say('You won!')
+        Speech.say('You won!')
         self.controller_interface.left_arm_up()
         self.controller_interface.left_arm_down()
         self.controller_interface.right_arm_up()

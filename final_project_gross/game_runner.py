@@ -148,9 +148,9 @@ class IdRatherRipMyNailOFF:
         row = [-1, 0, 0, 1]
         col = [0, -1, 1, 0]
         direction = ['north', 'west', 'east', 'south']
+        print(self.map_as_a_string())
         for k in range(len(row)):
             try:
-                print(self.map_as_a_string())
                 if (x + row[k]) < 0 or (x + row[k]) > (len(self.map[0]) -1):
                     continue
                 if (y + col[k]) < 0 or (y + col[k]) > (len(self.map) -1):
@@ -203,9 +203,12 @@ class IdRatherRipMyNailOFF:
             self.robot_controller_interface.forward(2)
             self.current_coordinates = new_coordinate
             self.this_is_the_players_stats_they_gonna_die_lol.update_current_position(self.current_coordinates)
+            if self.current_coordinates not in self.visited_coordinates:
+                self.visited_coordinates.append(self.current_coordinates)
             self.act_out_node(new_coordinate)
             if self.current_coordinates not in self.visited_coordinates:
                 self.visited_coordinates.append(self.current_coordinates)
+
         else:
             Speech.say('You moved too many times, ur dead')
             self.this_is_the_players_stats_they_gonna_die_lol.set_health(0)
@@ -214,7 +217,7 @@ class IdRatherRipMyNailOFF:
             self.on_finish()
             # TODO affect robot stats, do something, kill robot or hunter?
 
-        print(self.map_as_a_string())
+        # print(self.map_as_a_string())
 
     def act_out_node(self, coordinates: Tuple[int, int]):
         this_item: Any = self.map[coordinates[0]][coordinates[1]]
@@ -239,8 +242,10 @@ class IdRatherRipMyNailOFF:
             print(random_node)
         self.robot_controller_interface.turn_right(5)
         Speech.say("You have been moved to a random node.")
-        print(self.map_as_a_string())
+        # print(self.map_as_a_string())
         self.current_coordinates = (x_coordinate, y_coordinate)
+        if self.current_coordinates not in self.visited_coordinates:
+            self.visited_coordinates.append(self.current_coordinates)
         self.this_is_the_players_stats_they_gonna_die_lol.update_current_position(self.current_coordinates)
         self.this_is_the_players_stats_they_gonna_die_lol.update_fleeing(False)
         print(self.this_is_the_players_stats_they_gonna_die_lol.get_fleeing())

@@ -1,1 +1,1 @@
-images/start.png
+images/charging-station.png

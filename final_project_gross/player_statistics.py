@@ -8,7 +8,8 @@ class PlayerStatistics:
 
     def __init__(self, player_name: str) -> None:
         self.__player_name: str = player_name
-        self.__health: int = 400
+        self.__health: int = 2000
+        self.__health_max: int = 2000
         self.__damage_to_enemy: int = 1  # TODO: might not use this, depends on how fast we want 'battles' to happen
         self.__armor: int = 0  # TODO: might not use this, use with simple factorial equation to mitigate damage (dmg-x/100)
         self.__current_x: int = 0
@@ -30,6 +31,9 @@ class PlayerStatistics:
 
     def damage(self):
         return self.__damage_to_enemy
+
+    def get_health_max(self):
+        return self.__health_max
 
     def player_name(self) -> str:
         return self.__player_name

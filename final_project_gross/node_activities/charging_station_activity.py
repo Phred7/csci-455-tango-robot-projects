@@ -12,7 +12,7 @@ class ChargingStationActivity(NodeActivity):
         with open('images/picture.txt', "w") as f:
             f.write('images/charging-station.png')
 
-        self.player_statistics.set_health(400)  # TODO: should it recharge a random amount of health in a range that doesnt exceed some ceiling.
+        self.player_statistics.set_health(self.player_statistics.get_health_max())  # TODO: should it recharge a random amount of health in a range that doesnt exceed some ceiling.
 
         self.controller_interface.turn_left(1)
         self.controller_interface.turn_right(1)

@@ -23,7 +23,7 @@ class FunActivity(NodeActivity):
             Speech.say('you\'re dead roll better next time')
             # TODO: do exit stuff here... this should be handled by the game_runner and make robot move
         elif choice == 'heal':
-            self.player_statistics.set_health(400)
+            self.player_statistics.set_health(self.player_statistics.health()+400)
             Speech.say('healed health')
             self.controller_interface.left_arm_up()
             self.controller_interface.left_arm_down()

@@ -178,7 +178,7 @@ class IdRatherRipMyNailOFF:
         with open('images/picture.txt', "w") as f:
             f.write('images/traveling.png')
 
-        if self.total_moves < 30:
+        if self.total_moves < 30 and self.this_is_the_players_stats_they_gonna_die_lol.health()>0:
             if new_y < y:
                 if self.direction_facing in self.lesser_y:
                     function, time = self.lesser_y[self.direction_facing]
@@ -208,8 +208,10 @@ class IdRatherRipMyNailOFF:
                 self.visited_coordinates.append(self.current_coordinates)
         else:
             Speech.say('You moved too many times, ur dead')
+            self.this_is_the_players_stats_they_gonna_die_lol.set_health(0)
             with open('images/picture.txt', "w") as f:
                 f.write('images/dead.png')
+            self.on_finish()
             # TODO affect robot stats, do something, kill robot or hunter?
 
         print(self.map_as_a_string())
@@ -219,7 +221,7 @@ class IdRatherRipMyNailOFF:
         if not isinstance(this_item, int):
             if isinstance(this_item, Node):
                 this_item.execute_node_activity()
-                if isinstance(this_item.node_activity, EndActivity):
+                if isinstance(this_item.node_activity, EndActivity) or self.this_is_the_players_stats_they_gonna_die_lol.health()<1:
                     self.on_finish()
                     return
             else:
@@ -293,7 +295,10 @@ class IdRatherRipMyNailOFF:
 
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')
-        Speech.say("You completed the maze. Im dead now.")
+        if(self.this_is_the_players_stats_they_gonna_die_lol.health()>0):
+            Speech.say("You completed the maze. Im dead now.")
+        else:
+            Speech.say("You died. You are a loser, you lost.")
         self.gui_thread.join(1)
         sys.exit(0)
 

@@ -25,6 +25,12 @@ class PlayerStatistics:
     def set_health(self, health: int):
         self.__health = health
 
+    def set_damage(self,damage:int):
+        self.__damage_to_enemy = damage
+
+    def damage(self):
+        return self.__damage_to_enemy
+
     def player_name(self) -> str:
         return self.__player_name
 

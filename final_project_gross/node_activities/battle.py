@@ -34,7 +34,7 @@ class Battle:
         self.number_of_enemies: int = random.randint(1, self.maximum_number_of_enemies)
 
     def start_battle(self):
-        fight_string: str = f"There are {self.number_of_enemies} enemies. You must either fight or run."
+        fight_string: str = f"There are {self.number_of_enemies} enemies and I have {self.__player_stats.health()} health. You must either fight or run."
         Speech.say(fight_string)
         self.battle_flag = True
 
@@ -52,12 +52,11 @@ class Battle:
             if self.number_of_enemies > 0:
                 self.number_of_enemies -= self.__player_stats.deal_damage()  # TODO: using dynamic damage lets us just fill up features later
                 for i in range(self.number_of_enemies):
+                    self.__enemy_damage = random.randint(1,100)
                     self.__player_stats.set_health(
                         self.__player_stats.health() - (self.__enemy_damage - (
                             self.__player_stats.armour_class())))  # TODO: something like this for armor, might not be used
             # TODO: logic for 0 enemies left doesnt work quite right
-            stat_message: str = f"There are {self.number_of_enemies} enemies remaining. I have {self.__player_stats.health()} health left. Fight or run."
-            Speech.say(stat_message)
             if self.__player_stats.health() < 1:
                 with open('images/picture.txt', "w") as f:
                     f.write('images/dead.png')
@@ -67,8 +66,13 @@ class Battle:
             if self.number_of_enemies <= 0 or not self.battle_flag:
                 self.number_of_enemies = 0
                 self.battle_flag = False
-                Speech.say("battle win")
+                Speech.say("battle win, all enemies are dead.")
+                sayString: str = f"I have {self.__player_stats.health()} health left."
+                Speech.say(sayString)
                 # TODO: placeholder, do callback to something here
+            else:
+                stat_message: str = f"There are {self.number_of_enemies} enemies remaining. I have {self.__player_stats.health()} health left. Fight or run."
+                Speech.say(stat_message)
 
     def flee(self):
         Speech.say("I AM FLEEING")

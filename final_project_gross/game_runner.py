@@ -150,14 +150,15 @@ class IdRatherRipMyNailOFF:
         direction = ['north', 'west', 'east', 'south']
         for k in range(len(row)):
             try:
-                if (x + row[k]) > len(self.map[0]) or (y + col[k]) > len(self.map):
-                    print('we went to0 big off the map')
-                if (x + row[k]) < 0 or (y + col[k]) > 0:
-                    print('we went too small off the map')
+                print(self.map_as_a_string())
+                if (x + row[k]) < 0 or (x + row[k]) > (len(self.map[0]) -1):
+                    continue
+                if (y + col[k]) < 0 or (y + col[k]) > (len(self.map) -1):
+                    continue
                 if self.map[x + row[k]][y + col[k]] != 0:
                     possible_moves[direction[k]] = (x + row[k], y + col[k])
             except IndexError:
-                print('index error, we tried to go off the map')
+                print('index error')
                 pass
 
         output = 'Please select a direction ' + str(possible_moves.keys())
@@ -225,19 +226,22 @@ class IdRatherRipMyNailOFF:
                 print("Not a Node")
 
     def flee(self):
-        x_coordinate: int = rand.randrange(len(self.map[0]))
-        y_coordinate: int = rand.randrange(len(self.map))
+        x_coordinate: int = rand.randint(0, (len(self.map[0])-1))
+        y_coordinate: int = rand.randint(0, (len(self.map)-1))
         random_node = self.map[x_coordinate][y_coordinate]
+        print(random_node)
         while random_node == self.current_coordinates or random_node == self.end_coordinates or random_node == '0' or random_node == '1':
-            y_coordinate = rand.randrange(len(self.map[0]))
-            x_coordinate = rand.randrange(len(self.map))
+            x_coordinate: int = rand.randint(0, (len(self.map[0]) - 1))
+            y_coordinate: int = rand.randint(0, (len(self.map) - 1))
             random_node = self.map[x_coordinate][y_coordinate]
+            print(random_node)
         self.robot_controller_interface.turn_right(5)
         Speech.say("You have been moved to a random node.")
         print(self.map_as_a_string())
         self.current_coordinates = (x_coordinate, y_coordinate)
         self.this_is_the_players_stats_they_gonna_die_lol.update_current_position(self.current_coordinates)
         self.this_is_the_players_stats_they_gonna_die_lol.update_fleeing(False)
+        print(self.this_is_the_players_stats_they_gonna_die_lol.get_fleeing())
 
     def generate_nodes(self) -> List[Node]:
         return [Node("Easy Fight 0", EasyBattleActivity(self.this_is_the_players_stats_they_gonna_die_lol,

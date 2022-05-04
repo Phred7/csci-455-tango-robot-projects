@@ -20,11 +20,12 @@ class TrickyChoiceTypeActivity(NodeActivity):
         resp = ''
         resp = Speech.get_speech()
         if 'four fifty five' in resp or 'four hundred and fifty five' in resp or 'robotics' in resp or '455' in resp:
-            self.player_statistics.set_health(0)
-            Speech.say('you died wrong answer')
-            # TODO: make dead state and game exit
-        else:
             self.controller_interface.head_up()
             self.controller_interface.head_down()
             Speech.say('you are correct good job')
             # T\ODO: maybe include some sort of score if we're feeling extra spicy - we are not
+        else:
+            self.player_statistics.set_health(0)
+            Speech.say('you died wrong answer')
+            # TODO: make dead state and game exit
+

@@ -1,1 +1,1 @@
-images/traveling.png
+images/dead.png

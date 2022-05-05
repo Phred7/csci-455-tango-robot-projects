@@ -66,9 +66,9 @@ class Battle:
             if self.number_of_enemies <= 0 or not self.battle_flag:
                 self.number_of_enemies = 0
                 self.battle_flag = False
-                Speech.say("battle win, all enemies are dead.")
-                sayString: str = f"I have {self.__player_stats.health()} health left."
-                Speech.say(sayString)
+                Speech.say("battle won, all enemies are dead.")
+                say_string: str = f"I have {self.__player_stats.health()} health left."
+                Speech.say(say_string)
                 # TODO: placeholder, do callback to something here
             else:
                 stat_message: str = f"There are {self.number_of_enemies} enemies remaining. I have {self.__player_stats.health()} health left. Fight or run."

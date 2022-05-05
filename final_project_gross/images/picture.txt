@@ -1,1 +1,1 @@
-images/dead.png
+images/fun.png

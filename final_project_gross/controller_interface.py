@@ -71,6 +71,7 @@ class ControllerInterface:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"right arm up")
         else:
+            print('he he he')
             self.__robot_controller.right_arm(True)
             sleep(0.05)
 

@@ -1,5 +1,6 @@
 import random
 from enum import Enum
+from time import sleep
 
 from controller_interface import ControllerInterface
 from player_statistics import PlayerStatistics
@@ -45,7 +46,12 @@ class Battle:
         while self.battle_flag:
             _input: str = Speech.get_speech()
             if "fight" in _input or "attack" in _input or "kill" in _input:
+                self.__controller_interface.right_arm_up()
+                sleep(1)
                 self.attack_calculation()
+                sleep(1)
+                self.__controller_interface.right_arm_down()
+                sleep(1)
             elif "run" in _input or "flee" in _input:
                 self.flee()
 
@@ -78,5 +84,13 @@ class Battle:
 
     def flee(self):
         Speech.say("I AM FLEEING")
+        self.__controller_interface.head_up()
+        sleep(.5)
+        self.__controller_interface.head_down()
+        sleep(.5)
+        self.__controller_interface.right_arm_up()
+        sleep(1)
+        self.__controller_interface.right_arm_down()
+        sleep(1)
         self.battle_flag = False
         self.__player_stats.update_fleeing(True)

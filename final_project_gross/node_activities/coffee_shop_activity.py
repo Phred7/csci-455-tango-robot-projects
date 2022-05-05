@@ -22,6 +22,10 @@ class CoffeeShopActivity(NodeActivity):
 
         if self.end_x is None or self.end_y is None:
             print("coffee shop closed due to covid :(")
+            self.controller_interface.head_left()
+            sleep(1)
+            self.controller_interface.head_right()
+            sleep(1)
         else:
             calc_x = current_x_coordinate - self.end_x
             calc_y = current_y_coordinate - self.end_y

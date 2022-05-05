@@ -25,19 +25,24 @@ class FunActivity(NodeActivity):
         elif choice == 'heal':
             self.player_statistics.set_health(self.player_statistics.health()+400)
             Speech.say('healed health')
-            self.controller_interface.left_arm_up()
-            self.controller_interface.left_arm_down()
+            self.controller_interface.right_arm_up()
+            sleep(1)
+            self.controller_interface.right_arm_down()
+            sleep(1)
         elif choice == 'armor':
             self.player_statistics.modify_armour_class(self.player_statistics.armour_class()+100)
-            self.controller_interface.left_arm_up()
             self.controller_interface.right_arm_up()
+            sleep(1)
             Speech.say('armor armored')
-            self.controller_interface.left_arm_down()
+            sleep(1)
             self.controller_interface.right_arm_down()
+            sleep(1)
         elif choice == 'lore':
             self.controller_interface.right_arm_up()
-            Speech.say('lore placeholder')
-            # TODO: read a lore document. Not sure if TTS can just do file inputs... if you convert it to a string it should
+            sleep(1)
+            Speech.say('One ring to rule them all, one ring to find them, One ring to bring them all, and in the darkness bind them; In the Land of Mordor where the shadows lie.')
+            sleep(1)
             self.controller_interface.right_arm_down()
+            sleep(1)
         else:
             Speech.say('nothing happened.\nL')

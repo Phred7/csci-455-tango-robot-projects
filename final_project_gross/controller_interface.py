@@ -58,14 +58,14 @@ class ControllerInterface:
             print(f"left arm up")
         else:
             self.__robot_controller.left_arm(True)
-            sleep(0.05)
+            sleep(0.25)
 
     def left_arm_down(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"left arm down")
         else:
             self.__robot_controller.left_arm(False)
-            sleep(0.05)
+            sleep(0.25)
 
     def right_arm_up(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
@@ -73,42 +73,42 @@ class ControllerInterface:
         else:
             print('he he he')
             self.__robot_controller.right_arm(True)
-            sleep(0.05)
+            sleep(0.25)
 
     def right_arm_down(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"right arm down")
         else:
             self.__robot_controller.right_arm(False)
-            sleep(0.05)
+            sleep(0.25)
 
     def head_left(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"head left")
         else:
             self.__robot_controller.head_shake(False)
-            sleep(0.05)
+            sleep(0.25)
 
     def head_right(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"head right")
         else:
             self.__robot_controller.head_shake(True)
-            sleep(0.05)
+            sleep(0.25)
 
     def head_up(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"head up")
         else:
             self.__robot_controller.head_nod(True)
-            sleep(0.05)
+            sleep(0.25)
 
     def head_down(self) -> None:
         if self.__platform == "Windows" or self.__platform == "Darwin":
             print(f"head down")
         else:
             self.__robot_controller.head_shake(False)
-            sleep(0.05)
+            sleep(0.25)
 
 
 if __name__ == "__main__":

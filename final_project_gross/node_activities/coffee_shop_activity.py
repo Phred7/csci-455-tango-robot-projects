@@ -25,6 +25,7 @@ class CoffeeShopActivity(NodeActivity):
         else:
             calc_x = current_x_coordinate - self.end_x
             calc_y = current_y_coordinate - self.end_y
+            print("[DEBUG]: End X",self.end_x,"End Y",self.end_y)
 
             if abs(calc_x) > abs(calc_y):
                 if calc_x > 0:

@@ -14,6 +14,6 @@ class MediumBattleActivity(NodeActivity, Battle):
     def node_activity(self) -> None:
         # updates kivy graphics
         with open('images/picture.txt', "w") as f:
-            f.write('images/easy.png')
+            f.write('images/medium.jpeg')
 
         self.battle()

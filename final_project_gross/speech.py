@@ -37,9 +37,6 @@ class Speech:
                     speech_recognizer.operation_timeout = 8
                     speech_recognizer.phrase_threshold = 0.15
                     try:
-                        if platform.system() == "Windows":
-                            print("fictitiously got audio for windows")
-                            return "fictitious"
                         print("listening")
                         audio = speech_recognizer.listen(source, timeout=8)
                         print("got audio")

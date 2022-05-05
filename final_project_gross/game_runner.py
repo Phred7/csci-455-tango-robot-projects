@@ -1,4 +1,5 @@
 import os
+import platform
 import sys
 import threading
 from copy import deepcopy
@@ -75,9 +76,9 @@ class IdRatherRipMyNailOFF:
 
         with open('images/picture.txt', "w") as f:
             f.write("images/gray.jpg")
-
-        self.gui_thread: threading.Thread = threading.Thread(name="gui thread", target=self.gui, args=())
-        self.gui_thread.start()
+        if platform.system() != "Darwin":
+            self.gui_thread: threading.Thread = threading.Thread(name="gui thread", target=self.gui)
+            self.gui_thread.start()
 
     def initial_coordinates(self) -> Tuple[int, int]:
         """

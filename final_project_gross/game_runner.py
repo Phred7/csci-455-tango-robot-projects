@@ -243,6 +243,7 @@ class IdRatherRipMyNailOFF:
             x_coordinate: int = rand.randint(0, (len(self.map[0]) - 1))
             y_coordinate: int = rand.randint(0, (len(self.map) - 1))
             random_node = self.map[x_coordinate][y_coordinate]
+            toopledroople = x_coordinate, y_coordinate
             print(random_node)
         self.robot_controller_interface.turn_right(5)
         Speech.say("You have been moved to a random node.")

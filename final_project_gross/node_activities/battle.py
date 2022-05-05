@@ -1,6 +1,7 @@
 import random
 from enum import Enum
 
+from controller_interface import ControllerInterface
 from player_statistics import PlayerStatistics
 from speech import Speech
 
@@ -19,7 +20,8 @@ class Battle:
     Encapsulates Battles.
     """
 
-    def __init__(self, difficulty: BattleDifficulty, player_stats: PlayerStatistics) -> None:
+    def __init__(self, difficulty: BattleDifficulty, player_stats: PlayerStatistics, controller: ControllerInterface) -> None:
+        self.__controller_interface: ControllerInterface = controller
         self.battle_difficulty: BattleDifficulty = difficulty
         self.__player_stats: PlayerStatistics = player_stats
         self.__enemy_damage: int = random.randint(1, 100)  # random damage per enemy

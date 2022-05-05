@@ -237,8 +237,9 @@ class IdRatherRipMyNailOFF:
         x_coordinate: int = rand.randint(0, (len(self.map[0]) - 1))
         y_coordinate: int = rand.randint(0, (len(self.map) - 1))
         random_node = self.map[x_coordinate][y_coordinate]
+        toopledroople = x_coordinate, y_coordinate
         print(random_node)
-        while random_node == self.current_coordinates or random_node == self.end_coordinates or random_node == '0' or random_node == '1':
+        while toopledroople == self.current_coordinates or toopledroople == self.end_coordinates or random_node == '0' or random_node == '1':
             x_coordinate: int = rand.randint(0, (len(self.map[0]) - 1))
             y_coordinate: int = rand.randint(0, (len(self.map) - 1))
             random_node = self.map[x_coordinate][y_coordinate]

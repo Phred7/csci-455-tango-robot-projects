@@ -61,18 +61,18 @@ class IdRatherRipMyNailOFF:
 
         self.visited_coordinates: List[Tuple[int, int]] = [self.current_coordinates]
 
-        self.lesser_y: Dict[str, (Callable, int)] = {'east': (self.robot_controller_interface.turn_left, 1),
-                                                     'south': (self.robot_controller_interface.turn_left, 2),
-                                                     'west': (self.robot_controller_interface.turn_right, 1)}
-        self.greater_y: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 2),
-                                                      'east': (self.robot_controller_interface.turn_right, 1),
-                                                      'west': (self.robot_controller_interface.turn_left, 1)}
-        self.lesser_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 1),
-                                                     'east': (self.robot_controller_interface.turn_left, 2),
-                                                     'south': (self.robot_controller_interface.turn_right, 1)}
-        self.greater_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_right, 1),
-                                                      'south': (self.robot_controller_interface.turn_left, 1),
+        self.lesser_y: Dict[str, (Callable, int)] = {'east': (self.robot_controller_interface.turn_left, 2),
+                                                     'south': (self.robot_controller_interface.turn_left, 4),
+                                                     'west': (self.robot_controller_interface.turn_right, 2)}
+        self.greater_y: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 4),
+                                                      'east': (self.robot_controller_interface.turn_right, 2),
                                                       'west': (self.robot_controller_interface.turn_left, 2)}
+        self.lesser_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 2),
+                                                     'east': (self.robot_controller_interface.turn_left, 4),
+                                                     'south': (self.robot_controller_interface.turn_right, 2)}
+        self.greater_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_right, 2),
+                                                      'south': (self.robot_controller_interface.turn_left, 2),
+                                                      'west': (self.robot_controller_interface.turn_left, 4)}
 
         with open('images/picture.txt', "w") as f:
             f.write("images/gray.jpg")
@@ -201,7 +201,7 @@ class IdRatherRipMyNailOFF:
                     function(time)
                 self.direction_facing = 'east'
             self.total_moves += 1
-            self.robot_controller_interface.forward(2)
+            self.robot_controller_interface.forward(1)
             self.current_coordinates = new_coordinate
             self.this_is_the_players_stats_they_gonna_die_lol.update_current_position(self.current_coordinates)
             if self.current_coordinates not in self.visited_coordinates:

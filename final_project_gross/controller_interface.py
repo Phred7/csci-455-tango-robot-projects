@@ -40,6 +40,7 @@ class ControllerInterface:
         pass
 
     def forward(self, number_of_seconds: float) -> None:
+        print('controller interface rn')
         self.__call_action_and_stop(self.__robot_controller.forward, "drive forward", self.__forward_backwards_number_of_repeated_calls, number_of_seconds)
 
     def backwards(self, number_of_seconds: float) -> None:

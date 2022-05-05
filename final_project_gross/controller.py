@@ -113,6 +113,7 @@ class Controller:
         sleep(0.05)
 
     def forward(self):
+        print('controller fwd')
         # < 6000 on channel 1
         self.motor_velocity_counter -= self.motor_step_size
         if self.motor_velocity_counter < self.servo_min:
@@ -250,7 +251,6 @@ class Controller:
             self.drive_servo("l_shoulder", self.five_steps_of_POWER[2])
 
     def right_arm(self, move_up_bool: bool) -> None:
-        print(' i am in pain')
         if move_up_bool:
             self.left_arm_position = 1
             self.drive_servo("r_shoulder", self.five_steps_of_POWER[0])

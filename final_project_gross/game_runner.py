@@ -201,6 +201,7 @@ class IdRatherRipMyNailOFF:
                     function(time)
                 self.direction_facing = 'east'
             self.total_moves += 1
+            print('gr fwd')
             self.robot_controller_interface.forward(1)
             self.current_coordinates = new_coordinate
             self.this_is_the_players_stats_they_gonna_die_lol.update_current_position(self.current_coordinates)

@@ -1,1 +1,1 @@
-images/fun.png
+images/start.png

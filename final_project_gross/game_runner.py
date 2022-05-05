@@ -61,18 +61,18 @@ class IdRatherRipMyNailOFF:
 
         self.visited_coordinates: List[Tuple[int, int]] = [self.current_coordinates]
 
-        self.lesser_y: Dict[str, (Callable, int)] = {'east': (self.robot_controller_interface.turn_left, 1),
-                                                     'south': (self.robot_controller_interface.turn_left, 2),
-                                                     'west': (self.robot_controller_interface.turn_right, 1)}
-        self.greater_y: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 2),
-                                                      'east': (self.robot_controller_interface.turn_right, 1),
-                                                      'west': (self.robot_controller_interface.turn_left, 1)}
-        self.lesser_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 1),
-                                                     'east': (self.robot_controller_interface.turn_left, 2),
-                                                     'south': (self.robot_controller_interface.turn_right, 1)}
-        self.greater_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_right, 1),
-                                                      'south': (self.robot_controller_interface.turn_left, 1),
+        self.lesser_y: Dict[str, (Callable, int)] = {'east': (self.robot_controller_interface.turn_left, 2),
+                                                     'south': (self.robot_controller_interface.turn_left, 4),
+                                                     'west': (self.robot_controller_interface.turn_right, 2)}
+        self.greater_y: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 4),
+                                                      'east': (self.robot_controller_interface.turn_right, 2),
                                                       'west': (self.robot_controller_interface.turn_left, 2)}
+        self.lesser_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_left, 2),
+                                                     'east': (self.robot_controller_interface.turn_left, 4),
+                                                     'south': (self.robot_controller_interface.turn_right, 2)}
+        self.greater_x: Dict[str, (Callable, int)] = {'north': (self.robot_controller_interface.turn_right, 2),
+                                                      'south': (self.robot_controller_interface.turn_left, 2),
+                                                      'west': (self.robot_controller_interface.turn_left, 4)}
 
         with open('images/picture.txt', "w") as f:
             f.write("images/gray.jpg")
@@ -152,9 +152,9 @@ class IdRatherRipMyNailOFF:
         print(self.map_as_a_string())
         for k in range(len(row)):
             try:
-                if (x + row[k]) < 0 or (x + row[k]) > (len(self.map[0]) -1):
+                if (x + row[k]) < 0 or (x + row[k]) > (len(self.map[0]) - 1):
                     continue
-                if (y + col[k]) < 0 or (y + col[k]) > (len(self.map) -1):
+                if (y + col[k]) < 0 or (y + col[k]) > (len(self.map) - 1):
                     continue
                 if self.map[x + row[k]][y + col[k]] != 0:
                     possible_moves[direction[k]] = (x + row[k], y + col[k])
@@ -179,7 +179,7 @@ class IdRatherRipMyNailOFF:
         with open('images/picture.txt', "w") as f:
             f.write('images/traveling.png')
 
-        if self.total_moves < 30 and self.this_is_the_players_stats_they_gonna_die_lol.health()>0:
+        if self.total_moves < 30 and self.this_is_the_players_stats_they_gonna_die_lol.health() > 0:
             if new_y < y:
                 if self.direction_facing in self.lesser_y:
                     function, time = self.lesser_y[self.direction_facing]
@@ -201,7 +201,7 @@ class IdRatherRipMyNailOFF:
                     function(time)
                 self.direction_facing = 'east'
             self.total_moves += 1
-            self.robot_controller_interface.forward(2)
+            self.robot_controller_interface.forward(1)
             self.current_coordinates = new_coordinate
             self.this_is_the_players_stats_they_gonna_die_lol.update_current_position(self.current_coordinates)
             if self.current_coordinates not in self.visited_coordinates:
@@ -225,15 +225,16 @@ class IdRatherRipMyNailOFF:
         if not isinstance(this_item, int):
             if isinstance(this_item, Node):
                 this_item.execute_node_activity()
-                if isinstance(this_item.node_activity, EndActivity) or self.this_is_the_players_stats_they_gonna_die_lol.health()<1:
+                if isinstance(this_item.node_activity,
+                              EndActivity) or self.this_is_the_players_stats_they_gonna_die_lol.health() < 1:
                     self.on_finish()
                     return
             else:
                 print("Not a Node")
 
     def flee(self):
-        x_coordinate: int = rand.randint(0, (len(self.map[0])-1))
-        y_coordinate: int = rand.randint(0, (len(self.map)-1))
+        x_coordinate: int = rand.randint(0, (len(self.map[0]) - 1))
+        y_coordinate: int = rand.randint(0, (len(self.map) - 1))
         random_node = self.map[x_coordinate][y_coordinate]
         print(random_node)
         while random_node == self.current_coordinates or random_node == self.end_coordinates or random_node == '0' or random_node == '1':
@@ -301,11 +302,12 @@ class IdRatherRipMyNailOFF:
 
     def on_finish(self):  # TODO: note we don't need the key for this to work
         print('you finished')
-        if(self.this_is_the_players_stats_they_gonna_die_lol.health()>0):
+        if self.this_is_the_players_stats_they_gonna_die_lol.health() > 0:
             Speech.say("You completed the maze. Im dead now.")
         else:
             Speech.say("You died. You are a loser, you lost.")
-        self.gui_thread.join(1)
+        if platform.system() != "Darwin":
+            self.gui_thread.join(1)
         sys.exit(0)
 
     def gui(self) -> None:

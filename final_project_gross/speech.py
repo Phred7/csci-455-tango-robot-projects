@@ -34,8 +34,8 @@ class Speech:
                     speech_recognizer = speech_recognition.Recognizer()
                     speech_recognizer.adjust_for_ambient_noise(source)
                     speech_recognizer.dynamic_energy_threshold = 3000
-                    speech_recognizer.operation_timeout = 8
-                    speech_recognizer.phrase_threshold = 0.15
+                    speech_recognizer.operation_timeout = 4
+                    speech_recognizer.phrase_threshold = 0.1
                     try:
                         print("listening")
                         audio = speech_recognizer.listen(source, timeout=8)

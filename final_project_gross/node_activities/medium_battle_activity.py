@@ -9,7 +9,7 @@ class MediumBattleActivity(NodeActivity, Battle):
 
     def __init__(self, player_statistics: PlayerStatistics, controller_interface: ControllerInterface) -> None:
         NodeActivity.__init__(self, player_statistics, controller_interface)
-        Battle.__init__(self, BattleDifficulty.MEDIUM, self.player_statistics)
+        Battle.__init__(self, BattleDifficulty.MEDIUM, player_statistics, controller_interface)
 
     def node_activity(self) -> None:
         # updates kivy graphics
